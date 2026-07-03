@@ -5,10 +5,14 @@ export default function Navbar() {
     <nav>
       <div>
         <Link href="/">CodeNest</Link>
-        <div>
-          <Link href="/lessons">Lessons</Link>
-          <Link href="/about">About</Link>
-        </div>
+        <ul>
+          <li>
+            <Link href="/lessons">Lessons</Link>
+          </li>
+          <li>
+            <Link href="/about">About</Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );

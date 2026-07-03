@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] p-8">
+    <div className="flex flex-col items-center justify-center py-16 px-8">
       <section className="text-center max-w-2xl">
         <h1 className="text-4xl font-bold mb-4">Welcome to CodeNest</h1>
         <p className="text-lg mb-8">
