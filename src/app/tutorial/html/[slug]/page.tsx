@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lessonsMap, allSlugs } from "@/lib/curriculum";
 import CopyCodeBlocks from "@/components/CopyCodeBlocks";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 type Props = {
   params: { slug: string };
@@ -24,11 +25,7 @@ export default function TutorialLessonPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
-        <span>{frontmatter.topic}</span>
-        <span className="text-gray-300">/</span>
-        <span className="text-gray-600">{lesson.title}</span>
-      </div>
+      <Breadcrumbs topic={frontmatter.topic} title={lesson.title} />
       <h1 className="mb-3 text-3xl font-bold tracking-tight">
         {lesson.title}
       </h1>
