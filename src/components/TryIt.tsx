@@ -66,13 +66,24 @@ export default function TryIt({ html = "", css = "", js = "" }: Props) {
           visibleFiles: Object.keys(files),
           activeFile: "/index.html",
           classes: {
-            "sp-layout": "!rounded-none !border-0",
+            "sp-layout": "!rounded-none !border-0 !min-h-[400px]",
+            "sp-tabs": "!border-b !border-gray-200",
           },
+          initMode: "immediate",
         }}
       >
         <SandpackLayout>
-          <SandpackCodeEditor showLineNumbers showInlineErrors wrapContent />
-          <SandpackPreview />
+          <SandpackCodeEditor
+            showTabs
+            showLineNumbers
+            showInlineErrors
+            wrapContent
+            closableTabs={false}
+          />
+          <SandpackPreview
+            showRefreshButton={false}
+            showOpenInCodeSandbox={false}
+          />
         </SandpackLayout>
       </SandpackProvider>
     </div>

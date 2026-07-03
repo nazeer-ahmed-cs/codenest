@@ -76,6 +76,7 @@ export default function PlaygroundPage() {
               "sp-wrapper": "h-full",
               "sp-layout": "h-full",
             },
+            initMode: "immediate",
           }}
         >
           <SandpackLayout>
@@ -85,8 +86,12 @@ export default function PlaygroundPage() {
               showInlineErrors
               wrapContent
               closableTabs={false}
+              showRunButton={false}
             />
-            <SandpackPreview />
+            <SandpackPreview
+              showRefreshButton={false}
+              showOpenInCodeSandbox={false}
+            />
           </SandpackLayout>
         </SandpackProvider>
       </div>
