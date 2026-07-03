@@ -1,13 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import {
-  SandpackProvider,
-  SandpackLayout,
-  SandpackCodeEditor,
-  SandpackPreview,
-  useSandpack,
-} from "@codesandbox/sandpack-react";
+import { useState, useCallback, lazy, Suspense } from "react";
+
+const SandpackEditor = lazy(() => import("@/components/SandpackEditor"));
 
 type Props = {
   html?: string;
@@ -38,21 +33,27 @@ ${html}
   return files;
 }
 
-function TryItHeader({ onReset }: { onReset: () => void }) {
-  const { sandpack } = useSandpack();
+function TryItHeader({
+  onReset,
+  files,
+}: {
+  onReset: () => void;
+  files: Record<string, string>;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
-    const activeFile = sandpack.activeFile;
-    const content = sandpack.files[activeFile]?.code ?? "";
+    const allCode = Object.entries(files)
+      .map(([name, code]) => `// ${name}\n${code}`)
+      .join("\n\n");
     try {
-      await navigator.clipboard.writeText(content);
+      await navigator.clipboard.writeText(allCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // clipboard not available
     }
-  }, [sandpack]);
+  }, [files]);
 
   return (
     <div className="flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-50 px-4 py-2">
@@ -80,6 +81,7 @@ function TryItHeader({ onReset }: { onReset: () => void }) {
 export default function TryIt({ html = "", css = "", js = "" }: Props) {
   const [resetKey, setResetKey] = useState(0);
   const files = buildFiles(html, css, js);
+  const visibleFiles = Object.keys(files);
 
   const handleReset = useCallback(() => {
     setResetKey((k) => k + 1);
@@ -87,36 +89,21 @@ export default function TryIt({ html = "", css = "", js = "" }: Props) {
 
   return (
     <div className="not-prose my-6 rounded-xl border border-gray-200">
-      <SandpackProvider
-        key={resetKey}
-        template="static"
-        files={files}
-        options={{
-          visibleFiles: Object.keys(files),
-          activeFile: "/index.html",
-          classes: {
-            "sp-layout": "!rounded-none !border-0 !min-h-[400px] !flex-col lg:!flex-row",
-            "sp-tabs": "!border-b !border-gray-200",
-            "sp-tab-button": "!text-sm",
-          },
-          initMode: "immediate",
-        }}
+      <TryItHeader onReset={handleReset} files={files} />
+      <Suspense
+        fallback={
+          <div className="flex h-[400px] items-center justify-center rounded-b-xl bg-gray-50 text-sm text-gray-400">
+            Loading editor…
+          </div>
+        }
       >
-        <TryItHeader onReset={handleReset} />
-        <SandpackLayout>
-          <SandpackCodeEditor
-            showTabs
-            showLineNumbers
-            showInlineErrors
-            wrapContent
-            closableTabs={false}
-          />
-          <SandpackPreview
-            showRefreshButton={false}
-            showOpenInCodeSandbox={false}
-          />
-        </SandpackLayout>
-      </SandpackProvider>
+        <SandpackEditor
+          key={resetKey}
+          files={files}
+          visibleFiles={visibleFiles}
+          activeFile="/index.html"
+        />
+      </Suspense>
     </div>
   );
 }
