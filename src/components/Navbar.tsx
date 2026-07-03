@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
 import TopicSwitcher from "@/components/TopicSwitcher";
+import AuthButton from "@/components/AuthButton";
 import type { SearchItem } from "@/lib/curriculum";
 import type { TopicNavItem } from "@/components/TopicSwitcher";
 
@@ -54,6 +55,8 @@ export default function Navbar({
         <div className="flex-1" />
 
         <SearchBar items={searchItems} />
+
+        <AuthButton />
 
         <a
           href="https://github.com/nazeer-ahmed-cs/codenest"

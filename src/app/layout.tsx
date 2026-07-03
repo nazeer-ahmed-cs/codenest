@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SessionProvider from "@/components/SessionProvider";
 import { topics, searchIndex } from "@/lib/curriculum";
 import type { TopicNavItem } from "@/components/TopicSwitcher";
 import "./globals.css";
@@ -51,11 +52,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex min-h-screen flex-col">
-          <Navbar searchItems={searchIndex} topicNavItems={topicNavItems} />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+        <SessionProvider>
+          <div className="flex min-h-screen flex-col">
+            <Navbar searchItems={searchIndex} topicNavItems={topicNavItems} />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );
