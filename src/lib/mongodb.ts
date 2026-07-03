@@ -3,7 +3,9 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGODB_URI;
 const options = {};
 
-function getClientPromise(): Promise<MongoClient> {
+let clientPromise: Promise<MongoClient>;
+
+function connect(): Promise<MongoClient> {
   if (!uri) {
     return Promise.reject(
       new Error("Please define the MONGODB_URI environment variable")
@@ -26,6 +28,11 @@ function getClientPromise(): Promise<MongoClient> {
   return client.connect();
 }
 
-const clientPromise = getClientPromise();
+export async function connectToDatabase() {
+  if (!clientPromise) {
+    clientPromise = connect();
+  }
+  return clientPromise;
+}
 
-export default clientPromise;
+export default connectToDatabase;
