@@ -1,0 +1,147 @@
+---
+title: "Forms & Inputs"
+slug: html-forms
+order: 6
+topic: "HTML Basics"
+description: "Build interactive forms with inputs, labels, buttons, and built-in validation."
+---
+
+Forms are how users send data to a server — sign-ups, searches, contact messages, and more.
+
+## The `<form>` Element
+
+Every form starts with `<form>` and uses the `action` and `method` attributes to control where and how data is sent.
+
+```html
+<form action="/submit" method="post">
+  <!-- inputs go here -->
+</form>
+```
+
+- `action` — URL where the data is sent
+- `method` — `get` (appends to URL) or `post` (sends in request body)
+
+## Input Fields
+
+The `<input>` element is the workhorse of forms. Its `type` attribute changes its appearance and behaviour.
+
+```html
+<input type="text" name="username" placeholder="Enter your name">
+<input type="email" name="email" placeholder="you@example.com">
+<input type="password" name="password">
+<input type="number" name="age" min="0" max="120">
+<input type="date" name="birthday">
+<input type="color" name="favourite">
+```
+
+| Type | Purpose |
+|---|---|
+| `text` | Single line of text |
+| `email` | Email address (validates `@` symbol) |
+| `password` | Masked text entry |
+| `number` | Numeric input with up/down arrows |
+| `date` | Date picker |
+| `checkbox` | Toggle on/off (multiple allowed) |
+| `radio` | Select one from a group |
+| `file` | File upload |
+| `hidden` | Stores data invisible to the user |
+
+## Labels
+
+Always connect a `<label>` to each input using the `for` attribute matching the input's `id`. This makes the label clickable and helps screen readers.
+
+```html
+<label for="email">Email Address</label>
+<input type="email" id="email" name="email">
+```
+
+## Checkboxes & Radio Buttons
+
+```html
+<fieldset>
+  <legend>Interests</legend>
+  <label><input type="checkbox" name="interests" value="code"> Coding</label>
+  <label><input type="checkbox" name="interests" value="design"> Design</label>
+</fieldset>
+
+<fieldset>
+  <legend>Experience Level</legend>
+  <label><input type="radio" name="level" value="beginner"> Beginner</label>
+  <label><input type="radio" name="level" value="intermediate"> Intermediate</label>
+  <label><input type="radio" name="level" value="advanced"> Advanced</label>
+</fieldset>
+```
+
+`<fieldset>` groups related inputs and `<legend>` provides a description for the group.
+
+## Textareas & Selects
+
+```html
+<label for="bio">Bio</label>
+<textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+
+<label for="country">Country</label>
+<select id="country" name="country">
+  <option value="">Choose...</option>
+  <option value="us">United States</option>
+  <option value="uk">United Kingdom</option>
+  <option value="ca">Canada</option>
+</select>
+```
+
+## Buttons
+
+```html
+<button type="submit">Submit</button>
+<button type="reset">Reset</button>
+<button type="button">Click Me</button>
+```
+
+- `submit` — sends the form
+- `reset` — clears all fields to defaults
+- `button` — does nothing on its own (used with JavaScript)
+
+## Validation
+
+HTML provides built-in validation without writing JavaScript.
+
+```html
+<input type="text" required minlength="3" maxlength="20">
+<input type="email" required>
+<input type="number" min="1" max="100" step="1">
+<input type="url" pattern="https?://.+">
+```
+
+| Attribute | What it does |
+|---|---|
+| `required` | Field must be filled in |
+| `minlength` / `maxlength` | Minimum / maximum text length |
+| `min` / `max` | Minimum / maximum numeric value |
+| `pattern` | Regex pattern the value must match |
+| `step` | Increment step for numbers |
+
+## Putting It Together
+
+```html
+<form action="/signup" method="post">
+  <fieldset>
+    <legend>Account Details</legend>
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" required minlength="2">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required minlength="8">
+  </fieldset>
+
+  <fieldset>
+    <legend>Preferences</legend>
+    <label><input type="checkbox" name="newsletter" checked> Subscribe to newsletter</label>
+  </fieldset>
+
+  <button type="submit">Create Account</button>
+</form>
+```

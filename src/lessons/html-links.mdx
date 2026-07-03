@@ -1,0 +1,146 @@
+---
+title: "Links & Navigation"
+slug: html-links
+order: 8
+topic: "HTML Basics"
+description: "Master anchor tags, URL types, link states, and navigation best practices."
+---
+
+Links are what makes the web interconnected. Every time you click from one page to another, you're using an anchor (`<a>`) element.
+
+## Anchor Tag Basics
+
+```html
+<a href="https://example.com">Visit Example</a>
+```
+
+The `href` attribute is the destination. Without it, the link won't go anywhere.
+
+```html
+<a>This is not a link</a>                     <!-- useless -->
+<a href="">This links to the current page</a> <!-- usually unintentional -->
+```
+
+## URL Types
+
+### Absolute URLs
+Point to a full web address, including `https://`.
+
+```html
+<a href="https://developer.mozilla.org">MDN</a>
+<a href="https://github.com/nazeer-ahmed-cs/codenest">Source Code</a>
+```
+
+### Relative URLs
+Point to pages within the same site, without the domain.
+
+```html
+<a href="/tutorial">Tutorial Home</a>
+<a href="/tutorial/html/html-forms">HTML Forms Lesson</a>
+<a href="../css-basics">Sibling Directory</a>
+```
+
+| Path | Meaning |
+|---|---|
+| `/page` | From the site root |
+| `page` | Relative to the current directory |
+| `./page` | Same as above (explicit current dir) |
+| `../page` | One directory up |
+| `page#section` | Link to an anchor on that page |
+
+### Fragment Identifiers
+Link to a specific part of a page using `#` and an element's `id`.
+
+```html
+<a href="#pricing">Jump to Pricing</a>
+
+<!-- later in the page -->
+<h2 id="pricing">Pricing</h2>
+```
+
+### Email & Phone
+
+```html
+<a href="mailto:hello@example.com">Send Email</a>
+<a href="tel:+15551234567">Call Us</a>
+```
+
+## Opening in a New Tab
+
+Use `target="_blank"` to open in a new tab. Always pair it with `rel="noopener noreferrer"` for security.
+
+```html
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">
+  Open in new tab
+</a>
+```
+
+Without `noopener`, the new page can access the original page's `window` object via `window.opener` — a security risk.
+
+## Link States
+
+Browsers style links differently based on their state. The default order in CSS is:
+
+| Pseudo-class | Meaning |
+|---|---|
+| `:link` | Unvisited link (default blue) |
+| `:visited` | Link the user has clicked before (default purple) |
+| `:hover` | Mouse is over the link |
+| `:active` | Being clicked in that moment |
+
+```css
+a { color: #0066cc; }
+a:hover { text-decoration: underline; }
+a:visited { color: #551a8b; }
+```
+
+## Navigation Best Practices
+
+### Descriptive Link Text
+Don't use "click here" — screen reader users often navigate by jumping between links and need meaningful context.
+
+```html
+<!-- Bad -->
+<a href="/docs">Click here</a> for documentation.
+
+<!-- Good -->
+Read the <a href="/docs">documentation</a>.
+```
+
+### Skip Links
+Help keyboard users skip repetitive navigation by adding a skip link as the first focusable element.
+
+```html
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<main id="main-content">
+  <!-- page content -->
+</main>
+```
+
+### Navigation Lists
+Group related links in `<nav>` with a list for screen readers.
+
+```html
+<nav aria-label="Main navigation">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/tutorial">Tutorial</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+```
+
+## Putting It Together
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/tutorial">Tutorial</a></li>
+    <li><a href="/tutorial/html/html-forms" aria-current="page">Forms</a></li>
+  </ol>
+</nav>
+```
+
+Breadcrumb navigation uses ordered lists (`<ol>`) because the order matters. The `aria-current="page"` attribute tells screen readers the current page.

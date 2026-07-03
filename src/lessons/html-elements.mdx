@@ -1,0 +1,98 @@
+---
+title: "HTML Elements Deep Dive"
+slug: html-elements
+order: 3
+topic: "HTML Basics"
+description: "Understand block vs inline elements, semantic HTML tags, and when to use div vs span."
+---
+
+Every piece of content on a web page is wrapped in an HTML element. Elements fall into two main categories that affect how they behave in the layout.
+
+## Block vs Inline
+
+**Block-level elements** start on a new line and take up the full width available. They stack vertically like boxes.
+
+```html
+<p>This paragraph is a block element.</p>
+<div>This div is also a block element.</div>
+```
+
+**Inline elements** flow within the text and only take up as much width as they need. They sit side by side.
+
+```html
+<p>This is a <span>span inside</span> a paragraph.</p>
+<p>Here is <a href="#">a link</a> and <strong>bold text</strong>.</p>
+```
+
+| Behaviour | Block | Inline |
+|---|---|---|
+| Starts new line | Yes | No |
+| Fills parent width | Yes | No (shrinks to content) |
+| Width & height | Respects them | Ignores them |
+| Common examples | `<div>`, `<p>`, `<h1>`–`<h6>` | `<span>`, `<a>`, `<strong>`, `<img>` |
+
+## Semantic HTML Elements
+
+Semantic elements describe **what the content is**, not just how it looks. They help search engines, screen readers, and other developers understand your page structure.
+
+### Page Structure
+
+```html
+<header>   <!-- Site header / intro content -->
+<nav>      <!-- Navigation links -->
+<main>     <!-- Primary page content (use once) -->
+<section>  <!-- Thematic group of content -->
+<article>  <!-- Self-contained piece of content -->
+<aside>    <!-- Sidebar / tangential content -->
+<footer>   <!-- Site footer / copyright info -->
+```
+
+### Example Layout
+
+```html
+<body>
+  <header>
+    <h1>My Blog</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <h2>Blog Post Title</h2>
+      <p>Posted on <time datetime="2025-01-15">January 15</time></p>
+      <section>
+        <h3>Introduction</h3>
+        <p>Content goes here.</p>
+      </section>
+    </article>
+
+    <aside>
+      <h3>Related Posts</h3>
+      <ul>
+        <li><a href="#">Another post</a></li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Blog</p>
+  </footer>
+</body>
+```
+
+## Generic Containers
+
+Use `<div>` (block) and `<span>` (inline) only when no semantic element fits. They are neutral containers with no meaning.
+
+```html
+<!-- Prefer semantic elements first -->
+<nav>...</nav>
+
+<!-- Fall back to div only for styling hooks -->
+<div class="gallery">...</div>
+```
+
+Remember: semantic HTML is the foundation of accessible, SEO-friendly web pages. Choose the element that best describes your content.

@@ -1,0 +1,120 @@
+---
+title: "Images & Media"
+slug: html-images
+order: 9
+topic: "HTML Basics"
+description: "Embed images, figures, and responsive media with proper accessibility and performance."
+---
+
+Images bring a page to life. HTML provides several elements for embedding and describing visual content.
+
+## The `<img>` Element
+
+```html
+<img src="photo.jpg" alt="A sunset over mountains">
+```
+
+Two attributes are **required**:
+
+- `src` — the image file path or URL
+- `alt` — descriptive text for accessibility and fallback
+
+### Alt Text Guidelines
+
+| Situation | Example `alt` |
+|---|---|
+| Informative image | `"A sunset over mountains with orange and purple sky"` |
+| Decorative image | `""` (empty — screen readers skip it) |
+| Logo linked to home | `"Company Name home page"` |
+| Icon with text label | `""` (text already conveys meaning) |
+| Chart / graph | Summary of the data shown |
+
+```html
+<!-- Decorative -- screen reader skips it -->
+<img src="divider.svg" alt="" role="presentation">
+
+<!-- Informative -->
+<img src="chart.png" alt="Bar chart showing 40% growth in Q1 2025">
+```
+
+## Image Dimensions
+
+Always set `width` and `height` to prevent layout shift when the image loads.
+
+```html
+<img src="photo.jpg" alt="Beach" width="800" height="600">
+```
+
+This lets the browser reserve the correct space before the image downloads, avoiding content jumping around.
+
+## Responsive Images with `srcset`
+
+Serve different image sizes for different screen widths using `srcset` and `sizes`.
+
+```html
+<img
+  src="photo-800.jpg"
+  srcset="photo-400.jpg 400w, photo-800.jpg 800w, photo-1200.jpg 1200w"
+  sizes="(max-width: 600px) 100vw, 50vw"
+  alt="Mountain landscape"
+>
+```
+
+- `srcset` lists available images with their pixel widths
+- `sizes` tells the browser how much space the image will occupy
+- The browser picks the best image based on screen size and device pixel ratio
+
+## The `<figure>` & `<figcaption>` Elements
+
+Use `<figure>` to group an image with its caption.
+
+```html
+<figure>
+  <img src="architecture.jpg" alt="Modern building with glass facade">
+  <figcaption>Downtown Arts Centre, completed 2024</figcaption>
+</figure>
+```
+
+`<figcaption>` provides a visible caption tied to the image. It is semantically connected by the `<figure>` wrapper.
+
+## Lazy Loading
+
+Add `loading="lazy"` to defer loading off-screen images until the user scrolls near them. This speeds up initial page load.
+
+```html
+<img src="hero.jpg" alt="Hero banner" loading="eager">
+<img src="gallery-photo.jpg" alt="Gallery item" loading="lazy">
+```
+
+- `loading="eager"` — load immediately (default for above-the-fold images)
+- `loading="lazy"` — load when close to the viewport
+
+## File Format Cheat Sheet
+
+| Format | Best for |
+|---|---|
+| JPEG / JPG | Photographs with many colours |
+| PNG | Graphics with transparency |
+| SVG | Icons, logos, illustrations (scales infinitely) |
+| WebP | Modern replacement for JPEG/PNG (smaller files) |
+| AVIF | Newest format, best compression (check browser support) |
+| GIF | Simple animations (use video for anything longer) |
+
+## Putting It Together
+
+```html
+<figure>
+  <img
+    src="product-800.jpg"
+    srcset="product-400.jpg 400w, product-800.jpg 800w, product-1200.jpg 1200w"
+    sizes="(max-width: 768px) 100vw, 50vw"
+    alt="Ergonomic office chair with lumbar support"
+    width="800"
+    height="600"
+    loading="lazy"
+  >
+  <figcaption>Our best-selling ergonomic chair in charcoal grey</figcaption>
+</figure>
+```
+
+This single `<figure>` block uses responsive sizing, lazy loading, explicit dimensions, and a descriptive caption — all best practices in one snippet.

@@ -1,0 +1,173 @@
+---
+title: "HTML Tables"
+slug: html-tables
+order: 7
+topic: "HTML Basics"
+description: "Create structured data tables with rows, columns, headers, and captions."
+---
+
+Tables display data in a grid of rows and columns — perfect for schedules, pricing, comparison charts, and reports.
+
+## Basic Table Structure
+
+```html
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>City</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>30</td>
+    <td>New York</td>
+  </tr>
+  <tr>
+    <td>Bob</td>
+    <td>25</td>
+    <td>London</td>
+  </tr>
+</table>
+```
+
+| Element | Purpose |
+|---|---|
+| `<table>` | The container for the entire table |
+| `<tr>` | Table row |
+| `<th>` | Table header cell (bold, centered by default) |
+| `<td>` | Table data cell |
+
+## Semantic Sections
+
+Split large tables into `<thead>`, `<tbody>`, and `<tfoot>` for better structure and styling.
+
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Widget</td>
+      <td>$9.99</td>
+      <td>42</td>
+    </tr>
+    <tr>
+      <td>Gadget</td>
+      <td>$24.99</td>
+      <td>18</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Total</td>
+      <td>$34.98</td>
+      <td>60</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+- `<thead>` — header rows (prints at top of each page when printed)
+- `<tbody>` — main data rows
+- `<tfoot>` — footer rows (summary, totals)
+
+## Spanning Rows & Columns
+
+Use `colspan` and `rowspan` to merge cells.
+
+```html
+<table>
+  <tr>
+    <th>Name</th>
+    <th colspan="2">Contact</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>alice@email.com</td>
+    <td>+1 555-0100</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Bob</td>
+    <td>bob@email.com</td>
+    <td>+1 555-0102</td>
+  </tr>
+  <tr>
+    <!-- rowspan leaves two slots open -->
+    <td>bob.work@email.com</td>
+    <td>+1 555-0103</td>
+  </tr>
+</table>
+```
+
+## Caption & Summary
+
+Use `<caption>` to give the table a title. It is announced by screen readers and displayed above the table.
+
+```html
+<table>
+  <caption>Q1 2025 Sales Report</caption>
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>January</td><td>$12,000</td></tr>
+    <tr><td>February</td><td>$15,000</td></tr>
+    <tr><td>March</td><td>$18,000</td></tr>
+  </tbody>
+</table>
+```
+
+For complex tables, add `scope` to `<th>` to clarify whether the header applies to a column or row:
+
+```html
+<th scope="col">Price</th>
+<th scope="row">Widget</th>
+```
+
+## Column Groups
+
+Style entire columns at once with `<colgroup>` and `<col>`.
+
+```html
+<table>
+  <colgroup>
+    <col class="product-col">
+    <col class="price-col">
+    <col class="stock-col">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Widget</td><td>$9.99</td><td>42</td></tr>
+    <tr><td>Gadget</td><td>$24.99</td><td>18</td></tr>
+  </tbody>
+</table>
+```
+
+## Accessibility Tip
+
+Tables are for **tabular data only**. Don't use them for page layout. Semantic HTML and CSS grid/flexbox are the correct tools for layout.
+
+```html
+<!-- Bad: table used for layout -->
+<table><tr><td>Left column</td><td>Right column</td></tr></table>
+
+<!-- Good: CSS layout -->
+<div class="grid grid-cols-2">
+  <div>Left column</div>
+  <div>Right column</div>
+</div>
+```

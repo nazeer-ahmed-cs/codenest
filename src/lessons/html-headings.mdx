@@ -1,0 +1,123 @@
+---
+title: "Headings & Document Outline"
+slug: html-headings
+order: 5
+topic: "HTML Basics"
+description: "Master the h1–h6 hierarchy for accessible, SEO-friendly page structure."
+---
+
+Headings create a clear hierarchy for your content. They help readers scan the page and tell assistive technologies how your document is organized.
+
+## The Six Levels
+
+```html
+<h1>Page Title</h1>
+<h2>Section</h2>
+<h3>Subsection</h3>
+<h4>Detail</h4>
+<h5>Sub-detail</h5>
+<h6>Minor heading</h6>
+```
+
+- `<h1>` is the most important — use it once per page for the main title
+- `<h6>` is the least important
+- Each level represents a step deeper in the content hierarchy
+
+## The Golden Rules
+
+### 1. Don't Skip Levels
+
+A heading outline should never jump from `<h1>` to `<h3>` without an `<h2>` in between. Skipping levels confuses screen readers and breaks the logical structure.
+
+```html
+<!-- Bad: skipped h2 -->
+<h1>Guide</h1>
+<h3>Details</h3>
+
+<!-- Good: proper nesting -->
+<h1>Guide</h1>
+<h2>Getting Started</h2>
+<h3>Installation</h3>
+<h3>Configuration</h3>
+<h2>Advanced Topics</h2>
+```
+
+### 2. Use Exactly One `<h1>` Per Page
+
+The `<h1>` should describe the overall purpose of the page — it's the top-level heading that appears in search results and browser tabs.
+
+```html
+<!-- Homepage -->
+<h1>CodeNest — Learn Web Development</h1>
+
+<!-- Lesson page -->
+<h1>HTML Attributes</h1>
+```
+
+### 3. Match the Visual to the Semantic Level
+
+Don't choose a heading level based on font size. Use the correct level for the hierarchy, then style it with CSS.
+
+```html
+<!-- Don't use h3 just because you want smaller text -->
+<h3>This is a main section</h3>
+
+<!-- Use the right level and style with CSS -->
+<h2 class="small-heading">This is a main section</h2>
+```
+
+## Document Outline
+
+A well-structured heading hierarchy creates a logical outline:
+
+```
+h1 "HTML Basics"
+  h2 "What is HTML?"
+    h3 "History"
+    h3 "Modern HTML"
+  h2 "Elements & Tags"
+  h2 "Attributes"
+    h3 "Global Attributes"
+    h3 "Specific Attributes"
+  h2 "Putting It Together"
+```
+
+This outline helps:
+- **Screen readers** navigate by jumping between headings (most common navigation method)
+- **Search engines** understand the page's topics and importance
+- **Readers** quickly find the section they need
+
+## Headings in Practice
+
+```html
+<article>
+  <h1>Complete Guide to Baking Bread</h1>
+
+  <section>
+    <h2>Ingredients</h2>
+    <ul>
+      <li>Flour</li>
+      <li>Water</li>
+      <li>Yeast</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Instructions</h2>
+    <h3>Step 1: Mix the Dough</h3>
+    <p>Combine all ingredients in a large bowl...</p>
+    <h3>Step 2: Knead</h3>
+    <p>Knead for 10 minutes until smooth...</p>
+  </section>
+
+  <section>
+    <h2>Tips & Tricks</h2>
+    <h3>Humidity Matters</h3>
+    <p>Adjust water amount based on humidity...</p>
+  </section>
+</article>
+```
+
+## Accessibility Note
+
+Users of screen readers often navigate by heading level. A clean, unbroken hierarchy (no skipped levels) makes your content far more usable. Always think about the outline first, then apply styling.

@@ -3,9 +3,9 @@ import Sidebar from "@/components/Sidebar";
 
 export default function TutorialLayout({ children }: { children: ReactNode }) {
   return (
-    <div>
+    <div className="flex">
       <Sidebar />
-      <div>{children}</div>
+      <div className="flex-1 p-6">{children}</div>
     </div>
   );
 }

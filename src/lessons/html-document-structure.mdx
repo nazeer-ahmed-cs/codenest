@@ -1,0 +1,48 @@
+---
+title: "HTML Document Structure"
+slug: html-document-structure
+order: 1
+topic: "HTML Basics"
+description: "Learn the skeleton of every HTML page: DOCTYPE, html, head, and body tags."
+---
+
+Every HTML document follows a standard structure that browsers use to render web pages. Let's break down the essential parts.
+
+## Basic Template
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First Page</title>
+</head>
+<body>
+  <h1>Hello, World!</h1>
+  <p>This is my first HTML page.</p>
+</body>
+</html>
+```
+
+## The Parts Explained
+
+### `<!DOCTYPE html>`
+Tells the browser this is an HTML5 document. Always put this on the very first line.
+
+### `<html>`
+The root element that wraps all page content. The `lang` attribute sets the page language (e.g. `en` for English).
+
+### `<head>`
+Contains **metadata** — information about the page that isn't displayed directly. Common elements:
+
+- `<meta charset="UTF-8">` — character encoding for proper text rendering
+- `<meta name="viewport">` — controls layout on mobile devices
+- `<title>` — the text shown in the browser tab
+
+### `<body>`
+Holds all the **visible content** — headings, paragraphs, images, links, and everything users see.
+
+## Try It Yourself
+
+Copy the template above into a file called `index.html`, open it in your browser, and watch it come to life. You've just written your first valid HTML document!

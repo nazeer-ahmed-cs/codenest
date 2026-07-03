@@ -1,0 +1,106 @@
+---
+title: "Text Elements & Links"
+slug: html-text-elements
+order: 2
+topic: "HTML Basics"
+description: "Master headings, paragraphs, lists, links, and inline formatting elements."
+---
+
+HTML provides a set of elements for structuring and styling text content. These are the building blocks of almost every web page.
+
+## Headings
+
+Use `<h1>` through `<h6>` to create headings. `<h1>` is the most important, `<h6>` the least.
+
+```html
+<h1>Main Title</h1>
+<h2>Section Title</h2>
+<h3>Subsection Title</h3>
+```
+
+Search engines and screen readers use headings to understand page structure. Always use them in order — don't skip from `<h1>` to `<h3>`.
+
+## Paragraphs
+
+Wrap blocks of text in `<p>` tags. Browsers add space between paragraphs automatically.
+
+```html
+<p>This is a paragraph of text. It can contain multiple sentences and will wrap naturally.</p>
+<p>This is another paragraph. Notice the spacing between them.</p>
+```
+
+## Inline Formatting
+
+| Element | Purpose | Example |
+|---|---|---|
+| `<strong>` | Strong importance (bold) | `<strong>Warning!</strong>` |
+| `<em>` | Emphasis (italic) | `<em>please</em>` |
+| `<br>` | Line break inside text | `Line 1<br>Line 2` |
+
+```html
+<p><strong>Important:</strong> Always use <em>semantic</em> elements instead of purely visual tags.</p>
+```
+
+## Lists
+
+### Unordered Lists (`<ul>`)
+
+Use for items where order doesn't matter:
+
+```html
+<ul>
+  <li>Apples</li>
+  <li>Bananas</li>
+  <li>Cherries</li>
+</ul>
+```
+
+### Ordered Lists (`<ol>`)
+
+Use for items where sequence matters:
+
+```html
+<ol>
+  <li>Preheat the oven</li>
+  <li>Mix the ingredients</li>
+  <li>Bake for 30 minutes</li>
+</ol>
+```
+
+## Links
+
+The `<a>` (anchor) element creates hyperlinks:
+
+```html
+<a href="https://example.com">Visit Example</a>
+<a href="/about">About Us</a>              <!-- relative path -->
+<a href="mailto:hello@example.com">Email</a>
+```
+
+The `href` attribute determines the destination. Use absolute URLs for external sites and relative paths for pages within your own site.
+
+## Putting It Together
+
+```html
+<h1>My Recipe Blog</h1>
+<p>Welcome to my collection of <em>favorite</em> recipes.</p>
+
+<h2>Today's Recipe: Pancakes</h2>
+<p>A simple and delicious breakfast.</p>
+
+<h3>Ingredients</h3>
+<ul>
+  <li>1 cup flour</li>
+  <li>1 egg</li>
+  <li>1 cup milk</li>
+</ul>
+
+<h3>Instructions</h3>
+<ol>
+  <li>Mix dry ingredients.</li>
+  <li>Add egg and milk, whisk until smooth.</li>
+  <li>Cook on a hot griddle until golden.</li>
+</ol>
+
+<p>For more recipes, <a href="/recipes">browse the archive</a>.</p>
+```
