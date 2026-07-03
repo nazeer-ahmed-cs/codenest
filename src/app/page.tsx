@@ -11,7 +11,7 @@ export default function Home() {
         </p>
         <div className="flex gap-4 justify-center">
           <Link
-            href="/lessons"
+            href="/tutorial"
             className="rounded-full border border-solid border-transparent bg-foreground text-background px-6 py-3 font-medium"
           >
             Browse Lessons

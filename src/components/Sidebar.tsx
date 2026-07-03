@@ -36,7 +36,7 @@ export default function Sidebar() {
               <ul>
                 {topic.lessons.map((lesson) => (
                   <li key={lesson.slug}>
-                    <Link href={`/lessons/${lesson.slug}`}>
+                    <Link href={`/tutorial/html/${lesson.slug}`}>
                       {lesson.title}
                     </Link>
                   </li>

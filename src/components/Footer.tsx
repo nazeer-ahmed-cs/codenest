@@ -7,7 +7,7 @@ export default function Footer() {
         <nav>
           <ul>
             <li>
-              <Link href="/lessons">Lessons</Link>
+              <Link href="/tutorial">Tutorial</Link>
             </li>
             <li>
               <Link href="/about">About</Link>
