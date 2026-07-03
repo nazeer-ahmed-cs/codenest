@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Fuse from "fuse.js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { SearchItem } from "@/lib/curriculum";
 
 function highlightText(text: string, query: string) {
@@ -27,6 +28,7 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const fuseRef = useRef<Fuse<SearchItem>>();
   const isMac =
     typeof navigator !== "undefined" && navigator.platform.includes("Mac");
@@ -85,12 +87,18 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const select = useCallback(() => {
-    setIsOpen(false);
-    setQuery("");
-    setResults([]);
-    inputRef.current?.blur();
-  }, []);
+  const select = useCallback(
+    (slug?: string) => {
+      if (slug) {
+        router.push(`/tutorial/html/${slug}`);
+      }
+      setIsOpen(false);
+      setQuery("");
+      setResults([]);
+      inputRef.current?.blur();
+    },
+    [router]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -116,8 +124,8 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
           break;
         case "Enter":
           e.preventDefault();
-          if (selectedIdx >= 0) {
-            select();
+          if (selectedIdx >= 0 && results[selectedIdx]) {
+            select(results[selectedIdx].slug);
           }
           break;
         case "Escape":
