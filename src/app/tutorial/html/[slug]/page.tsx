@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lessonsMap, allSlugs } from "@/lib/curriculum";
+import CopyCodeBlocks from "@/components/CopyCodeBlocks";
 
 type Props = {
   params: { slug: string };
@@ -35,9 +36,11 @@ export default function TutorialLessonPage({ params }: Props) {
         {frontmatter.description}
       </p>
 
-      <div className="prose prose-gray max-w-none">
-        <lesson.Content />
-      </div>
+      <CopyCodeBlocks>
+        <div className="prose prose-gray max-w-none">
+          <lesson.Content />
+        </div>
+      </CopyCodeBlocks>
 
       <nav
         className="mt-16 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8"

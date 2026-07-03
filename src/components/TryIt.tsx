@@ -6,6 +6,7 @@ import {
   SandpackLayout,
   SandpackCodeEditor,
   SandpackPreview,
+  useSandpack,
 } from "@codesandbox/sandpack-react";
 
 type Props = {
@@ -37,6 +38,45 @@ ${html}
   return files;
 }
 
+function TryItHeader({ onReset }: { onReset: () => void }) {
+  const { sandpack } = useSandpack();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    const activeFile = sandpack.activeFile;
+    const content = sandpack.files[activeFile]?.code ?? "";
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard not available
+    }
+  }, [sandpack]);
+
+  return (
+    <div className="flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-50 px-4 py-2">
+      <span className="text-xs font-medium text-gray-500">
+        Try it yourself
+      </span>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleCopy}
+          className="rounded-md px-3 py-1 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+        >
+          {copied ? "Copied!" : "Copy Code"}
+        </button>
+        <button
+          onClick={onReset}
+          className="rounded-md px-3 py-1 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+        >
+          Reset Code
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function TryIt({ html = "", css = "", js = "" }: Props) {
   const [resetKey, setResetKey] = useState(0);
   const files = buildFiles(html, css, js);
@@ -47,17 +87,6 @@ export default function TryIt({ html = "", css = "", js = "" }: Props) {
 
   return (
     <div className="not-prose my-6 rounded-xl border border-gray-200">
-      <div className="flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-50 px-4 py-2">
-        <span className="text-xs font-medium text-gray-500">
-          Try it yourself
-        </span>
-        <button
-          onClick={handleReset}
-          className="rounded-md px-3 py-1 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
-        >
-          Reset Code
-        </button>
-      </div>
       <SandpackProvider
         key={resetKey}
         template="static"
@@ -72,6 +101,7 @@ export default function TryIt({ html = "", css = "", js = "" }: Props) {
           initMode: "immediate",
         }}
       >
+        <TryItHeader onReset={handleReset} />
         <SandpackLayout>
           <SandpackCodeEditor
             showTabs
