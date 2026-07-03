@@ -1,0 +1,125 @@
+---
+title: "Email & Telephone Links"
+slug: html-email-links
+order: 19
+topic: "HTML Basics"
+description: "Create clickable email and telephone links using mailto: and tel: protocols."
+---
+
+Beyond standard hyperlinks, HTML supports special URL schemes for email, telephone, and other applications.
+
+## Email Links (`mailto:`)
+
+The `mailto:` scheme opens the user's default email client with a new message.
+
+```html
+<a href="mailto:hello@example.com">Send Email</a>
+```
+
+### Adding Subject and Body
+
+You can pre-fill the subject line and body content using query parameters.
+
+```html
+<a href="mailto:hello@example.com?subject=Hello&body=I%20have%20a%20question">
+  Send Email
+</a>
+```
+
+- `subject` — pre-fills the email subject
+- `body` — pre-fills the email body
+- `cc` — adds CC recipients
+- `bcc` — adds BCC recipients
+
+Spaces in query parameters must be URL-encoded as `%20`.
+
+### Multiple Recipients
+
+Separate multiple email addresses with commas (URL-encoded as `%2C`).
+
+```html
+<a href="mailto:alice@example.com%2Cbob@example.com">
+  Email Alice and Bob
+</a>
+```
+
+### Complete Example
+
+```html
+<a href="mailto:support@codenest.dev?subject=Help%20Request&cc=manager@codenest.dev">
+  Contact Support
+</a>
+```
+
+## Telephone Links (`tel:`)
+
+The `tel:` scheme initiates a phone call on mobile devices or opens a dialer on desktop.
+
+```html
+<a href="tel:+15551234567">Call (555) 123-4567</a>
+```
+
+Always include the country code with a `+` prefix. The number can include dashes, dots, or spaces for readability — browsers strip them automatically.
+
+```html
+<a href="tel:+15551234567">+1 (555) 123-4567</a>
+<a href="tel:+442079460123">+44 20 7946 0123</a>
+```
+
+## SMS Links (`sms:`)
+
+On mobile devices, `sms:` opens the messaging app.
+
+```html
+<a href="sms:+15551234567">Send Text</a>
+```
+
+You can pre-fill the message body:
+
+```html
+<a href="sms:+15551234567?body=Hello%20from%20CodeNest">Send Text</a>
+```
+
+## Styling Protocol Links
+
+These links work with standard CSS styling like any other anchor tag.
+
+```css
+a[href^="mailto:"]::before {
+  content: "✉ ";
+}
+
+a[href^="tel:"]::before {
+  content: "📞 ";
+}
+```
+
+The `^=` attribute selector targets elements whose attribute starts with a specific value.
+
+## Putting It Together
+
+```html
+<section>
+  <h2>Contact Us</h2>
+
+  <p>
+    Email: <a href="mailto:hello@codenest.dev">hello@codenest.dev</a>
+  </p>
+  <p>
+    Phone: <a href="tel:+15551234567">+1 (555) 123-4567</a>
+  </p>
+  <p>
+    Support: <a href="mailto:support@codenest.dev?subject=Help">Open Support Ticket</a>
+  </p>
+</section>
+```
+
+## Browser Behavior
+
+| Scheme | Desktop | Mobile |
+|---|---|---|
+| `mailto:` | Opens default email client (Outlook, Mail) | Opens email app |
+| `tel:` | Shows a notification (no dialer) | Opens phone dialer |
+| `sms:` | May not work | Opens messaging app |
+
+On desktop, clicking `mailto:` links won't work if the user hasn't set up an email client. Consider also showing the plain email address as text alongside the link.

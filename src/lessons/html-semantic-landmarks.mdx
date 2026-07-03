@@ -1,0 +1,178 @@
+---
+title: "Semantic Landmarks Deep Dive"
+slug: html-semantic-landmarks
+order: 14
+topic: "HTML Basics"
+description: "Master HTML5 landmark elements and build well-structured, accessible page layouts."
+---
+
+HTML5 introduced landmark elements that give structure and meaning to your pages. Each landmark has an implicit ARIA role that screen readers can navigate directly.
+
+## The Landmark Elements
+
+### `<header>`
+
+Represents introductory content — usually a logo, tagline, or navigation. Use it once at the top of the page or inside an `<article>`/`<section>`.
+
+```html
+<header>
+  <img src="logo.svg" alt="CodeNest">
+  <p>Learn to code, one lesson at a time.</p>
+</header>
+```
+
+**Implicit role:** `banner` (when not nested in article/section).
+
+### `<nav>`
+
+Contains navigation links. You can have multiple nav elements — differentiate them with `aria-label`.
+
+```html
+<nav aria-label="Main">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/tutorial">Tutorial</a></li>
+  </ul>
+</nav>
+
+<nav aria-label="Footer">
+  <ul>
+    <li><a href="/privacy">Privacy</a></li>
+  </ul>
+</nav>
+```
+
+**Implicit role:** `navigation`.
+
+### `<main>`
+
+Wraps the primary content of the page. **Use only once per page.**
+
+```html
+<main>
+  <h1>HTML Tutorial</h1>
+  <p>Welcome to the tutorial.</p>
+</main>
+```
+
+**Implicit role:** `main`. Screen readers have a shortcut to jump to `<main>`.
+
+### `<section>`
+
+Groups related content that should have a heading. Think of it as a chapter in a book.
+
+```html
+<section>
+  <h2>Getting Started</h2>
+  <p>Content about getting started...</p>
+</section>
+```
+
+**Implicit role:** `region` (when it has an accessible name via heading).
+
+### `<article>`
+
+Represents a self-contained piece of content that could be distributed independently — a blog post, news story, forum comment.
+
+```html
+<article>
+  <h2>How to Learn HTML</h2>
+  <p>HTML is the foundation of the web...</p>
+  <footer>
+    <p>Posted by CodeNest on <time datetime="2025-01-15">Jan 15</time></p>
+  </footer>
+</article>
+```
+
+**Implicit role:** `article`.
+
+### `<aside>`
+
+Contains content tangentially related to the surrounding content — sidebars, pull quotes, advertisements.
+
+```html
+<article>
+  <p>Main content about HTML...</p>
+  <aside>
+    <h3>Did You Know?</h3>
+    <p>HTML was first released in 1993.</p>
+  </aside>
+</article>
+```
+
+**Implicit role:** `complementary`.
+
+### `<footer>`
+
+Contains footer information — copyright, links, author info. Use at the page level or inside articles/sections.
+
+```html
+<footer>
+  <p>&copy; 2025 CodeNest</p>
+</footer>
+```
+
+**Implicit role:** `contentinfo` (when not nested in article/section).
+
+## Nesting Rules
+
+```
+<body>
+  <header>          <!-- banner landmark -->
+    <nav>           <!-- navigation landmark -->
+      ...
+    </nav>
+  </header>
+
+  <main>            <!-- main landmark (only one) -->
+    <article>       <!-- article (no landmark role) -->
+      <header>      <!-- no implicit role (nested) -->
+        <h1>Article Title</h1>
+      </header>
+
+      <section>     <!-- region landmark -->
+        <h2>Section Heading</h2>
+        <p>Content...</p>
+      </section>
+
+      <footer>      <!-- no implicit role (nested) -->
+        <p>Article footer</p>
+      </footer>
+    </article>
+
+    <aside>         <!-- complementary landmark -->
+      <h2>Related</h2>
+      ...
+    </aside>
+  </main>
+
+  <footer>          <!-- contentinfo landmark -->
+    <p>&copy; 2025</p>
+  </footer>
+</body>
+```
+
+## Common Mistakes
+
+```html
+<!-- Mistake: multiple <main> elements -->
+<main>...</main>
+<main>...</main>
+
+<!-- Mistake: <header> without any navigation or intro -->
+<div class="header">Not a header element</div>
+
+<!-- Mistake: <section> without a heading -->
+<section>
+  <div>Some content</div>   <!-- missing heading means no region landmark -->
+</section>
+```
+
+## Testing Landmarks
+
+Most browsers have accessibility trees in DevTools that show landmarks. Screen reader users can navigate between landmarks using keyboard shortcuts:
+- **VoiceOver (Mac):** Rotor → Landmarks
+- **NVDA (Windows):** `D` key to cycle through landmarks
+- **JAWS (Windows):** `R` key to cycle through landmarks
+
+A well-structured page with proper landmarks makes navigation significantly faster for assistive technology users.

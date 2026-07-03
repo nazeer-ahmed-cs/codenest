@@ -1,0 +1,152 @@
+---
+title: "Web Accessibility Basics"
+slug: html-accessibility
+order: 11
+topic: "HTML Basics"
+description: "Make your sites usable by everyone with semantic HTML, ARIA, and accessible patterns."
+---
+
+Web accessibility (a11y) ensures people with disabilities can use your website. It also improves SEO and usability for everyone.
+
+## Why Accessibility Matters
+
+- **15-20%** of the global population has some form of disability
+- Accessible sites rank better in search engines
+- Accessible code is more robust and maintainable
+- Many countries have laws requiring digital accessibility
+
+## Semantic HTML is the Foundation
+
+Using the correct HTML element for each purpose gives screen readers and other assistive technologies meaningful information about your content.
+
+```html
+<!-- Bad: divs for everything -->
+<div class="nav">
+  <div class="button" onclick="...">Click</div>
+</div>
+
+<!-- Good: semantic elements -->
+<nav>
+  <button type="button">Click</button>
+</nav>
+```
+
+## Landmarks
+
+HTML5 landmark elements help screen reader users jump to major sections of a page.
+
+| Element | Implicit Role | Use |
+|---|---|---|
+| `<header>` | `banner` | Site header (not inside article/section) |
+| `<nav>` | `navigation` | Navigation links |
+| `<main>` | `main` | Primary content (use once per page) |
+| `<section>` | `region` | Thematic group with a heading |
+| `<article>` | `article` | Self-contained content |
+| `<aside>` | `complementary` | Sidebar content |
+| `<footer>` | `contentinfo` | Site footer (not inside article/section) |
+
+## ARIA
+
+ARIA (Accessible Rich Internet Applications) attributes fill gaps where HTML semantics aren't enough.
+
+```html
+<button aria-label="Close dialog" onclick="closeDialog()">X</button>
+
+<div role="alert">Your session will expire soon.</div>
+
+<nav aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/tutorial">Tutorial</a></li>
+  </ol>
+</nav>
+```
+
+### First Rule of ARIA
+
+**Don't use ARIA if you can use a native HTML element instead.**
+
+```html
+<!-- Bad: ARIA instead of native -->
+<div role="button" tabindex="0" onclick="submit()">Submit</div>
+
+<!-- Good: native element -->
+<button type="submit">Submit</button>
+```
+
+## Keyboard Navigation
+
+Not all users can use a mouse. Ensure every interactive element is reachable and operable with the keyboard.
+
+```html
+<!-- tabindex="0" makes a div focusable -->
+<div role="button" tabindex="0" onclick="submit()">Submit</div>
+
+<!-- Skip link lets keyboard users bypass navigation -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content">
+  ...
+</main>
+```
+
+### Tab Order
+
+- Interactive elements are automatically focusable in DOM order
+- Use `tabindex="0"` to make a non-interactive element focusable
+- Use `tabindex="-1"` to make an element programmatically focusable but not tabbable
+- Never use positive `tabindex` values (e.g., `tabindex="5"`)
+
+## Color and Contrast
+
+- Text must have a contrast ratio of at least **4.5:1** against its background
+- Large text (18px+ bold or 24px+ regular) needs at least **3:1**
+- Don't rely solely on color to convey information
+
+```html
+<!-- Bad: color-only indicator -->
+<span style="color: red;">Error</span>
+
+<!-- Good: text + color -->
+<span style="color: red;">Error: Please fill in all required fields.</span>
+```
+
+## Alt Text
+
+Every `<img>` must have `alt` text. Decorative images should use `alt=""` (empty) so screen readers skip them.
+
+```html
+<!-- Informative image -->
+<img src="chart.png" alt="Bar chart showing Q1 revenue of $45,000">
+
+<!-- Decorative image -->
+<img src="divider.png" alt="">
+```
+
+## Putting It Together
+
+```html
+<body>
+  <header>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/tutorial">Tutorial</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <h1>Accessible Page</h1>
+    <p>This page is usable by everyone.</p>
+
+    <button type="button" aria-label="Play video">
+      ▶
+    </button>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CodeNest</p>
+  </footer>
+</body>
+```

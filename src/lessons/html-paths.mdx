@@ -1,0 +1,126 @@
+---
+title: "File Paths & URLs"
+slug: html-paths
+order: 17
+topic: "HTML Basics"
+description: "Understand absolute and relative paths, root-relative URLs, and how to link files correctly."
+---
+
+Every link, image, and resource on a web page is referenced by a path. Understanding how paths work prevents broken links and missing resources.
+
+## Absolute Paths
+
+An absolute URL includes the full web address — protocol, domain, and path.
+
+```html
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML">MDN HTML Docs</a>
+<img src="https://example.com/images/photo.jpg" alt="Photo">
+```
+
+Use absolute URLs when linking to resources on **other websites**.
+
+## Relative Paths
+
+A relative URL is resolved relative to the current page's location. No domain needed.
+
+```html
+<!-- Same directory -->
+<a href="about.html">About</a>
+<img src="photo.jpg" alt="Photo">
+
+<!-- Subdirectory -->
+<a href="html/forms.html">Forms Lesson</a>
+<img src="images/photo.jpg" alt="Photo">
+
+<!-- Parent directory -->
+<a href="../index.html">Home</a>
+<img src="../images/photo.jpg" alt="Photo">
+```
+
+### Path Components
+
+| Notation | Meaning |
+|---|---|
+| `file.html` | Same directory |
+| `folder/file.html` | Inside a subdirectory |
+| `../file.html` | Parent directory (one level up) |
+| `../../file.html` | Two levels up |
+| `./file.html` | Current directory (explicit) |
+
+## Root-Relative Paths
+
+A root-relative path starts with `/` and is resolved from the site's root directory. These work the same way regardless of which page you're on.
+
+```html
+<!-- Always resolves to the root of the domain -->
+<a href="/">Home</a>
+<a href="/tutorial">Tutorial</a>
+<img src="/images/logo.png" alt="Logo">
+```
+
+**Absolute path:** `https://site.com/tutorial/html/forms`  
+**Root-relative:** `/tutorial/html/forms`  
+**Relative (from `/tutorial/`):** `html/forms`  
+**Relative (from `/tutorial/html/`):** `forms`
+
+## Common Mistakes
+
+### Wrong Nesting Level
+
+```html
+<!-- From /tutorial/html/forms.html, these are WRONG -->
+<img src="images/photo.jpg">        <!-- looks in /tutorial/html/images/ -->
+<img src="../images/photo.jpg">     <!-- looks in /tutorial/images/ -->
+
+<!-- CORRECT: goes up two levels to find /images/ -->
+<img src="../../images/photo.jpg">
+```
+
+### Missing File Extension
+
+```html
+<a href="/about">       <!-- might work if server handles extensionless URLs -->
+<a href="about.html">   <!-- always explicit -->
+```
+
+### Case Sensitivity
+
+URLs are case-sensitive. `Photo.jpg` and `photo.jpg` are different files on most servers (not on Windows local, but on Linux servers).
+
+```html
+<!-- Might work locally, fails on production server -->
+<img src="Photo.jpg">
+
+<!-- Always use the exact case -->
+<img src="photo.jpg">
+```
+
+## Path Examples
+
+```
+Site structure:
+/
+├── index.html
+├── images/
+│   ├── logo.png
+│   └── photos/
+│       └── vacation.jpg
+└── tutorial/
+    ├── index.html
+    └── html/
+        ├── forms.html
+        └── images.html
+```
+
+| From page | To file | Path |
+|---|---|---|
+| `/index.html` | `/images/logo.png` | `images/logo.png` or `/images/logo.png` |
+| `/tutorial/index.html` | `/images/logo.png` | `../images/logo.png` or `/images/logo.png` |
+| `/tutorial/html/forms.html` | `/tutorial/index.html` | `../index.html` or `/tutorial` |
+| `/tutorial/html/forms.html` | `/images/photos/vacation.jpg` | `../../images/photos/vacation.jpg` or `/images/photos/vacation.jpg` |
+
+## Best Practice
+
+For internal links, favor **root-relative paths** (`/tutorial/html/forms`) — they work from any page and are easy to move when restructuring.
+
+For images and assets, root-relative paths are also the safest choice in most cases. Use relative paths only within the same directory where the relationship is clear.

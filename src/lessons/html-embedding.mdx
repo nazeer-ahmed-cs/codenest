@@ -1,0 +1,133 @@
+---
+title: "Embedding Content"
+slug: html-embedding
+order: 15
+topic: "HTML Basics"
+description: "Embed external content with iframes, and understand object, embed, and picture elements."
+---
+
+Beyond images and video, HTML provides several elements for embedding external content from other sources.
+
+## `<iframe>` In Depth
+
+The `<iframe>` embeds an entire HTML page inside your page. It is the most common embedding tool.
+
+```html
+<iframe
+  src="https://codesandbox.io/embed/example"
+  width="100%"
+  height="500"
+  style="border: 0;"
+  allowfullscreen
+  loading="lazy"
+  title="Code playground"
+></iframe>
+```
+
+### Common Use Cases
+
+- YouTube videos
+- Google Maps locations
+- Code playgrounds (CodeSandbox, CodePen)
+- Payment forms (Stripe, PayPal)
+- Social media posts (Twitter, Instagram)
+
+### Responsive Iframes
+
+Wrap iframes in a container with CSS to make them responsive:
+
+```html
+<style>
+  .embed-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+  }
+  .embed-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+</style>
+
+<div class="embed-wrapper">
+  <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          title="Video" allowfullscreen></iframe>
+</div>
+```
+
+### Communicating with Iframes
+
+The parent page can send messages to an iframe, and vice versa, using `postMessage`.
+
+```js
+// In the parent page
+iframe.contentWindow.postMessage("hello", "https://example.com");
+
+// In the iframe
+window.addEventListener("message", (event) => {
+  console.log(event.data); // "hello"
+});
+```
+
+## `<picture>` for Responsive Images
+
+The `<picture>` element gives you fine control over which image to load based on screen size, resolution, or format support.
+
+```html
+<picture>
+  <source srcset="photo.avif" type="image/avif">
+  <source srcset="photo.webp" type="image/webp">
+  <img src="photo.jpg" alt="Landscape photo" width="800" height="600">
+</picture>
+```
+
+The browser picks the first `<source>` whose type is supported. This lets you serve modern formats (AVIF, WebP) with a JPEG fallback.
+
+You can also use media queries:
+
+```html
+<picture>
+  <source media="(min-width: 800px)" srcset="large.jpg">
+  <source media="(min-width: 400px)" srcset="medium.jpg">
+  <img src="small.jpg" alt="Responsive image">
+</picture>
+```
+
+## `<object>` and `<embed>`
+
+These older elements embed external resources like PDFs and Flash (deprecated). Prefer native HTML elements or iframes instead.
+
+```html
+<!-- Embed a PDF -->
+<object data="document.pdf" type="application/pdf" width="600" height="400">
+  <p>Unable to display PDF. <a href="document.pdf">Download instead</a>.</p>
+</object>
+```
+
+## Putting It Together
+
+```html
+<section>
+  <h2>Today's Lesson</h2>
+
+  <!-- Responsive video -->
+  <div class="embed-wrapper">
+    <iframe src="https://www.youtube.com/embed/example"
+            title="Lesson video" allowfullscreen loading="lazy"></iframe>
+  </div>
+
+  <!-- Live code playground -->
+  <iframe src="https://codesandbox.io/embed/example"
+          width="100%" height="400"
+          title="Code example" loading="lazy"></iframe>
+
+  <!-- Responsive image with format fallback -->
+  <picture>
+    <source srcset="diagram.avif" type="image/avif">
+    <source srcset="diagram.webp" type="image/webp">
+    <img src="diagram.png" alt="Lesson diagram">
+  </picture>
+</section>
+```

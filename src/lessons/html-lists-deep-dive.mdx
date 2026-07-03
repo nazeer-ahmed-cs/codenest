@@ -1,0 +1,170 @@
+---
+title: "Lists Deep Dive"
+slug: html-lists-deep-dive
+order: 16
+topic: "HTML Basics"
+description: "Master ordered, unordered, and description lists with nesting, styling, and accessibility."
+---
+
+Lists are everywhere in HTML — navigation menus, ingredients, instructions, definitions, and more. Three types of lists cover every use case.
+
+## Unordered Lists
+
+Use `<ul>` when the item order doesn't matter.
+
+```html
+<ul>
+  <li>Apples</li>
+  <li>Bananas</li>
+  <li>Cherries</li>
+</ul>
+```
+
+The browser adds a bullet point by default. You can change it with CSS:
+
+```css
+ul { list-style-type: square; }   /* disc, circle, square, none */
+```
+
+## Ordered Lists
+
+Use `<ol>` when the sequence matters — instructions, rankings, steps.
+
+```html
+<ol>
+  <li>Preheat the oven</li>
+  <li>Mix the ingredients</li>
+  <li>Bake for 30 minutes</li>
+</ol>
+```
+
+### HTML Attributes for `<ol>`
+
+```html
+<ol type="A">         <!-- A, B, C -->
+<ol type="a">         <!-- a, b, c -->
+<ol type="I">         <!-- I, II, III -->
+<ol type="i">         <!-- i, ii, iii -->
+<ol type="1">         <!-- 1, 2, 3 (default) -->
+<ol start="5">        <!-- starts at 5 -->
+<ol reversed>         <!-- counts down -->
+```
+
+```html
+<ol type="A" start="3">
+  <li>Third item</li>
+  <li>Fourth item</li>
+</ol>
+```
+
+## Description Lists
+
+`<dl>` pairs terms with descriptions — glossaries, metadata, Q&A.
+
+```html
+<dl>
+  <dt>HTML</dt>
+  <dd>HyperText Markup Language — the standard language for web pages.</dd>
+
+  <dt>CSS</dt>
+  <dd>Cascading Style Sheets — controls the visual presentation.</dd>
+</dl>
+```
+
+- `<dt>` — definition term (the word or phrase being defined)
+- `<dd>` — definition description (the explanation)
+
+You can have multiple `<dd>` for one `<dt>` and vice versa.
+
+## Nesting Lists
+
+Lists can be nested inside other list items to create hierarchies.
+
+```html
+<ul>
+  <li>Fruits
+    <ul>
+      <li>Apples</li>
+      <li>Bananas</li>
+      <li>Cherries</li>
+    </ul>
+  </li>
+  <li>Vegetables
+    <ul>
+      <li>Carrots</li>
+      <li>Broccoli</li>
+    </ul>
+  </li>
+</ul>
+```
+
+Nested lists are useful for:
+- Site navigation with submenus
+- Table of contents
+- Multi-level outlines
+- Category trees
+
+## Styling Hooks
+
+Lists have several CSS properties for finer control:
+
+```css
+/* Remove default bullets/numbers */
+ul, ol { list-style: none; padding: 0; }
+
+/* Custom bullet using a pseudo-element */
+li::before {
+  content: "→ ";
+  color: #2563eb;
+}
+
+/* Horizontal navigation list */
+nav ul { display: flex; gap: 1rem; list-style: none; }
+```
+
+## Lists for Navigation
+
+Screen readers announce the number of items in a list, making them ideal for navigation.
+
+```html
+<nav aria-label="Main navigation">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
+```
+
+## Putting It Together
+
+```html
+<section>
+  <h2>Course Outline</h2>
+  <ol type="I">
+    <li>
+      <strong>Introduction</strong>
+      <ul>
+        <li>Welcome to the course</li>
+        <li>Setting up your environment</li>
+      </ul>
+    </li>
+    <li>
+      <strong>HTML Basics</strong>
+      <ul>
+        <li>Document structure</li>
+        <li>Text elements</li>
+        <li>Forms & tables</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Glossary</h2>
+  <dl>
+    <dt>Element</dt>
+    <dd>A building block of HTML, defined by a start tag, content, and end tag.</dd>
+    <dt>Attribute</dt>
+    <dd>Additional information on an element, written as name-value pairs.</dd>
+  </dl>
+</section>
+```

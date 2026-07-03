@@ -23,6 +23,16 @@ export default function Navbar() {
           >
             Tutorial
           </Link>
+          <Link
+            href="/playground"
+            className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+              pathname === "/playground"
+                ? "bg-gray-100 text-gray-900"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            }`}
+          >
+            Playground
+          </Link>
           <a
             href="https://github.com/nazeer-ahmed-cs/codenest"
             target="_blank"

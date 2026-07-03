@@ -1,0 +1,148 @@
+---
+title: "Meta Tags & SEO"
+slug: html-meta-tags
+order: 12
+topic: "HTML Basics"
+description: "Control how your page appears in search results and on social media with meta tags."
+---
+
+Meta tags live in the `<head>` of your HTML document and provide information about the page to browsers, search engines, and social platforms.
+
+## Essential Meta Tags
+
+### Character Encoding
+
+```html
+<meta charset="UTF-8">
+```
+
+Declares the character encoding. **Always include this** — it prevents text rendering issues with special characters.
+
+### Viewport for Mobile
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+Tells mobile browsers to render at the device width instead of a desktop-width zoomed out. Required for responsive design.
+
+### Page Description
+
+```html
+<meta name="description" content="Learn HTML from scratch with interactive lessons and live code examples.">
+```
+
+Search engines often display this description below the page title in results. Keep it between 150-160 characters.
+
+### Author
+
+```html
+<meta name="author" content="CodeNest">
+```
+
+Identifies the content author. Not critical for SEO but helps with content management.
+
+## SEO Meta Tags
+
+### Robots
+
+```html
+<meta name="robots" content="index, follow">
+```
+
+Controls whether search engines index the page and follow its links.
+
+| Value | Meaning |
+|---|---|
+| `index, follow` | Index the page and follow links (default) |
+| `noindex` | Don't show this page in search results |
+| `nofollow` | Don't pass link authority |
+| `noindex, nofollow` | Hide completely from search engines |
+
+### Keywords (Deprecated)
+
+```html
+<meta name="keywords" content="HTML, tutorial, learn to code">
+```
+
+Search engines no longer use this due to past abuse. Don't bother.
+
+## Open Graph (Social Media)
+
+Open Graph tags control how your page appears when shared on Facebook, LinkedIn, Discord, and other platforms.
+
+```html
+<meta property="og:title" content="HTML Tutorial - CodeNest">
+<meta property="og:description" content="Learn HTML from scratch with interactive lessons.">
+<meta property="og:image" content="https://codenest.dev/og-image.png">
+<meta property="og:url" content="https://codenest.dev/tutorial/html">
+<meta property="og:type" content="website">
+```
+
+| Property | Purpose |
+|---|---|
+| `og:title` | Title shown in the share card |
+| `og:description` | Description shown below the title |
+| `og:image` | Image displayed in the card (recommended 1200x630px) |
+| `og:url` | Canonical URL of the page |
+| `og:type` | Content type (`website`, `article`, `video`, etc.) |
+
+## Twitter Cards
+
+Twitter has its own meta tags (though it also falls back to Open Graph).
+
+```html
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Tutorial - CodeNest">
+<meta name="twitter:description" content="Learn HTML from scratch.">
+<meta name="twitter:image" content="https://codenest.dev/og-image.png">
+```
+
+## Favicon
+
+The favicon appears in browser tabs, bookmarks, and search results.
+
+```html
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+```
+
+- Use `.ico` for broad compatibility
+- Use a 32x32 or 48x48 image
+- Apple devices use `apple-touch-icon` for home screen bookmarks
+
+## Canonical URL
+
+```html
+<link rel="canonical" href="https://codenest.dev/tutorial/html/meta-tags">
+```
+
+Prevents duplicate content issues by telling search engines which URL is the preferred version.
+
+## Complete Example
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Tags & SEO - CodeNest</title>
+  <meta name="description" content="Learn how meta tags control your page's appearance in search results and social media.">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Meta Tags & SEO - CodeNest">
+  <meta property="og:description" content="Learn how meta tags control your page's appearance.">
+  <meta property="og:image" content="https://codenest.dev/og.png">
+  <meta property="og:url" content="https://codenest.dev/tutorial/html/meta-tags">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="canonical" href="https://codenest.dev/tutorial/html/meta-tags">
+</head>
+<body>
+  <!-- page content -->
+</body>
+</html>
+```

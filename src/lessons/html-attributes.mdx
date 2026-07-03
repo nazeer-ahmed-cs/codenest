@@ -43,7 +43,7 @@ These attributes work on **every** HTML element.
   <p lang="fr">Bonjour le monde!</p>
 </div>
 
-<button title="Save your changes" tabindex="1">Save</button>
+<button title="Save your changes">Save</button>
 <p hidden>This paragraph is hidden.</p>
 ```
 
@@ -127,3 +127,24 @@ console.log(btn.dataset.role);   // "admin"
 ```
 
 Attributes give you fine-grained control over how elements behave and appear. Mastering them is key to writing expressive, accessible HTML.
+
+<TryIt
+  html={`<article class="post" lang="en">
+  <h2>My Vacation</h2>
+  <img src="https://placehold.co/600x400/2563eb/white?text=Beach"
+       alt="Tropical beach at sunset" width="600" height="400">
+  <p>We had an amazing time exploring the <span lang="es">playa</span>.</p>
+  <a href="#" data-category="travel">Read more &rarr;</a>
+</article>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.post { border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; }
+h2 { margin-top: 0; color: #111; }
+img { max-width: 100%; border-radius: 0.5rem; }
+a { color: #2563eb; text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }`}
+/>

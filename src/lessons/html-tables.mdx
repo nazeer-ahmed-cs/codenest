@@ -171,3 +171,56 @@ Tables are for **tabular data only**. Don't use them for page layout. Semantic H
   <div>Right column</div>
 </div>
 ```
+
+<TryIt
+  html={`<table>
+  <caption>Q1 2025 Sales Report</caption>
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>Revenue</th>
+      <th>Expenses</th>
+      <th>Profit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>January</td>
+      <td>$12,000</td>
+      <td>$8,000</td>
+      <td>$4,000</td>
+    </tr>
+    <tr>
+      <td>February</td>
+      <td>$15,000</td>
+      <td>$9,000</td>
+      <td>$6,000</td>
+    </tr>
+    <tr>
+      <td>March</td>
+      <td>$18,000</td>
+      <td>$10,000</td>
+      <td>$8,000</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Total</td>
+      <td>$45,000</td>
+      <td>$27,000</td>
+      <td>$18,000</td>
+    </tr>
+  </tfoot>
+</table>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+table { width: 100%; border-collapse: collapse; }
+caption { font-weight: 600; margin-bottom: 0.5rem; text-align: left; }
+th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+th { background: #f9fafb; font-weight: 600; }
+tfoot td { font-weight: 600; border-top: 2px solid #d1d5db; }`}
+/>

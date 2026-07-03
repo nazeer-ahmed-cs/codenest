@@ -1,0 +1,112 @@
+---
+title: "Audio, Video & Iframes"
+slug: html-multimedia
+order: 10
+topic: "HTML Basics"
+description: "Embed audio, video, and external content with the multimedia elements."
+---
+
+The web is more than text. HTML lets you embed audio, video, and external pages directly into your documents.
+
+## Video
+
+The `<video>` element embeds a video player with native browser controls.
+
+```html
+<video controls width="640" height="360">
+  <source src="tutorial.mp4" type="video/mp4">
+  <source src="tutorial.webm" type="video/webm">
+  <p>Your browser does not support video.</p>
+</video>
+```
+
+| Attribute | Purpose |
+|---|---|
+| `controls` | Shows play, pause, volume, and fullscreen buttons |
+| `autoplay` | Starts playing automatically (use sparingly) |
+| `loop` | Repeats the video |
+| `muted` | Starts with audio off (required for autoplay in most browsers) |
+| `poster` | An image shown before the video starts |
+| `width` / `height` | Sets the player dimensions |
+
+Provide multiple `<source>` elements with different formats for browser compatibility. The text inside `<video>` is a fallback for unsupported browsers.
+
+## Audio
+
+The `<audio>` element works the same way for sound files.
+
+```html
+<audio controls>
+  <source src="podcast.mp3" type="audio/mpeg">
+  <source src="podcast.ogg" type="audio/ogg">
+  <p>Your browser does not support audio.</p>
+</audio>
+```
+
+Audio supports the same attributes (`controls`, `autoplay`, `loop`, `muted`) minus the visual ones (`width`, `height`, `poster`).
+
+## Iframes
+
+The `<iframe>` element embeds another HTML page inside your page — maps, videos, forms, or any external content.
+
+```html
+<iframe
+  src="https://www.google.com/maps/embed?pb=..."
+  width="600"
+  height="450"
+  style="border: 0;"
+  allowfullscreen
+  loading="lazy"
+  title="Office location on Google Maps"
+></iframe>
+```
+
+### Security Attributes
+
+| Attribute | Purpose |
+|---|---|
+| `allowfullscreen` | Lets the iframe enter fullscreen mode |
+| `loading="lazy"` | Defers loading until the iframe is near the viewport |
+| `title` | Describes the content for screen readers (always set this) |
+| `sandbox` | Restricts what the embedded page can do |
+
+### The `sandbox` Attribute
+
+```html
+<iframe
+  src="https://example.com"
+  sandbox="allow-scripts allow-same-origin"
+  title="Example content"
+></iframe>
+```
+
+`sandbox` with no value applies all restrictions. Common permissions:
+
+| Value | What it allows |
+|---|---|
+| `allow-scripts` | Run JavaScript |
+| `allow-same-origin` | Access the embedding page's origin |
+| `allow-forms` | Submit forms |
+| `allow-popups` | Open popup windows |
+
+## Embedding a YouTube Video
+
+YouTube provides an iframe embed code in every video's Share menu.
+
+```html
+<iframe
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  width="560"
+  height="315"
+  allowfullscreen
+  title="YouTube video player"
+></iframe>
+```
+
+## Best Practices
+
+- Always set `controls` on audio and video so users can start/stop playback
+- Always set `title` on iframes for accessibility
+- Use `loading="lazy"` on iframes below the fold to improve performance
+- Provide multiple `<source>` formats (MP4 + WebM for video, MP3 + OGG for audio)
+- Add fallback text inside all multimedia elements

@@ -9,6 +9,16 @@ import HtmlFormsMdx, { frontmatter as htmlFormsFm } from "@/lessons/html-forms.m
 import HtmlTablesMdx, { frontmatter as htmlTablesFm } from "@/lessons/html-tables.mdx";
 import HtmlLinksMdx, { frontmatter as htmlLinksFm } from "@/lessons/html-links.mdx";
 import HtmlImagesMdx, { frontmatter as htmlImagesFm } from "@/lessons/html-images.mdx";
+import HtmlMultimediaMdx, { frontmatter as htmlMultimediaFm } from "@/lessons/html-multimedia.mdx";
+import HtmlAccessibilityMdx, { frontmatter as htmlAccessibilityFm } from "@/lessons/html-accessibility.mdx";
+import HtmlMetaTagsMdx, { frontmatter as htmlMetaTagsFm } from "@/lessons/html-meta-tags.mdx";
+import HtmlEntitiesMdx, { frontmatter as htmlEntitiesFm } from "@/lessons/html-entities.mdx";
+import HtmlSemanticLandmarksMdx, { frontmatter as htmlSemanticLandmarksFm } from "@/lessons/html-semantic-landmarks.mdx";
+import HtmlEmbeddingMdx, { frontmatter as htmlEmbeddingFm } from "@/lessons/html-embedding.mdx";
+import HtmlListsDeepDiveMdx, { frontmatter as htmlListsDeepDiveFm } from "@/lessons/html-lists-deep-dive.mdx";
+import HtmlPathsMdx, { frontmatter as htmlPathsFm } from "@/lessons/html-paths.mdx";
+import HtmlCssIntegrationMdx, { frontmatter as htmlCssIntegrationFm } from "@/lessons/html-css-integration.mdx";
+import HtmlEmailLinksMdx, { frontmatter as htmlEmailLinksFm } from "@/lessons/html-email-links.mdx";
 import VariablesMdx, { frontmatter as variablesFm } from "@/lessons/variables.mdx";
 import FunctionsMdx, { frontmatter as functionsFm } from "@/lessons/functions.mdx";
 import ComponentsMdx, { frontmatter as componentsFm } from "@/lessons/components.mdx";
@@ -38,6 +48,16 @@ const rawLessons: RawLesson[] = [
   { ...(htmlTablesFm as unknown as LessonFrontmatter), Content: HtmlTablesMdx },
   { ...(htmlLinksFm as unknown as LessonFrontmatter), Content: HtmlLinksMdx },
   { ...(htmlImagesFm as unknown as LessonFrontmatter), Content: HtmlImagesMdx },
+  { ...(htmlMultimediaFm as unknown as LessonFrontmatter), Content: HtmlMultimediaMdx },
+  { ...(htmlAccessibilityFm as unknown as LessonFrontmatter), Content: HtmlAccessibilityMdx },
+  { ...(htmlMetaTagsFm as unknown as LessonFrontmatter), Content: HtmlMetaTagsMdx },
+  { ...(htmlEntitiesFm as unknown as LessonFrontmatter), Content: HtmlEntitiesMdx },
+  { ...(htmlSemanticLandmarksFm as unknown as LessonFrontmatter), Content: HtmlSemanticLandmarksMdx },
+  { ...(htmlEmbeddingFm as unknown as LessonFrontmatter), Content: HtmlEmbeddingMdx },
+  { ...(htmlListsDeepDiveFm as unknown as LessonFrontmatter), Content: HtmlListsDeepDiveMdx },
+  { ...(htmlPathsFm as unknown as LessonFrontmatter), Content: HtmlPathsMdx },
+  { ...(htmlCssIntegrationFm as unknown as LessonFrontmatter), Content: HtmlCssIntegrationMdx },
+  { ...(htmlEmailLinksFm as unknown as LessonFrontmatter), Content: HtmlEmailLinksMdx },
   { ...(variablesFm as unknown as LessonFrontmatter), Content: VariablesMdx },
   { ...(functionsFm as unknown as LessonFrontmatter), Content: FunctionsMdx },
   { ...(componentsFm as unknown as LessonFrontmatter), Content: ComponentsMdx },

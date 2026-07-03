@@ -1,0 +1,113 @@
+---
+title: "HTML Entities & Special Characters"
+slug: html-entities
+order: 13
+topic: "HTML Basics"
+description: "Display reserved characters, symbols, and special characters using HTML entities."
+---
+
+HTML reserves certain characters like `<`, `>`, and `&` for markup. To display them as text, you use **HTML entities** — special codes that begin with `&` and end with `;`.
+
+## Reserved Characters
+
+The three characters that have special meaning in HTML must always be escaped:
+
+| Character | Entity | Why you need it |
+|---|---|---|
+| `<` | `&lt;` | Starts an HTML tag |
+| `>` | `&gt;` | Ends an HTML tag |
+| `&` | `&amp;` | Starts an entity |
+
+```html
+<p>Use &lt;h1&gt; for the main heading.</p>
+<p>The &amp; symbol is called an ampersand.</p>
+```
+
+Without escaping, the browser would interpret `<h1>` as an actual heading tag.
+
+## Common Symbols
+
+| Entity | Result | Name |
+|---|---|---|
+| `&copy;` | &copy; | Copyright |
+| `&reg;` | &reg; | Registered trademark |
+| `&trade;` | &trade; | Trademark |
+| `&bull;` | &bull; | Bullet point |
+| `&hellip;` | &hellip; | Ellipsis |
+| `&mdash;` | &mdash; | Em dash |
+| `&ndash;` | &ndash; | En dash |
+| `&lsquo;` | &lsquo; | Left single quote |
+| `&rsquo;` | &rsquo; | Right single quote |
+| `&ldquo;` | &ldquo; | Left double quote |
+| `&rdquo;` | &rdquo; | Right double quote |
+
+```html
+<p>&copy; 2025 CodeNest. All rights reserved.</p>
+<p>Read more &mdash; it&rsquo;s worth your time.</p>
+```
+
+## Numeric Entities
+
+You can also use numeric codes (decimal or hexadecimal) for any Unicode character.
+
+```html
+<p>&#60; &#62; &#38;</p>         <!-- < > & -->
+<p>&#x2665; &#x2605; &#x2603;</p> <!-- ♥ ★ ☃ -->
+```
+
+- `&#N;` — decimal code (N is the Unicode number)
+- `&#xN;` — hexadecimal code (N is the Unicode hex value)
+
+## Non-Breaking Space
+
+The `&nbsp;` entity inserts a space that prevents the browser from breaking the line.
+
+```html
+<p>Price: $19&nbsp;99</p>   <!-- won't split across lines -->
+<p>10&nbsp;km&nbsp;away</p> <!-- stays together -->
+```
+
+This is also useful for preventing orphaned words at the end of paragraphs.
+
+## Putting It Together
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Entities</title>
+</head>
+<body>
+  <h1>Common HTML Entities</h1>
+
+  <h2>Reserved Characters</h2>
+  <p>Use &amp;lt; for &lt; and &amp;gt; for &gt;.</p>
+
+  <h2>Typography</h2>
+  <p>&ldquo;This is a quoted sentence&rdquo; &mdash; Author</p>
+  <p>It&rsquo;s important to escape &amp; in URLs.</p>
+
+  <h2>Symbols</h2>
+  <p>&copy; 2025 &bull; &reg; All rights reserved &trade;</p>
+
+  <h2>Emoji via Hex Entities</h2>
+  <p>&#x1F600; &#x1F44D; &#x2728;</p>
+</body>
+</html>
+```
+
+## Quick Reference
+
+| Entity | Result |
+|---|---|
+| `&amp;` | &amp; |
+| `&lt;` | &lt; |
+| `&gt;` | &gt; |
+| `&quot;` | &quot; |
+| `&nbsp;` | (non-breaking space) |
+| `&copy;` | &copy; |
+| `&mdash;` | &mdash; |
+| `&hellip;` | &hellip; |
+
+When in doubt, use an HTML entity reference chart. Your editor may also auto-escape these when pasting from rich text sources.

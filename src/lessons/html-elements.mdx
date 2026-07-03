@@ -96,3 +96,47 @@ Use `<div>` (block) and `<span>` (inline) only when no semantic element fits. Th
 ```
 
 Remember: semantic HTML is the foundation of accessible, SEO-friendly web pages. Choose the element that best describes your content.
+
+<TryIt
+  html={`<header>
+  <h1>My Blog</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<main>
+  <article>
+    <h2>Blog Post Title</h2>
+    <p>Posted on <time datetime="2025-01-15">January 15</time></p>
+    <section>
+      <h3>Introduction</h3>
+      <p>This is the article content. Try editing anything!</p>
+    </section>
+  </article>
+
+  <aside>
+    <h3>Related Posts</h3>
+    <ul>
+      <li><a href="#">Another post</a></li>
+      <li><a href="#">More articles</a></li>
+    </ul>
+  </aside>
+</main>
+
+<footer>
+  <p>&copy; 2025 My Blog</p>
+</footer>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header { border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; }
+nav a { margin-right: 1rem; color: #2563eb; }
+main { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; padding: 1rem 0; }
+aside { background: #f9fafb; padding: 1rem; border-radius: 0.5rem; }
+footer { border-top: 1px solid #ddd; padding-top: 0.5rem; font-size: 0.875rem; color: #666; }`}
+/>

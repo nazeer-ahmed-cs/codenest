@@ -1,0 +1,197 @@
+---
+title: "CSS Integration"
+slug: html-css-integration
+order: 18
+topic: "HTML Basics"
+description: "Connect CSS to HTML with inline styles, internal stylesheets, and external files."
+---
+
+HTML provides the structure; CSS provides the presentation. Three methods connect the two.
+
+## External Stylesheet (Best Practice)
+
+The most common and maintainable approach. Link to a `.css` file using `<link>` in the `<head>`.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Styled Page</h1>
+</body>
+</html>
+```
+
+**Benefits:**
+- One CSS file controls many pages
+- Browser caches the file across page loads
+- Clean separation of content and presentation
+
+## Internal Stylesheet
+
+CSS is written in a `<style>` tag inside the `<head>`. Use this for single-page sites or when testing.
+
+```html
+<head>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    h1 { color: #2563eb; }
+    .highlight { background: #fef3c7; padding: 0.5rem; }
+  </style>
+</head>
+```
+
+**When to use:**
+- Single-page sites
+- Email templates
+- Quick prototypes
+- Overriding external styles for a single page
+
+## Inline Styles
+
+CSS is written directly on an element using the `style` attribute. Use sparingly.
+
+```html
+<p style="color: red; font-weight: bold;">This is an alert.</p>
+```
+
+**Avoid inline styles** in most cases. They:
+- Can't be reused
+- Mix content with presentation
+- Override other styles (high specificity)
+- Harder to maintain
+
+## The Cascade
+
+When multiple styles apply to the same element, the cascade determines which wins.
+
+1. **Inline styles** (highest priority)
+2. **Internal stylesheet** (within `<style>`)
+3. **External stylesheet** (via `<link>`)
+4. **Browser defaults** (lowest priority)
+
+Within the same origin, **specificity** breaks ties:
+- `#id` (most specific) > `.class` > `element` (least specific)
+
+```html
+<style>
+  .text { color: blue; }
+  p { color: red; }
+</style>
+
+<p class="text">This text is blue (class wins over element).</p>
+```
+
+## CSS Selectors Quick Reference
+
+| Selector | Targets |
+|---|---|
+| `*` | All elements |
+| `p` | All `<p>` elements |
+| `.class` | All elements with `class="class"` |
+| `#id` | The element with `id="id"` |
+| `div p` | `<p>` inside a `<div>` |
+| `div > p` | Direct child `<p>` of `<div>` |
+| `p:hover` | `<p>` when the mouse hovers |
+
+## CSS Box Model
+
+Every element is a rectangular box. Understanding the box model is key to layout.
+
+```
++---------------------------+
+|        Margin             |
+|  +---------------------+  |
+|  |      Border         |  |
+|  |  +---------------+  |  |
+|  |  |   Padding     |  |  |
+|  |  |  +---------+  |  |  |
+|  |  |  | Content |  |  |  |
+|  |  |  +---------+  |  |  |
+|  |  +---------------+  |  |
+|  +---------------------+  |
++---------------------------+
+```
+
+```css
+div {
+  width: 300px;
+  padding: 20px;
+  border: 2px solid black;
+  margin: 10px;
+}
+```
+
+By default, `width` only sets the **content** width. Use `box-sizing: border-box` to include padding and border in the width calculation.
+
+## Colors in CSS
+
+```css
+p {
+  color: #2563eb;         /* Hex */
+  color: rgb(37, 99, 235); /* RGB */
+  color: hsl(217, 91%, 60%); /* HSL */
+  color: blue;            /* Named color */
+  background: rgba(0, 0, 0, 0.5); /* RGB with opacity */
+}
+```
+
+- **Hex** (`#2563eb`) — most common, 6-digit RGB values
+- **RGB** — red, green, blue values 0-255
+- **HSL** — hue (0-360), saturation (0-100%), lightness (0-100%)
+- **Named** — limited set (blue, red, green, etc.)
+
+## Putting It Together
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Integration</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .page-title {
+      color: #2563eb;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="page-title" style="margin-bottom: 2rem;">
+    Welcome
+  </h1>
+  <p>This paragraph gets its style from the external stylesheet.</p>
+</body>
+</html>
+```
+
+Start with external stylesheets, use internal for page-specific overrides, and avoid inline styles unless absolutely necessary.
+
+<TryIt
+  html={`<h1>Hello, CSS!</h1>
+<p>This paragraph is styled with the external stylesheet.</p>
+<p class="highlight">This one has an extra class applied.</p>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+h1 {
+  color: #2563eb;
+  text-align: center;
+}
+.highlight {
+  background: #fef3c7;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+}`}
+/>
