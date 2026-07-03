@@ -95,8 +95,9 @@ export default function TryIt({ html = "", css = "", js = "" }: Props) {
           visibleFiles: Object.keys(files),
           activeFile: "/index.html",
           classes: {
-            "sp-layout": "!rounded-none !border-0 !min-h-[400px]",
+            "sp-layout": "!rounded-none !border-0 !min-h-[400px] !flex-col lg:!flex-row",
             "sp-tabs": "!border-b !border-gray-200",
+            "sp-tab-button": "!text-sm",
           },
           initMode: "immediate",
         }}

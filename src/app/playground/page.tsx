@@ -74,7 +74,7 @@ export default function PlaygroundPage() {
             activeFile: "/index.html",
             classes: {
               "sp-wrapper": "h-full",
-              "sp-layout": "h-full",
+              "sp-layout": "h-full !flex-col lg:!flex-row",
             },
             initMode: "immediate",
           }}
