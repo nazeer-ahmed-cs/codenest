@@ -22,18 +22,24 @@ export const metadata: Metadata = {
   description: "An interactive learning platform",
 };
 
-const topicNavItems: TopicNavItem[] = [
-  {
-    label: "HTML",
-    href: `/tutorial/html/${topics.find((t) => t.title === "HTML Basics")?.lessons[0]?.slug ?? ""}`,
-  },
-  {
-    label: "CSS",
-    href: `/tutorial/html/${topics.find((t) => t.title === "CSS")?.lessons[0]?.slug ?? ""}`,
-  },
-  { label: "JavaScript Fundamentals", href: "/tutorial", disabled: true },
-  { label: "React", href: "/tutorial", disabled: true },
-];
+const topicLabels: Record<string, string> = {
+  "Getting Started": "Getting Started",
+  "HTML Basics": "HTML",
+  CSS: "CSS",
+  "JavaScript Fundamentals": "JavaScript",
+  React: "React",
+};
+
+const topicNavItems: TopicNavItem[] = topics
+  .filter((t) => t.title !== "Getting Started")
+  .map((t) => {
+    const first = t.lessons[0];
+    return {
+      label: topicLabels[t.title] ?? t.title,
+      href: first ? `/tutorial/html/${first.slug}` : "/tutorial",
+      disabled: !first,
+    };
+  });
 
 export default function RootLayout({
   children,
