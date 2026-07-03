@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { searchIndex } from "@/lib/curriculum";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -31,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex min-h-screen flex-col">
-          <Navbar />
+          <Navbar searchItems={searchIndex} />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

@@ -97,3 +97,19 @@ export const lessonsMap: Record<string, { title: string; Content: typeof Welcome
   );
 
 export const allSlugs = Object.keys(lessonsMap);
+
+export type SearchItem = {
+  title: string;
+  slug: string;
+  topic: string;
+  description: string;
+};
+
+export const searchIndex: SearchItem[] = rawLessons
+  .filter((l) => l.slug !== "hello-world")
+  .map((l) => ({
+    title: l.title,
+    slug: l.slug,
+    topic: l.topic,
+    description: l.description,
+  }));
