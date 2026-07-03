@@ -5,6 +5,21 @@ import Fuse from "fuse.js";
 import Link from "next/link";
 import type { SearchItem } from "@/lib/curriculum";
 
+function highlightText(text: string, query: string) {
+  if (!query.trim()) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = text.split(new RegExp(`(${escaped})`, "gi"));
+  return parts.map((part, i) =>
+    part.toLowerCase() === query.toLowerCase() ? (
+      <mark key={i} className="rounded-sm bg-blue-100 text-gray-900">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function SearchBar({ items }: { items: SearchItem[] }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchItem[]>([]);
@@ -13,6 +28,8 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fuseRef = useRef<Fuse<SearchItem>>();
+  const isMac =
+    typeof navigator !== "undefined" && navigator.platform.includes("Mac");
 
   useEffect(() => {
     fuseRef.current = new Fuse(items, {
@@ -26,6 +43,19 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
       minMatchCharLength: 2,
     });
   }, [items]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const isCmdK = (e.metaKey || e.ctrlKey) && e.key === "k";
+      const isSlash = e.key === "/" && e.target === document.body;
+      if (isCmdK || isSlash) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
 
   const doSearch = useCallback((q: string) => {
     if (!fuseRef.current || !q.trim()) {
@@ -55,16 +85,12 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const select = useCallback(
-    (idx: number) => {
-      const item = results[idx];
-      if (!item) return;
-      setIsOpen(false);
-      setQuery("");
-      setResults([]);
-    },
-    [results]
-  );
+  const select = useCallback(() => {
+    setIsOpen(false);
+    setQuery("");
+    setResults([]);
+    inputRef.current?.blur();
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -91,7 +117,7 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
         case "Enter":
           e.preventDefault();
           if (selectedIdx >= 0) {
-            select(selectedIdx);
+            select();
           }
           break;
         case "Escape":
@@ -104,8 +130,11 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
     [isOpen, results, selectedIdx, select]
   );
 
+  const showDropdown = isOpen && query.trim().length > 0;
+  const hasResults = results.length > 0;
+
   return (
-    <div ref={containerRef} className="relative mx-2 flex-1 max-w-xs">
+    <div ref={containerRef} className="relative mx-auto w-full max-w-xs">
       <div className="relative">
         <svg
           className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
@@ -124,7 +153,7 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
           ref={inputRef}
           type="text"
           role="combobox"
-          aria-expanded={isOpen}
+          aria-expanded={showDropdown && hasResults}
           aria-controls="search-results"
           aria-label="Search lessons"
           placeholder="Search lessons..."
@@ -137,47 +166,54 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
             if (results.length > 0) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-8 pr-8 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
         />
+        <kbd className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-400 sm:inline-block">
+          {isMac ? "⌘K" : "Ctrl+K"}
+        </kbd>
       </div>
 
       <div
         id="search-results"
-        className={`absolute left-0 right-0 top-full mt-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg ${
-          isOpen && results.length > 0
-            ? "visible opacity-100"
-            : "invisible opacity-0"
+        className={`absolute left-0 right-0 top-full mt-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-opacity ${
+          showDropdown ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <ul className="py-1" role="listbox">
-          {results.map((item, idx) => (
-            <li
-              key={item.slug}
-              role="option"
-              aria-selected={idx === selectedIdx}
-            >
-              <Link
-                href={`/tutorial/html/${item.slug}`}
-                onClick={() => select(idx)}
-                className={`block px-3 py-2.5 transition-colors ${
-                  idx === selectedIdx ? "bg-blue-50" : "hover:bg-gray-50"
-                }`}
+        {hasResults ? (
+          <ul className="py-1" role="listbox">
+            {results.map((item, idx) => (
+              <li
+                key={item.slug}
+                role="option"
+                aria-selected={idx === selectedIdx}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-sm font-medium text-gray-900">
-                    {item.title}
-                  </span>
-                  <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-500">
-                    {item.topic}
-                  </span>
-                </div>
-                <p className="mt-0.5 line-clamp-1 text-xs text-gray-500">
-                  {item.description}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <Link
+                  href={`/tutorial/html/${item.slug}`}
+                  onClick={() => select()}
+                  className={`block px-3 py-2.5 transition-colors ${
+                    idx === selectedIdx ? "bg-blue-50" : "hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="truncate text-sm font-medium text-gray-900">
+                      {highlightText(item.title, query)}
+                    </span>
+                    <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-500">
+                      {item.topic}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 line-clamp-1 text-xs text-gray-500">
+                    {highlightText(item.description, query)}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="px-3 py-4 text-center text-xs text-gray-400">
+            No lessons found
+          </p>
+        )}
       </div>
     </div>
   );
