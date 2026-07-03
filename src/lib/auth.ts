@@ -60,6 +60,6 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.AUTH_SECRET,
   pages: {
-    signIn: "/",
+    signIn: "/login",
   },
 };
