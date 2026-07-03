@@ -1,0 +1,277 @@
+---
+title: "CSS Colors"
+slug: css-colors
+order: 3
+topic: "CSS"
+description: "Learn how to apply color in CSS using named, hexadecimal, RGB, and HSL values with transparency."
+---
+
+Color brings a website to life. CSS offers several ways to specify color values, each suited to different situations.
+
+## The `color` and `background-color` Properties
+
+The two primary properties for applying color:
+
+- `color` — text color
+- `background-color` — the background behind the text
+
+```css
+h1 {
+  color: #1a1a1a;
+  background-color: #f0f9ff;
+}
+```
+
+## Named Colors
+
+CSS defines 148 named colors that you can use directly in your stylesheets. They are great for quick prototyping but limited in range.
+
+```css
+.alert-error { color: red; }
+.alert-success { color: green; }
+.bg-muted { background-color: lightgray; }
+```
+
+Common named colors: `white`, `black`, `red`, `green`, `blue`, `gray`, `lightgray`, `darkgray`, `yellow`, `orange`, `purple`, `pink`, `transparent`.
+
+## Hexadecimal (Hex)
+
+Hex values are the most widely used format in production CSS. A `#` followed by six hexadecimal digits (0-9, a-f) represents Red-Green-Blue values.
+
+```css
+.primary {
+  color: #2563eb;  /* a vibrant blue */
+}
+
+.muted {
+  color: #6b7280;  /* a medium gray */
+}
+```
+
+Each pair of digits represents one channel: `#RRGGBB`.
+
+**Shortened hex:** when each pair has matching digits, you can use three characters.
+
+```css
+ color: #336;   /* short for #333366 */
+ color: #fff;   /* short for #ffffff — white */
+```
+
+**With alpha (transparency):** an eight-digit hex adds two digits for opacity.
+
+```css
+.overlay {
+  background-color: #00000080;  /* black at 50% opacity */
+}
+```
+
+## RGB and RGBA
+
+The `rgb()` function gives you Red, Green, and Blue values from 0 to 255 (or 0% to 100%).
+
+```css
+.element {
+  color: rgb(37, 99, 235);      /* same as #2563eb */
+  background: rgb(255, 255, 255);
+}
+```
+
+`rgba()` adds an alpha channel for transparency, from 0 (fully transparent) to 1 (fully opaque).
+
+```css
+.overlay {
+  background: rgba(0, 0, 0, 0.5);   /* semi-transparent black */
+}
+
+.faded-text {
+  color: rgba(37, 99, 235, 0.6);   /* blue at 60% opacity */
+}
+```
+
+The modern `rgb()` syntax also accepts a `/` for alpha, making `rgba()` redundant:
+
+```css
+.overlay {
+  background: rgb(0 0 0 / 0.5);
+}
+```
+
+## HSL and HSLA
+
+HSL stands for **Hue, Saturation, Lightness**. It is more intuitive for humans to read and adjust.
+
+- **Hue** — position on the color wheel (0–360): 0 = red, 120 = green, 240 = blue
+- **Saturation** — intensity (0% = gray, 100% = full color)
+- **Lightness** — brightness (0% = black, 100% = white, 50% = normal)
+
+```css
+.element {
+  color: hsl(217, 91%, 60%);      /* same vibrant blue */
+  background: hsl(0, 0%, 100%);   /* white */
+}
+```
+
+HSLA adds an alpha channel:
+
+```css
+.overlay {
+  background: hsla(0, 0%, 0%, 0.5);
+}
+
+/* Or modern syntax */
+.overlay {
+  background: hsl(0 0% 0% / 0.5);
+}
+```
+
+**Why HSL?** Need a darker shade? Lower the lightness. A subtler color? Reduce saturation. It makes creating color variations trivial.
+
+## Which Format Should You Use?
+
+| Format | Best for |
+|---|---|
+| Hex `#2563eb` | General use, most common |
+| RGB `rgb(37, 99, 235)` | When you need numeric channel values |
+| HSL `hsl(217, 91%, 60%)` | When you need to tweak hue/sat/lightness |
+| Named `red` | Quick prototypes, simple demos |
+| `transparent` | Invisible backgrounds or borders |
+
+## Putting It Together
+
+```html
+<div class="palette">
+  <div class="swatch primary">
+    <span>Primary</span>
+    <code>#2563eb</code>
+  </div>
+  <div class="swatch secondary">
+    <span>Secondary</span>
+    <code>#7c3aed</code>
+  </div>
+  <div class="swatch accent">
+    <span>Accent</span>
+    <code>#f59e0b</code>
+  </div>
+  <div class="swatch muted">
+    <span>Muted</span>
+    <code>#6b7280</code>
+  </div>
+  <div class="swatch light">
+    <span>Light BG</span>
+    <code>#f3f4f6</code>
+  </div>
+</div>
+
+<div class="demo-text">
+  <h2>Color in Action</h2>
+  <p class="solid">Solid text using <code>rgb(37, 99, 235)</code></p>
+  <p class="faded">Faded text using <code>hsla(217, 91%, 60%, 0.6)</code></p>
+  <p class="gradient-word">
+    <span class="hue-shift">Gradient text effect</span>
+  </p>
+</div>
+```
+
+```css
+.palette {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.swatch {
+  flex: 1;
+  min-width: 120px;
+  padding: 1.5rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  font-size: 0.875rem;
+}
+
+.swatch code {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.primary { background: #2563eb; }
+.secondary { background: #7c3aed; }
+.accent { background: #f59e0b; }
+.muted { background: #6b7280; }
+.light { background: #f3f4f6; color: #1f2937; }
+
+.demo-text { margin-top: 2rem; }
+.solid { color: rgb(37, 99, 235); font-size: 1.125rem; }
+.faded { color: hsla(217, 91%, 60%, 0.6); font-size: 1.125rem; }
+.hue-shift {
+  font-size: 1.25rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+```
+
+<TryIt
+  html={`<div class="palette">
+  <div class="swatch primary">
+    <span>Primary</span>
+    <code>#2563eb</code>
+  </div>
+  <div class="swatch secondary">
+    <span>Secondary</span>
+    <code>#7c3aed</code>
+  </div>
+  <div class="swatch accent">
+    <span>Accent</span>
+    <code>#f59e0b</code>
+  </div>
+  <div class="swatch muted">
+    <span>Muted</span>
+    <code>#6b7280</code>
+  </div>
+  <div class="swatch light">
+    <span>Light BG</span>
+    <code>#f3f4f6</code>
+  </div>
+</div>
+
+<div class="demo-text">
+  <h2>Color in Action</h2>
+  <p class="solid">Solid text using <code>rgb(37, 99, 235)</code></p>
+  <p class="faded">Faded text using <code>hsla(217, 91%, 60%, 0.6)</code></p>
+  <p class="gradient-word">
+    <span class="hue-shift">Gradient text effect</span>
+  </p>
+</div>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.palette { display: flex; gap: 1rem; flex-wrap: wrap; }
+.swatch {
+  flex: 1; min-width: 120px; padding: 1.5rem 1rem;
+  border-radius: 10px; text-align: center; color: white;
+  font-size: 0.875rem;
+}
+.swatch code { display: block; margin-top: 4px; font-size: 0.75rem; opacity: 0.8; }
+.primary { background: #2563eb; }
+.secondary { background: #7c3aed; }
+.accent { background: #f59e0b; }
+.muted { background: #6b7280; }
+.light { background: #f3f4f6; color: #1f2937; }
+.demo-text { margin-top: 2rem; }
+.solid { color: rgb(37, 99, 235); font-size: 1.125rem; }
+.faded { color: hsla(217, 91%, 60%, 0.6); font-size: 1.125rem; }
+.hue-shift {
+  font-size: 1.25rem; font-weight: bold;
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}`}
+/>

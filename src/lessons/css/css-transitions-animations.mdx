@@ -1,0 +1,379 @@
+---
+title: "Transitions & Animations"
+slug: css-transitions-animations
+order: 10
+topic: "CSS"
+description: "Add motion and interactivity with CSS transitions, transforms, and keyframe animations."
+---
+
+CSS can bring interfaces to life without JavaScript. Transitions smooth out state changes, while animations run complex, multi-step motion sequences.
+
+## Transitions
+
+A transition animates a property from one value to another over a given duration. It needs four things: a property, a duration, a timing function, and an optional delay.
+
+```css
+.button {
+  background: #2563eb;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: #1d4ed8;
+}
+```
+
+### Transition Properties
+
+| Property | Purpose |
+|---|---|
+| `transition-property` | Which property to animate (or `all`) |
+| `transition-duration` | How long the animation lasts |
+| `transition-timing-function` | Acceleration curve |
+| `transition-delay` | Wait time before starting |
+
+### Timing Functions
+
+```css
+.element {
+  transition: all 0.3s ease;         /* default — smooth start and end */
+  transition: all 0.3s ease-in;      /* starts slow, ends fast */
+  transition: all 0.3s ease-out;     /* starts fast, ends slow */
+  transition: all 0.3s ease-in-out;  /* slow start and end */
+  transition: all 0.3s linear;       /* constant speed */
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* custom curve */
+}
+```
+
+### Transitioning Multiple Properties
+
+```css
+.card {
+  background: white;
+  transform: scale(1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  background: #f9fafb;
+}
+```
+
+## Transforms
+
+Transforms visually manipulate an element without affecting the document flow. They are GPU-accelerated, making them ideal for smooth animations.
+
+```css
+/* Translate — move the element */
+.move { transform: translateX(20px); }
+.move { transform: translateY(-10px); }
+.move { transform: translate(20px, -10px); }
+
+/* Rotate */
+.spin { transform: rotate(45deg); }
+.spin { transform: rotate(-90deg); }
+
+/* Scale */
+.grow { transform: scale(1.2); }
+.shrink { transform: scale(0.8); }
+
+/* Skew */
+.tilt { transform: skewX(10deg); }
+.tilt { transform: skewY(5deg); }
+```
+
+Combine multiple transforms in one declaration:
+
+```css
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+```
+
+For best performance, only animate `transform` and `opacity` — the browser can optimise these without triggering layout recalculations.
+
+## Keyframe Animations
+
+For more complex motion, use `@keyframes` to define multi-step sequences.
+
+### Defining a Keyframe
+
+```css
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+You can use percentage stops for finer control:
+
+```css
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  70%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+```
+
+### Applying an Animation
+
+```css
+.hero {
+  animation: fadeIn 0.6s ease forwards;
+}
+```
+
+### Animation Properties
+
+| Property | Purpose |
+|---|---|
+| `animation-name` | Name of the `@keyframes` rule |
+| `animation-duration` | How long one cycle lasts |
+| `animation-timing-function` | Acceleration curve |
+| `animation-delay` | Wait before starting |
+| `animation-iteration-count` | Number of cycles (`infinite` for looping) |
+| `animation-direction` | `normal`, `reverse`, `alternate`, `alternate-reverse` |
+| `animation-fill-mode` | `none`, `forwards`, `backwards`, `both` |
+| `animation-play-state` | `running` or `paused` |
+
+### Shorthand
+
+```css
+.element {
+  animation: slideIn 0.5s ease-out 0.2s forwards;
+}
+```
+
+Order: name, duration, timing-function, delay, fill-mode.
+
+### Practical Animation Examples
+
+**Pulsing dot:**
+
+```css
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+.dot {
+  animation: pulse 2s ease-in-out infinite;
+}
+```
+
+**Loading spinner:**
+
+```css
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+```
+
+**Slide-in from the left:**
+
+```css
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sidebar {
+  animation: slideIn 0.3s ease-out;
+}
+```
+
+## Performance Best Practices
+
+- Animate `transform` and `opacity` only — they are compositor-only properties
+- Avoid animating `width`, `height`, `top`, `left`, `margin`, `padding` — these trigger layout recalculations
+- Use `will-change: transform` sparingly to hint at future animations
+- Prefer `translate()` over `top`/`left` for positioning animations
+
+## Putting It Together
+
+```html
+<section class="demo">
+  <h1>Transitions &amp; Animations</h1>
+
+  <div class="card-grid">
+    <div class="card card-hover">
+      <h3>Hover Me</h3>
+      <p>This card uses transitions on hover — scale, shadow, and background all animate smoothly.</p>
+    </div>
+
+    <div class="card card-pulse">
+      <h3>Pulse</h3>
+      <p>This card has a continuous pulse animation on its border.</p>
+    </div>
+
+    <div class="card card-spinner">
+      <div class="spinner"></div>
+      <h3>Loading</h3>
+      <p>A CSS-only spinner built with keyframes.</p>
+    </div>
+  </div>
+
+  <button class="btn btn-slide">Slide In</button>
+</section>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  background: #f3f4f6;
+  margin: 0;
+  padding: 2rem;
+}
+
+.demo { max-width: 800px; margin: 0 auto; }
+h1 { margin-bottom: 1.5rem; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  background: #f9fafb;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { border-color: #e5e7eb; }
+  50% { border-color: #2563eb; }
+}
+
+.card-pulse {
+  animation: pulseBorder 2s ease-in-out infinite;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn:hover { background: #1d4ed8; transform: scale(1.05); }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.btn-slide {
+  animation: slideIn 0.5s ease-out;
+}
+```
+
+<TryIt
+  html={`<section class="demo">
+  <h1>Transitions &amp; Animations</h1>
+
+  <div class="card-grid">
+    <div class="card card-hover">
+      <h3>Hover Me</h3>
+      <p>This card uses transitions on hover — scale, shadow, and background all animate smoothly.</p>
+    </div>
+
+    <div class="card card-pulse">
+      <h3>Pulse</h3>
+      <p>This card has a continuous pulse animation on its border.</p>
+    </div>
+
+    <div class="card card-spinner">
+      <div class="spinner"></div>
+      <h3>Loading</h3>
+      <p>A CSS-only spinner built with keyframes.</p>
+    </div>
+  </div>
+
+  <button class="btn btn-slide">Slide In</button>
+</section>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  background: #f3f4f6; margin: 0; padding: 2rem;
+}
+.demo { max-width: 800px; margin: 0 auto; }
+h1 { margin-bottom: 1.5rem; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.card {
+  background: white; border-radius: 12px; padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.card-hover:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 24px rgba(0,0,0,0.1); background: #f9fafb; }
+@keyframes pulseBorder {
+  0%, 100% { border-color: #e5e7eb; }
+  50% { border-color: #2563eb; }
+}
+.card-pulse { animation: pulseBorder 2s ease-in-out infinite; }
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid #e5e7eb; border-top-color: #2563eb;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn {
+  display: inline-block; margin-top: 2rem;
+  padding: 0.75rem 1.5rem; background: #2563eb;
+  color: white; border: none; border-radius: 8px;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.btn:hover { background: #1d4ed8; transform: scale(1.05); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.btn-slide { animation: slideIn 0.5s ease-out; }`}
+/>

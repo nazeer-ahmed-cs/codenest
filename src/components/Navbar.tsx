@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
+import TopicSwitcher from "@/components/TopicSwitcher";
 import type { SearchItem } from "@/lib/curriculum";
+import type { TopicNavItem } from "@/components/TopicSwitcher";
 
 export default function Navbar({
   searchItems,
+  topicNavItems,
 }: {
   searchItems: SearchItem[];
+  topicNavItems: TopicNavItem[];
 }) {
   const pathname = usePathname();
 
@@ -22,17 +26,9 @@ export default function Navbar({
           CodeNest
         </Link>
 
+        <TopicSwitcher topics={topicNavItems} />
+
         <nav className="flex items-center gap-1">
-          <Link
-            href="/tutorial"
-            className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-              pathname.startsWith("/tutorial")
-                ? "bg-gray-100 text-gray-900"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-            }`}
-          >
-            Tutorial
-          </Link>
           <Link
             href="/playground"
             className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${

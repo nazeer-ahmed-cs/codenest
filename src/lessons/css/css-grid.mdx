@@ -1,0 +1,305 @@
+---
+title: "CSS Grid"
+slug: css-grid
+order: 6
+topic: "CSS"
+description: "Build two-dimensional layouts with CSS Grid: explicit grids, template areas, auto-flow, and alignment."
+---
+
+CSS Grid is a two-dimensional layout system designed for arranging content in both rows and columns at the same time. It excels at page-level layouts and complex component arrangements.
+
+## The Grid Container
+
+Turn any element into a grid container with `display: grid`.
+
+```css
+.container {
+  display: grid;
+}
+```
+
+Unlike Flexbox (which distributes content along one axis), Grid works on both axes simultaneously.
+
+## Defining Columns and Rows
+
+Use `grid-template-columns` and `grid-template-rows` to define the track sizes.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+}
+```
+
+The `fr` unit distributes available space proportionally. `1fr` means one fraction of the free space.
+
+| Unit | Meaning |
+|---|---|
+| `px` | Fixed pixel width |
+| `%` | Percentage of the container |
+| `fr` | Fraction of available space |
+| `auto` | Sized by content |
+| `minmax(min, max)` | Flexible range between min and max |
+
+### The `repeat()` Function
+
+Avoid repeating identical values:
+
+```css
+.container {
+  grid-template-columns: repeat(3, 1fr);  /* three equal columns */
+  grid-template-columns: repeat(4, 200px); /* four fixed columns */
+  grid-template-columns: 200px repeat(2, 1fr) 200px; /* mixed */
+}
+```
+
+## Gap
+
+`gap` adds spacing between grid cells.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  row-gap: 16px;
+  column-gap: 24px;
+}
+```
+
+## Placing Items Explicitly
+
+Grid items are placed automatically by default, but you can control their position using line numbers.
+
+```
+Columns:  1      2       3       4
+         ┌──────┬───────┬───────┐
+Row 1    │      │       │       │
+         ├──────┼───────┼───────┤
+Row 2    │      │       │       │
+         ├──────┼───────┼───────┤
+Row 3    │      │       │       │
+         └──────┴───────┴───────┘
+```
+
+```css
+.item {
+  grid-column: 1 / 3;   /* span from column line 1 to line 3 */
+  grid-row: 1 / 2;      /* span from row line 1 to line 2 */
+}
+
+/* Span shorthand */
+.item {
+  grid-column: span 2;  /* span 2 columns */
+  grid-row: span 2;     /* span 2 rows */
+}
+```
+
+## Grid Template Areas
+
+The most intuitive way to define layouts — name your grid cells and place items by name.
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  min-height: 100vh;
+  gap: 0;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+```
+
+Each row in the `grid-template-areas` string represents a row of the grid. A period (`.`) leaves a cell empty.
+
+## Auto Flow
+
+By default, items fill each row then wrap to the next. Control this with `grid-auto-flow`.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: row;      /* default — fill rows first */
+  grid-auto-flow: column;    /* fill columns first */
+  grid-auto-flow: dense;     /* fill gaps by rearranging items */
+}
+```
+
+## Aligning Items
+
+Grid provides powerful alignment control on both axes.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(2, 100px);
+
+  /* Align items inside their cells */
+  justify-items: center;     /* horizontal alignment */
+  align-items: center;       /* vertical alignment */
+
+  /* Align the entire grid inside the container */
+  justify-content: center;   /* horizontal alignment */
+  align-content: center;     /* vertical alignment */
+}
+```
+
+## Putting It Together
+
+```html
+<div class="layout">
+  <header class="header">
+    <h1>My Dashboard</h1>
+  </header>
+  <aside class="sidebar">
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="#">Overview</a></li>
+      <li><a href="#">Analytics</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </aside>
+  <main class="main">
+    <h2>Welcome back!</h2>
+    <p>This is the main content area. Grid makes it easy to create this layout.</p>
+    <div class="stats">
+      <div class="stat">Users: 1,234</div>
+      <div class="stat">Revenue: $5,678</div>
+      <div class="stat">Orders: 89</div>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2025 Dashboard</p>
+  </footer>
+</div>
+```
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  min-height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background: #1f2937;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.header h1 { margin: 0; font-size: 1.25rem; }
+
+.sidebar {
+  grid-area: sidebar;
+  background: #f3f4f6;
+  padding: 1.5rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li { margin-bottom: 0.5rem; }
+.sidebar a { color: #374151; text-decoration: none; }
+.sidebar a:hover { color: #2563eb; }
+
+.main {
+  grid-area: main;
+  padding: 2rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat {
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.footer {
+  grid-area: footer;
+  text-align: center;
+  padding: 1rem;
+  background: #f3f4f6;
+  font-size: 0.875rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+}
+```
+
+<TryIt
+  html={`<div class="layout">
+  <header class="header">
+    <h1>My Dashboard</h1>
+  </header>
+  <aside class="sidebar">
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="#">Overview</a></li>
+      <li><a href="#">Analytics</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </aside>
+  <main class="main">
+    <h2>Welcome back!</h2>
+    <p>This is the main content area. Grid makes it easy to create this layout.</p>
+    <div class="stats">
+      <div class="stat">Users: 1,234</div>
+      <div class="stat">Revenue: $5,678</div>
+      <div class="stat">Orders: 89</div>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2025 Dashboard</p>
+  </footer>
+</div>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  min-height: 100vh;
+}
+.header { grid-area: header; background: #1f2937; color: white; padding: 1rem 2rem; }
+.header h1 { margin: 0; font-size: 1.25rem; }
+.sidebar { grid-area: sidebar; background: #f3f4f6; padding: 1.5rem; border-right: 1px solid #e5e7eb; }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li { margin-bottom: 0.5rem; }
+.sidebar a { color: #374151; text-decoration: none; }
+.sidebar a:hover { color: #2563eb; }
+.main { grid-area: main; padding: 2rem; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.stat { padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 10px; text-align: center; font-weight: 600; color: #1f2937; }
+.footer { grid-area: footer; text-align: center; padding: 1rem; background: #f3f4f6; font-size: 0.875rem; color: #6b7280; border-top: 1px solid #e5e7eb; }`}
+/>

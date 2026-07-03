@@ -1,0 +1,306 @@
+---
+title: "CSS Selectors"
+slug: css-selectors
+order: 1
+topic: "CSS"
+description: "Learn how to target HTML elements with type, class, ID, attribute, combinatory selectors, and pseudo-classes."
+---
+
+Selectors are the backbone of CSS. They tell the browser which elements to style. A strong grasp of selectors lets you write clean, maintainable stylesheets.
+
+## Basic Selectors
+
+| Selector | Example | Targets |
+|---|---|---|
+| Type (element) | `h1` | All `<h1>` elements |
+| Class | `.card` | Elements with `class="card"` |
+| ID | `#header` | The element with `id="header"` (use once per page) |
+| Universal | `*` | Every element on the page |
+| Grouping | `h1, h2, h3` | Multiple selectors, same rules |
+
+```css
+/* Type selector */
+h1 {
+  font-size: 2rem;
+}
+
+/* Class selector */
+.card {
+  background: white;
+  border-radius: 8px;
+}
+
+/* ID selector */
+#header {
+  height: 60px;
+}
+
+/* Universal selector — reset margins on everything */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Grouping — apply the same rule to multiple elements */
+h1, h2, h3 {
+  line-height: 1.2;
+}
+```
+
+**Class vs ID:** Classes can be reused on many elements. IDs must be unique and are best reserved for JavaScript hooks or anchor links. Prefer classes for styling.
+
+## Combinatory Selectors
+
+Combinators let you target elements based on their relationship in the DOM tree.
+
+### Descendant (space)
+
+Targets an element nested anywhere inside another.
+
+```css
+article p {
+  color: #333;
+}
+/* Matches any <p> inside an <article>, no matter how deep */
+```
+
+### Child (`>`)
+
+Targets a direct child only.
+
+```css
+ul > li {
+  list-style: none;
+}
+/* Matches <li> that is a direct child of <ul>, but not <li> nested deeper */
+```
+
+### Adjacent Sibling (`+`)
+
+Targets an element that immediately follows another.
+
+```css
+h2 + p {
+  margin-top: 0;
+}
+/* Matches the first <p> after each <h2> */
+```
+
+### General Sibling (`~`)
+
+Targets all siblings after an element, not just the first one.
+
+```css
+h2 ~ p {
+  color: #666;
+}
+/* Matches every <p> that follows an <h2> at the same level */
+```
+
+### Putting Combinators Together
+
+```css
+nav ul > li a.external {
+  color: #2563eb;
+}
+/* An <a class="external"> anywhere inside an <li> that is a direct child of a <ul> inside a <nav> */
+```
+
+## Attribute Selectors
+
+Target elements by their attributes or attribute values.
+
+| Pattern | Example | Matches |
+|---|---|---|
+| `[attr]` | `[disabled]` | Elements with the attribute |
+| `[attr="value"]` | `[type="text"]` | Exact value match |
+| `[attr^="val"]` | `[href^="https"]` | Value starts with |
+| `[attr$="val"]` | `[src$=".jpg"]` | Value ends with |
+| `[attr*="val"]` | `[class*="btn"]` | Value contains anywhere |
+
+```css
+input[type="email"] {
+  border-color: #2563eb;
+}
+
+a[href^="https"] {
+  color: green;
+}
+
+img[src$=".png"] {
+  background: #f0f0f0;
+}
+```
+
+## Pseudo-classes
+
+Pseudo-classes style elements based on **state** or **position** in the document.
+
+### State Pseudo-classes
+
+```css
+a:hover {
+  text-decoration: underline;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+```
+
+### Structural Pseudo-classes
+
+```css
+li:first-child {
+  font-weight: bold;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li:nth-child(odd) {
+  background: #f9fafb;
+}
+
+p:empty {
+  display: none;
+}
+```
+
+### `:not()` Negation
+
+```css
+input:not([type="submit"]) {
+  border: 1px solid #d1d5db;
+}
+```
+
+## Pseudo-elements
+
+Pseudo-elements style **specific parts** of an element. They use double colons (`::`).
+
+```css
+/* First line of a paragraph */
+p::first-line {
+  font-weight: bold;
+}
+
+/* First letter */
+p::first-letter {
+  font-size: 2em;
+  float: left;
+}
+
+/* Before and after — great for icons or decorations */
+.note::before {
+  content: "💡 ";
+}
+
+.link::after {
+  content: " →";
+}
+
+/* Selection highlight */
+::selection {
+  background: #2563eb;
+  color: white;
+}
+```
+
+## Specificity
+
+When multiple selectors target the same element, specificity decides which rule wins.
+
+| Selector | Specificity |
+|---|---|
+| `*` (universal) | 0, 0, 0, 0 |
+| `h1` (type) | 0, 0, 0, 1 |
+| `.card` (class) | 0, 0, 1, 0 |
+| `#header` (ID) | 0, 1, 0, 0 |
+| Inline style | 1, 0, 0, 0 |
+| `!important` | Overrides everything (use sparingly) |
+
+```css
+/* Which color wins? */
+h1 { color: red; }           /* 0,0,0,1 */
+.title { color: blue; }      /* 0,0,1,0 */
+#main-title { color: green; } /* 0,1,0,0 → wins */
+```
+
+In general, keep specificity low — prefer class selectors over IDs for styling.
+
+## Putting It Together
+
+```html
+<nav class="navbar">
+  <ul>
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="https://blog.example.com" class="external">Blog</a></li>
+  </ul>
+</nav>
+
+<main>
+  <article class="post">
+    <h2>Understanding Selectors</h2>
+    <p class="meta">Posted on <time datetime="2025-06-01">June 1, 2025</time></p>
+    <p>Selectors are fundamental to CSS. This article covers the most useful patterns.</p>
+    <p class="note">Practice by editing the code below!</p>
+  </article>
+</main>
+```
+
+With this CSS:
+
+```css
+.navbar { background: #1f2937; padding: 1rem; }
+.navbar ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; }
+.navbar a { color: #d1d5db; text-decoration: none; }
+.navbar a:hover { color: white; }
+.navbar a.active { color: #60a5fa; font-weight: bold; }
+.post { max-width: 650px; margin: 2rem auto; }
+.post h2 { color: #111; font-size: 1.75rem; }
+.meta { color: #6b7280; font-size: 0.875rem; }
+.note { background: #fef3c7; padding: 0.75rem; border-radius: 0.5rem; }
+.note::before { content: "✏️ "; }
+```
+
+<TryIt
+  html={`<nav class="navbar">
+  <ul>
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="external">Blog</a></li>
+  </ul>
+</nav>
+
+<main>
+  <article class="post">
+    <h2>Understanding Selectors</h2>
+    <p class="meta">Posted on <time datetime="2025-06-01">June 1, 2025</time></p>
+    <p>Selectors are fundamental to CSS. This article covers the most useful patterns.</p>
+    <p class="note">Try editing the HTML or CSS to see selectors in action!</p>
+  </article>
+</main>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: #f9fafb;
+}
+.navbar { background: #1f2937; padding: 1rem; }
+.navbar ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; }
+.navbar a { color: #d1d5db; text-decoration: none; }
+.navbar a:hover { color: white; }
+.navbar a.active { color: #60a5fa; font-weight: bold; }
+.post { max-width: 650px; margin: 2rem auto; padding: 0 1rem; }
+.post h2 { color: #111; font-size: 1.75rem; }
+.meta { color: #6b7280; font-size: 0.875rem; }
+.note { background: #fef3c7; padding: 0.75rem; border-radius: 0.5rem; }`}
+/>

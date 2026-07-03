@@ -1,0 +1,283 @@
+---
+title: "Typography"
+slug: css-typography
+order: 9
+topic: "CSS"
+description: "Style text with font families, sizes, weights, line-height, text-align, and web fonts."
+---
+
+Typography is a core part of web design. CSS provides fine-grained control over how text appears, from the font face down to the spacing between letters.
+
+## Font Family
+
+The `font-family` property specifies the typeface. Always provide fallback fonts in case the primary choice is unavailable.
+
+```css
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+h1 {
+  font-family: "Georgia", "Times New Roman", serif;
+}
+```
+
+| Generic Family | Examples |
+|---|---|
+| `serif` | Georgia, Times New Roman, Garamond |
+| `sans-serif` | Inter, Arial, Helvetica, system-ui |
+| `monospace` | Fira Code, Courier New, Consolas |
+| `cursive` | Brush Script, Pacifico |
+| `fantasy` | Impact, Papyrus |
+
+The `system-ui` value uses the operating system's default UI font, giving a native feel.
+
+## Font Size
+
+Use `font-size` to control text size. Prefer relative units for accessibility.
+
+```css
+body {
+  font-size: 16px;       /* absolute — overrides user preferences */
+  font-size: 100%;       /* relative — respects browser default */
+  font-size: 1rem;       /* relative — 1rem = 16px by default */
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+small { font-size: 0.875rem; }
+```
+
+## Font Weight and Style
+
+`font-weight` controls boldness. `font-style` controls italics.
+
+```css
+strong { font-weight: 700; }
+h1 { font-weight: 800; }
+.light { font-weight: 300; }
+
+em { font-style: italic; }
+.normal { font-style: normal; }
+```
+
+Numeric weights: 100 (thin) to 900 (black). 400 = normal, 700 = bold.
+
+## Line Height
+
+`line-height` controls the vertical space between lines of text.
+
+```css
+body {
+  line-height: 1.6;      /* unitless — relative to font-size */
+}
+
+.tight { line-height: 1.2; }
+.loose { line-height: 2; }
+```
+
+A unitless value is best practice — it scales with the font-size.
+
+## Text Alignment
+
+```css
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }
+.justify { text-align: justify; }
+```
+
+## Text Decoration
+
+```css
+a { text-decoration: none; }
+
+.underline { text-decoration: underline; }
+.strikethrough { text-decoration: line-through; }
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+```
+
+## Text Transform
+
+Change the capitalisation of text.
+
+```css
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+```
+
+## Letter and Word Spacing
+
+```css
+h1 {
+  letter-spacing: 0.05em;   /* space between characters */
+}
+
+p {
+  word-spacing: 0.1em;      /* space between words */
+}
+```
+
+## Web Fonts with `@import`
+
+Google Fonts can be loaded via `@import` in your stylesheet:
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+```
+
+## Web Fonts with `@font-face`
+
+For self-hosted fonts, use `@font-face`:
+
+```css
+@font-face {
+  font-family: "MyCustomFont";
+  src: url("fonts/MyCustomFont.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+The `font-display: swap` ensures text remains visible while the font loads.
+
+## Putting It Together
+
+```html
+<article class="post">
+  <h1>The Art of Typography</h1>
+  <p class="meta">Posted on <time datetime="2025-06-15">June 15, 2025</time> by <a href="#">Jane Smith</a></p>
+
+  <p class="lead">Typography is the craft of making written language readable and appealing. On the web, CSS gives us extraordinary control over every aspect of type.</p>
+
+  <h2>Choosing Your Typeface</h2>
+  <p>The best typeface depends on your brand and content. Serif fonts like Georgia convey tradition and authority. Sans-serif fonts like Inter feel modern and clean.</p>
+
+  <blockquote>
+    <p>"Typography is the craft of endowing human language with a durable visual form."</p>
+    <cite>— Robert Bringhurst</cite>
+  </blockquote>
+
+  <h2>Readability Matters</h2>
+  <p>Aim for a line length of 45-75 characters. Use ample line-height (1.5–1.8) and generous spacing between sections. Good typography is invisible — it lets the content shine.</p>
+
+  <p class="small">This is smaller text, styled with a utility class.</p>
+</article>
+```
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap");
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1f2937;
+  max-width: 680px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.post h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.75rem;
+  line-height: 1.15;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem;
+}
+
+.meta a { color: #2563eb; text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+
+.lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 0.5rem;
+  font-weight: 600;
+}
+
+p { margin: 0 0 1rem; }
+
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 4px solid #2563eb;
+  color: #4b5563;
+}
+
+blockquote p { font-style: italic; font-size: 1.125rem; }
+blockquote cite { font-size: 0.875rem; color: #6b7280; }
+
+.small {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+```
+
+<TryIt
+  html={`<article class="post">
+  <h1>The Art of Typography</h1>
+  <p class="meta">Posted on <time datetime="2025-06-15">June 15, 2025</time> by <a href="#">Jane Smith</a></p>
+
+  <p class="lead">Typography is the craft of making written language readable and appealing. On the web, CSS gives us extraordinary control over every aspect of type.</p>
+
+  <h2>Choosing Your Typeface</h2>
+  <p>The best typeface depends on your brand and content. Serif fonts like Georgia convey tradition and authority. Sans-serif fonts like Inter feel modern and clean.</p>
+
+  <blockquote>
+    <p>"Typography is the craft of endowing human language with a durable visual form."</p>
+    <cite>— Robert Bringhurst</cite>
+  </blockquote>
+
+  <h2>Readability Matters</h2>
+  <p>Aim for a line length of 45-75 characters. Use ample line-height (1.5–1.8) and generous spacing between sections. Good typography is invisible — it lets the content shine.</p>
+
+  <p class="small">This is smaller text, styled with a utility class.</p>
+</article>`}
+  css={`@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap");
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 1rem; line-height: 1.7;
+  color: #1f2937; max-width: 680px;
+  margin: 3rem auto; padding: 0 1.5rem;
+}
+.post h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.75rem; line-height: 1.15;
+  margin: 0 0 0.25rem; letter-spacing: -0.02em;
+}
+.meta { font-size: 0.875rem; color: #6b7280; margin: 0 0 1.5rem; }
+.meta a { color: #2563eb; text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.lead { font-size: 1.2rem; line-height: 1.6; color: #374151; }
+h2 { font-size: 1.5rem; margin: 2rem 0 0.5rem; font-weight: 600; }
+p { margin: 0 0 1rem; }
+blockquote { margin: 1.5rem 0; padding: 0 0 0 1.5rem; border-left: 4px solid #2563eb; color: #4b5563; }
+blockquote p { font-style: italic; font-size: 1.125rem; }
+blockquote cite { font-size: 0.875rem; color: #6b7280; }
+.small { font-size: 0.8rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.1em; }`}
+/>

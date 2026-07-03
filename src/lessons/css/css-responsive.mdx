@@ -1,0 +1,336 @@
+---
+title: "Responsive Design"
+slug: css-responsive
+order: 8
+topic: "CSS"
+description: "Create layouts that adapt to any screen size using media queries, relative units, and mobile-first principles."
+---
+
+Responsive design ensures a website looks and functions well on every device — from a narrow phone to a wide desktop monitor.
+
+## The Viewport Meta Tag
+
+Every responsive page needs this in the `<head>`:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+This tells the browser to match the device's width and disable default zoom, making your CSS media queries work correctly.
+
+## Media Queries
+
+Media queries apply CSS only when certain conditions are met, such as viewport width.
+
+```css
+/* Base styles apply to all screen sizes */
+.container {
+  padding: 16px;
+}
+
+/* Tablet: 768px and up */
+@media (min-width: 768px) {
+  .container {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop: 1024px and up */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+```
+
+### Common Breakpoints
+
+| Breakpoint | Target |
+|---|---|
+| `576px` | Small phones in landscape |
+| `768px` | Tablets |
+| `992px` | Small desktops / tablets in landscape |
+| `1200px` | Large desktops |
+
+Use breakpoints based on your content, not specific devices.
+
+## Mobile-First Approach
+
+Write base styles for the smallest screen first, then add layers with `min-width` queries.
+
+```
+Mobile:   base styles
+Tablet:   @media (min-width: 768px) { enhancements }
+Desktop:  @media (min-width: 1024px) { enhancements }
+```
+
+**Benefits:** simpler stylesheets, no hidden overrides, works on unknown future devices.
+
+## Relative Units
+
+Prefer relative units over fixed `px` for responsive designs.
+
+| Unit | Relative to |
+|---|---|
+| `%` | Parent element's size |
+| `em` | Current element's font-size |
+| `rem` | Root (`html`) font-size — 1rem = 16px by default |
+| `vw` | Viewport width (1vw = 1% of width) |
+| `vh` | Viewport height (1vh = 1% of height) |
+| `clamp(min, preferred, max)` | Fluid value within a range |
+
+```css
+/* Fluid typography */
+h1 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Full-height hero section */
+.hero {
+  height: 100vh;
+}
+
+/* Responsive padding */
+.card {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2.5rem;
+  }
+}
+```
+
+## Responsive Images
+
+Make images scale with their container:
+
+```css
+img {
+  max-width: 100%;
+  height: auto;
+}
+```
+
+For art direction (different crops on different screens), use the `<picture>` element:
+
+```html
+<picture>
+  <source srcset="hero-wide.webp" media="(min-width: 768px)">
+  <img src="hero-narrow.webp" alt="Hero image">
+</picture>
+```
+
+## Responsive Typography
+
+Use `clamp()` for font sizes that scale smoothly between a minimum and maximum:
+
+```css
+body {
+  font-size: clamp(1rem, 0.75rem + 0.5vw, 1.125rem);
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1rem + 3vw, 3rem);
+}
+```
+
+## Responsive Layouts with Flexbox and Grid
+
+Combine Flexbox, Grid, and media queries for adaptive layouts:
+
+```css
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;            /* single column on mobile */
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr); /* two columns on tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr); /* three columns on desktop */
+  }
+}
+```
+
+## The `container` Query (Modern)
+
+Container queries let you style elements based on their **parent container's size** rather than the viewport.
+
+```css
+.card-container {
+  container-type: inline-size;
+}
+
+@container (min-width: 400px) {
+  .card {
+    display: flex;
+    gap: 1rem;
+  }
+}
+```
+
+Container queries are ideal for reusable components that need to adapt to different layout contexts.
+
+## Putting It Together
+
+```html
+<header class="hero">
+  <h1>Responsive Design Works</h1>
+  <p>Resize the browser to see this page adapt.</p>
+</header>
+
+<section class="features">
+  <article class="card">
+    <h3>Fluid Typography</h3>
+    <p>Text scales smoothly between min and max sizes using <code>clamp()</code>.</p>
+  </article>
+  <article class="card">
+    <h3>Responsive Grid</h3>
+    <p>The card layout changes from one column to three as the viewport grows.</p>
+  </article>
+  <article class="card">
+    <h3>Mobile-First</h3>
+    <p>Base styles are built for small screens, then enhanced for larger ones.</p>
+  </article>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 — Built with responsive techniques</p>
+</footer>
+```
+
+```css
+/* Mobile-first base styles */
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  font-size: clamp(1rem, 0.75rem + 0.5vw, 1.125rem);
+}
+
+.hero {
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 1rem + 4vw, 3.5rem);
+  margin: 0 0 0.5rem;
+}
+
+.hero p {
+  font-size: clamp(1rem, 0.75rem + 1vw, 1.25rem);
+  opacity: 0.9;
+  margin: 0;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.card h3 { margin: 0 0 0.5rem; }
+.card p { margin: 0; color: #6b7280; line-height: 1.6; }
+
+.footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .hero { padding: 5rem 2rem; }
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 3rem 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .hero { padding: 6rem 2rem; }
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 4rem 2rem;
+  }
+}
+```
+
+<TryIt
+  html={`<header class="hero">
+  <h1>Responsive Design Works</h1>
+  <p>Resize the preview to see this page adapt.</p>
+</header>
+
+<section class="features">
+  <article class="card">
+    <h3>Fluid Typography</h3>
+    <p>Text scales smoothly between min and max sizes using <code>clamp()</code>.</p>
+  </article>
+  <article class="card">
+    <h3>Responsive Grid</h3>
+    <p>The card layout changes from one column to three as the viewport grows.</p>
+  </article>
+  <article class="card">
+    <h3>Mobile-First</h3>
+    <p>Base styles are built for small screens, then enhanced for larger ones.</p>
+  </article>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 — Built with responsive techniques</p>
+</footer>`}
+  css={`body {
+  font-family: system-ui, sans-serif; margin: 0;
+  font-size: clamp(1rem, 0.75rem + 0.5vw, 1.125rem);
+}
+.hero {
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: white; text-align: center; padding: 3rem 1rem;
+}
+.hero h1 { font-size: clamp(2rem, 1rem + 4vw, 3.5rem); margin: 0 0 0.5rem; }
+.hero p { font-size: clamp(1rem, 0.75rem + 1vw, 1.25rem); opacity: 0.9; margin: 0; }
+.features {
+  display: grid; grid-template-columns: 1fr; gap: 1rem;
+  padding: 2rem 1rem; max-width: 1200px; margin: 0 auto;
+}
+.card { padding: 1.5rem; background: white; border: 1px solid #e5e7eb; border-radius: 12px; }
+.card h3 { margin: 0 0 0.5rem; }
+.card p { margin: 0; color: #6b7280; line-height: 1.6; }
+.footer { text-align: center; padding: 2rem 1rem; background: #f3f4f6; color: #6b7280; font-size: 0.875rem; }
+@media (min-width: 640px) {
+  .hero { padding: 5rem 2rem; }
+  .features { grid-template-columns: repeat(2, 1fr); padding: 3rem 2rem; }
+}
+@media (min-width: 1024px) {
+  .hero { padding: 6rem 2rem; }
+  .features { grid-template-columns: repeat(3, 1fr); padding: 4rem 2rem; }
+}`}
+/>

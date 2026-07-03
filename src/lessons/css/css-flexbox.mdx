@@ -1,0 +1,346 @@
+---
+title: "Flexbox"
+slug: css-flexbox
+order: 5
+topic: "CSS"
+description: "Master Flexbox for one-dimensional layouts: axis direction, alignment, wrapping, and flexible sizing."
+---
+
+Flexbox is a CSS layout module designed for distributing space and aligning content in **one dimension** — either a row or a column. It solves common layout challenges like centering, equal-height columns, and responsive spacing with minimal code.
+
+## The Flex Container
+
+Any element becomes a flex container by setting `display: flex`. Its children become **flex items**.
+
+```css
+.container {
+  display: flex;
+}
+```
+
+```html
+<div class="container">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+</div>
+```
+
+By default, items arrange in a row from left to right.
+
+## Main Axis and Cross Axis
+
+Flexbox operates along two axes:
+
+- **Main axis** — direction set by `flex-direction` (default: row)
+- **Cross axis** — perpendicular to the main axis
+
+```
+flex-direction: row        flex-direction: column
+┌────┬────┬────┐           ┌────┐
+│ 1  │ 2  │ 3  │           │ 1  │
+└────┴────┴────┘           ├────┤
+  → main axis              │ 2  │
+                            ├────┤
+                            │ 3  │
+                            └────┘
+                              ↓ main axis
+```
+
+```css
+.container {
+  display: flex;
+  flex-direction: row;        /* default — left to right */
+  flex-direction: row-reverse; /* right to left */
+  flex-direction: column;      /* top to bottom */
+  flex-direction: column-reverse; /* bottom to top */
+}
+```
+
+## Alignment on the Main Axis
+
+`justify-content` controls how items are distributed along the main axis.
+
+```css
+.container {
+  display: flex;
+  justify-content: flex-start;   /* default — packed at start */
+  justify-content: flex-end;     /* packed at end */
+  justify-content: center;       /* centred */
+  justify-content: space-between; /* first at start, last at end, equal gaps */
+  justify-content: space-around;  /* equal space around each item */
+  justify-content: space-evenly;  /* perfectly equal gaps */
+}
+```
+
+## Alignment on the Cross Axis
+
+`align-items` controls how items align on the cross axis.
+
+```css
+.container {
+  display: flex;
+  align-items: stretch;      /* default — items fill the container height */
+  align-items: flex-start;   /* packed at the top */
+  align-items: flex-end;     /* packed at the bottom */
+  align-items: center;       /* vertically centred */
+  align-items: baseline;     /* aligned by text baseline */
+}
+```
+
+### The Centring Pattern
+
+This is the most common Flexbox recipe — centre a child both horizontally and vertically:
+
+```css
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+## Wrapping
+
+By default, items stay on one line. `flex-wrap` lets them wrap to a new line when there isn't enough room.
+
+```css
+.container {
+  display: flex;
+  flex-wrap: wrap;       /* items wrap to new lines */
+  flex-wrap: nowrap;     /* default — no wrapping */
+  flex-wrap: wrap-reverse; /* wrap, but in reverse order */
+}
+```
+
+Combined with `gap` for spacing:
+
+```css
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+```
+
+## Flexible Sizing with `flex`
+
+The `flex` property is a shorthand for `flex-grow`, `flex-shrink`, and `flex-basis`. It controls how items grow and shrink.
+
+```css
+.item {
+  flex: 1;                /* grow equally, default shrink, basis 0 */
+  flex: 1 1 auto;         /* grow, shrink, basis = content width */
+  flex: 0 0 200px;        /* fixed width — no grow, no shrink, 200px basis */
+  flex: 0 1 auto;         /* default — can shrink but not grow */
+}
+```
+
+### Common Layouts with Flex
+
+**Evenly spaced cards:**
+
+```css
+.card-container {
+  display: flex;
+  gap: 24px;
+}
+
+.card {
+  flex: 1;  /* each card takes equal width */
+}
+```
+
+**Sticky footer:**
+
+```css
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;  /* pushes footer down */
+}
+```
+
+**Navigation bar:**
+
+```css
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+```
+
+## The `gap` Property
+
+`gap` adds space between flex items without affecting the outer edges. It replaces the need for margin hacks.
+
+```css
+.container {
+  display: flex;
+  gap: 16px;        /* 16px between each item */
+  row-gap: 16px;    /* vertical gap when wrapping */
+  column-gap: 16px; /* horizontal gap */
+}
+```
+
+## Ordering
+
+Override the visual order of flex items without changing the HTML.
+
+```css
+.item:nth-child(2) {
+  order: -1;  /* moves this item to the front */
+}
+```
+
+All items default to `order: 0`. Lower values appear first.
+
+## Putting It Together
+
+```html
+<nav class="navbar">
+  <span class="logo">MySite</span>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="cards">
+  <article class="card">
+    <h3>Card One</h3>
+    <p>Flexbox makes equal-height columns effortless.</p>
+  </article>
+  <article class="card">
+    <h3>Card Two</h3>
+    <p>Items stretch to match the tallest sibling automatically.</p>
+  </article>
+  <article class="card">
+    <h3>Card Three</h3>
+    <p>No more float-based layout hacks!</p>
+  </article>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 MySite. Built with Flexbox.</p>
+</footer>
+```
+
+```css
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #1f2937;
+  color: white;
+}
+
+.logo { font-weight: bold; font-size: 1.25rem; }
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a { color: #d1d5db; text-decoration: none; }
+.nav-links a:hover { color: white; }
+
+.cards {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem;
+  flex: 1;
+}
+
+.card {
+  flex: 1;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: #f3f4f6;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+```
+
+<TryIt
+  html={`<nav class="navbar">
+  <span class="logo">MySite</span>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="cards">
+  <article class="card">
+    <h3>Card One</h3>
+    <p>Flexbox makes equal-height columns effortless.</p>
+  </article>
+  <article class="card">
+    <h3>Card Two</h3>
+    <p>Items stretch to match the tallest sibling automatically.</p>
+  </article>
+  <article class="card">
+    <h3>Card Three</h3>
+    <p>No more float-based layout hacks!</p>
+  </article>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 MySite. Built with Flexbox.</p>
+</footer>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  display: flex; flex-direction: column;
+  min-height: 100vh; margin: 0;
+}
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2rem; background: #1f2937; color: white;
+}
+.logo { font-weight: bold; font-size: 1.25rem; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: #d1d5db; text-decoration: none; }
+.nav-links a:hover { color: white; }
+.cards { display: flex; gap: 1.5rem; padding: 2rem; flex: 1; }
+.card {
+  flex: 1; padding: 1.5rem; background: white;
+  border: 1px solid #e5e7eb; border-radius: 12px;
+}
+.card h3 { margin: 0 0 0.5rem; }
+.card p { margin: 0; color: #6b7280; line-height: 1.5; }
+.footer { text-align: center; padding: 1rem; background: #f3f4f6; font-size: 0.875rem; color: #6b7280; }`}
+/>

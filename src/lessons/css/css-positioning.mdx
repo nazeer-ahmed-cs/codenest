@@ -1,0 +1,320 @@
+---
+title: "Positioning"
+slug: css-positioning
+order: 7
+topic: "CSS"
+description: "Control element placement with static, relative, absolute, fixed, and sticky positioning."
+---
+
+The `position` property controls how an element is placed in the document flow. CSS offers five positioning schemes, each with different behaviour.
+
+## The Position Values
+
+| Value | Behaviour |
+|---|---|
+| `static` | Default — follows normal document flow |
+| `relative` | Offset from its normal position; still takes up original space |
+| `absolute` | Removed from flow; positioned relative to nearest positioned ancestor |
+| `fixed` | Removed from flow; positioned relative to the viewport |
+| `sticky` | Hybrid — behaves as relative until a scroll threshold, then becomes fixed |
+
+Once you set a non-static position, you can use `top`, `right`, `bottom`, and `left` to offset the element.
+
+## Static Positioning
+
+Every element defaults to `position: static`. It follows normal document flow. The `top`, `right`, `bottom`, and `left` properties have no effect.
+
+```css
+.element {
+  position: static; /* default — no offset possible */
+}
+```
+
+## Relative Positioning
+
+`position: relative` offsets the element from its **normal position** using `top`/`right`/`bottom`/`left`. The element still takes up its original space in the layout — other elements do not move to fill the gap.
+
+```css
+.box {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  /* shifted 20px down and 20px right from where it would normally be */
+}
+```
+
+```html
+<div class="box">Normal</div>
+<div class="box offset">Offset 20px down, 20px right</div>
+<div class="box">Normal — notice the gap above</div>
+```
+
+**Use cases:** fine-tuning an element's position, creating a positioning anchor for absolute children.
+
+## Absolute Positioning
+
+`position: absolute` removes the element from the document flow entirely. Other elements act as if it does not exist. The element is positioned relative to the **nearest positioned ancestor** (an ancestor with `position` other than `static`). If none exists, it positions relative to the `<body>`.
+
+```css
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+}
+
+.card {
+  position: relative; /* becomes the anchor for .badge */
+}
+```
+
+```html
+<div class="card" style="position: relative;">
+  <p>Card content</p>
+  <span class="badge">New</span>
+</div>
+```
+
+**The anchor pattern:** always set `position: relative` on the parent so the absolute child positions relative to it, not the body.
+
+## Fixed Positioning
+
+`position: fixed` removes the element from the document flow and positions it relative to the **viewport**. It stays in place even when the page scrolls.
+
+```css
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+/* Add padding to the body so content isn't hidden behind the fixed navbar */
+body {
+  padding-top: 60px;
+}
+```
+
+**Use cases:** sticky headers, floating action buttons, cookie consent banners, modals.
+
+## Sticky Positioning
+
+`position: sticky` is a hybrid. It behaves like `relative` until the element reaches a scroll threshold, then it becomes `fixed` within its parent container.
+
+```css
+.section-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+```
+
+The `top` value defines the scroll offset at which the element "sticks". The element is confined to its parent container — once the parent scrolls out of view, the sticky element goes with it.
+
+**Use cases:** table headers that stay visible, section headers in long lists, sidebar navigation.
+
+## Z-Index
+
+When positioned elements overlap, `z-index` controls which appears on top. Higher values appear in front.
+
+```css
+.modal {
+  position: fixed;
+  z-index: 1000;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 999;
+}
+```
+
+Elements with the same `z-index` stack in DOM order (later elements on top). `z-index` only works on positioned elements (not `static`).
+
+## Putting It Together
+
+```html
+<!-- Fixed navbar -->
+<nav class="navbar">
+  <span class="logo">MySite</span>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Sticky section headers -->
+<main>
+  <section>
+    <h2 class="sticky-header">Section One</h2>
+    <p>Scroll down to see the sticky header in action.</p>
+    <p>Each section header will stick to the top while you scroll through its section.</p>
+  </section>
+  <section>
+    <h2 class="sticky-header">Section Two</h2>
+    <p>Content for section two goes here.</p>
+  </section>
+  <section>
+    <h2 class="sticky-header">Section Three</h2>
+    <p>Content for section three goes here.</p>
+  </section>
+</main>
+
+<!-- Card with absolute positioned badge -->
+<div class="card-wrapper">
+  <div class="card">
+    <h3>Special Offer</h3>
+    <p>This card has an absolutely-positioned badge.</p>
+    <span class="badge">New</span>
+  </div>
+  <div class="card">
+    <h3>Regular Item</h3>
+    <p>This one does not.</p>
+  </div>
+</div>
+```
+
+```css
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  background: #1f2937;
+  color: white;
+  z-index: 100;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a { color: #d1d5db; text-decoration: none; }
+.navbar a:hover { color: white; }
+
+body { padding-top: 56px; font-family: system-ui, sans-serif; margin: 0; }
+
+.sticky-header {
+  position: sticky;
+  top: 56px;
+  background: #f3f4f6;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border-bottom: 2px solid #2563eb;
+  z-index: 50;
+}
+
+section { padding: 1rem; }
+section p { line-height: 1.8; color: #374151; }
+section + section { margin-top: 2rem; }
+
+.card-wrapper {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card {
+  position: relative;
+  flex: 1;
+  padding: 2rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #2563eb;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+```
+
+<TryIt
+  html={`<nav class="navbar">
+  <span class="logo">MySite</span>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section>
+    <h2 class="sticky-header">Section One</h2>
+    <p>Scroll down to see the sticky header in action.</p>
+    <p>Each section header will stick to the top while you scroll through its section.</p>
+    <p>Keep scrolling to see more positioning examples below.</p>
+  </section>
+  <section>
+    <h2 class="sticky-header">Section Two</h2>
+    <p>Content for section two goes here.</p>
+    <p>Notice how the sticky header changes as you scroll past each section.</p>
+  </section>
+  <section>
+    <h2 class="sticky-header">Section Three</h2>
+    <p>Content for section three goes here.</p>
+    <p>The fixed navbar stays at the top the entire time.</p>
+  </section>
+</main>
+
+<div class="card-wrapper">
+  <div class="card">
+    <h3>Special Offer</h3>
+    <p>This card has an absolutely-positioned badge.</p>
+    <span class="badge">New</span>
+  </div>
+  <div class="card">
+    <h3>Regular Item</h3>
+    <p>This one does not.</p>
+  </div>
+</div>`}
+  css={`body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding-top: 56px;
+}
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 2rem; background: #1f2937; color: white; z-index: 100;
+}
+.navbar ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+.navbar a { color: #d1d5db; text-decoration: none; }
+.navbar a:hover { color: white; }
+.sticky-header {
+  position: sticky; top: 56px;
+  background: #f3f4f6; padding: 0.75rem 1rem; margin: 0;
+  border-bottom: 2px solid #2563eb; z-index: 50;
+}
+section { padding: 1rem; }
+section p { line-height: 1.8; color: #374151; }
+section + section { margin-top: 2rem; }
+.card-wrapper { display: flex; gap: 1rem; padding: 1rem; }
+.card { position: relative; flex: 1; padding: 2rem; background: white; border: 1px solid #e5e7eb; border-radius: 12px; }
+.badge {
+  position: absolute; top: -10px; right: -10px;
+  background: #2563eb; color: white;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: bold;
+}`}
+/>

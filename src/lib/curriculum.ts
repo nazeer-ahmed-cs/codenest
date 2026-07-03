@@ -23,6 +23,16 @@ import VariablesMdx, { frontmatter as variablesFm } from "@/lessons/variables.md
 import FunctionsMdx, { frontmatter as functionsFm } from "@/lessons/functions.mdx";
 import ComponentsMdx, { frontmatter as componentsFm } from "@/lessons/components.mdx";
 import StateHooksMdx, { frontmatter as stateHooksFm } from "@/lessons/state-hooks.mdx";
+import CssSelectorsMdx, { frontmatter as cssSelectorsFm } from "@/lessons/css/css-selectors.mdx";
+import CssBoxModelMdx, { frontmatter as cssBoxModelFm } from "@/lessons/css/css-box-model.mdx";
+import CssColorsMdx, { frontmatter as cssColorsFm } from "@/lessons/css/css-colors.mdx";
+import CssBackgroundsMdx, { frontmatter as cssBackgroundsFm } from "@/lessons/css/css-backgrounds.mdx";
+import CssFlexboxMdx, { frontmatter as cssFlexboxFm } from "@/lessons/css/css-flexbox.mdx";
+import CssGridMdx, { frontmatter as cssGridFm } from "@/lessons/css/css-grid.mdx";
+import CssPositioningMdx, { frontmatter as cssPositioningFm } from "@/lessons/css/css-positioning.mdx";
+import CssResponsiveMdx, { frontmatter as cssResponsiveFm } from "@/lessons/css/css-responsive.mdx";
+import CssTypographyMdx, { frontmatter as cssTypographyFm } from "@/lessons/css/css-typography.mdx";
+import CssTransitionsAnimationsMdx, { frontmatter as cssTransitionsAnimationsFm } from "@/lessons/css/css-transitions-animations.mdx";
 
 export type LessonFrontmatter = {
   title: string;
@@ -62,6 +72,16 @@ const rawLessons: RawLesson[] = [
   { ...(functionsFm as unknown as LessonFrontmatter), Content: FunctionsMdx },
   { ...(componentsFm as unknown as LessonFrontmatter), Content: ComponentsMdx },
   { ...(stateHooksFm as unknown as LessonFrontmatter), Content: StateHooksMdx },
+  { ...(cssSelectorsFm as unknown as LessonFrontmatter), Content: CssSelectorsMdx },
+  { ...(cssBoxModelFm as unknown as LessonFrontmatter), Content: CssBoxModelMdx },
+  { ...(cssColorsFm as unknown as LessonFrontmatter), Content: CssColorsMdx },
+  { ...(cssBackgroundsFm as unknown as LessonFrontmatter), Content: CssBackgroundsMdx },
+  { ...(cssFlexboxFm as unknown as LessonFrontmatter), Content: CssFlexboxMdx },
+  { ...(cssGridFm as unknown as LessonFrontmatter), Content: CssGridMdx },
+  { ...(cssPositioningFm as unknown as LessonFrontmatter), Content: CssPositioningMdx },
+  { ...(cssResponsiveFm as unknown as LessonFrontmatter), Content: CssResponsiveMdx },
+  { ...(cssTypographyFm as unknown as LessonFrontmatter), Content: CssTypographyMdx },
+  { ...(cssTransitionsAnimationsFm as unknown as LessonFrontmatter), Content: CssTransitionsAnimationsMdx },
 ];
 
 rawLessons.sort((a, b) => {
