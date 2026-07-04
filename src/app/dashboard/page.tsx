@@ -14,10 +14,9 @@ export default async function DashboardPage() {
 
   const client = await connectToDatabase();
   const db = client.db("codenest");
-  const progressDoc = await db
+  const progress = await db
     .collection("user-progress")
     .findOne({ userId: session.user.id });
-  const progress = progressDoc ?? {};
 
   const completed = new Set(progress?.completedLessons ?? []);
   const bookmarked = new Set(progress?.bookmarkedLessons ?? []);
