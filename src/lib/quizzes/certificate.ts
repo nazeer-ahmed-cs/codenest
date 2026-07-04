@@ -145,7 +145,7 @@ export const certificateQuiz: Quiz = {
         "max-width: 768px applies styles when the viewport is 768px or narrower.",
     },
 
-    // ── JavaScript (8) ──
+    // ── JavaScript (14) ──
     {
       question: "Which keyword declares a constant variable in JavaScript?",
       options: ["var", "let", "const", "static"],
@@ -166,11 +166,44 @@ export const certificateQuiz: Quiz = {
         "typeof returns a string indicating the type: 'string', 'number', 'boolean', 'object', 'undefined', etc.",
     },
     {
+      question: "Which of the following is falsy in JavaScript?",
+      options: ["'false'", "[]", "0", "{}"],
+      correctIndex: 2,
+      explanation:
+        "0 is falsy. 'false', [], and {} are all truthy. Falsy values are false, 0, '', null, undefined, and NaN.",
+    },
+    {
+      question: "What does the ternary operator `a ? b : c` do?",
+      options: [
+        "Loops while a is true",
+        "Returns b if a is truthy, otherwise c",
+        "Assigns a to b or c",
+        "Compares a to b and c",
+      ],
+      correctIndex: 1,
+      explanation:
+        "The ternary operator evaluates the condition a. If truthy it returns b; otherwise it returns c.",
+    },
+    {
+      question: "Which loop guarantees the body runs at least once?",
+      options: ["for", "while", "do...while", "for...of"],
+      correctIndex: 2,
+      explanation:
+        "do...while executes the body first, then checks the condition. for and while check the condition before running.",
+    },
+    {
       question: "Which method adds an element to the end of an array?",
       options: ["push()", "pop()", "unshift()", "append()"],
       correctIndex: 0,
       explanation:
         "push() adds one or more elements to the end. pop() removes from the end. unshift() adds to the beginning.",
+    },
+    {
+      question: "What does `[1, 2, 3].map(n => n * 2)` return?",
+      options: ["[1, 2, 3]", "[2, 4, 6]", "[undefined, undefined, undefined]", "6"],
+      correctIndex: 1,
+      explanation:
+        "map() creates a new array by applying the callback to each element. Each number is doubled: [2, 4, 6].",
     },
     {
       question: "What is the result of `3 + \"3\"` in JavaScript?",
@@ -190,6 +223,20 @@ export const certificateQuiz: Quiz = {
       correctIndex: 1,
       explanation:
         "Arrow functions use the => syntax: const fn = () => { }. They don't have their own `this` binding.",
+    },
+    {
+      question: "How do you access the `name` property of an object `user`?",
+      options: ["user(name)", "user->name", "user.name", "user[name]"],
+      correctIndex: 2,
+      explanation:
+        "Dot notation (user.name) is the standard way to access properties. Bracket notation is used for dynamic keys.",
+    },
+    {
+      question: "What does `Object.keys({ a: 1, b: 2 })` return?",
+      options: ["[1, 2]", "['a', 'b']", "[{ a: 1 }, { b: 2 }]", "['a:1', 'b:2']"],
+      correctIndex: 1,
+      explanation:
+        "Object.keys() returns an array of the object's own enumerable property names: ['a', 'b'].",
     },
     {
       question: "What does the `===` operator check?",

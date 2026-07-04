@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lessonsMap, allSlugs } from "@/lib/curriculum";
@@ -15,6 +16,34 @@ export function generateStaticParams() {
   return allSlugs.map((slug) => ({ slug }));
 }
 
+export function generateMetadata({ params }: Props): Metadata {
+  const lesson = lessonsMap[params.slug];
+  if (!lesson) return { title: "Lesson Not Found" };
+
+  const { frontmatter } = lesson;
+  const siteUrl = "https://codenest-pink.vercel.app";
+  const ogImage = `${siteUrl}/api/og/lesson?slug=${encodeURIComponent(params.slug)}`;
+
+  return {
+    title: `${frontmatter.title} | CodeNest`,
+    description: frontmatter.description,
+    openGraph: {
+      title: frontmatter.title,
+      description: frontmatter.description,
+      url: `${siteUrl}/tutorial/html/${params.slug}`,
+      siteName: "CodeNest",
+      type: "article",
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: frontmatter.title,
+      description: frontmatter.description,
+      images: [ogImage],
+    },
+  };
+}
+
 export default function TutorialLessonPage({ params }: Props) {
   const lesson = lessonsMap[params.slug];
 
@@ -26,8 +55,38 @@ export default function TutorialLessonPage({ params }: Props) {
   const prev = frontmatter.prevSlug ? lessonsMap[frontmatter.prevSlug] : null;
   const next = frontmatter.nextSlug ? lessonsMap[frontmatter.nextSlug] : null;
 
+  const siteUrl = "https://codenest-pink.vercel.app";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: frontmatter.title,
+    description: frontmatter.description,
+    url: `${siteUrl}/tutorial/html/${params.slug}`,
+    image: `${siteUrl}/api/og/lesson?slug=${encodeURIComponent(params.slug)}`,
+    author: { "@type": "Organization", name: "CodeNest", url: siteUrl },
+    publisher: {
+      "@type": "Organization",
+      name: "CodeNest",
+      logo: { "@type": "ImageObject", url: `${siteUrl}/favicon.ico` },
+    },
+    datePublished: "2026-01-01",
+    inLanguage: "en-US",
+    about: { "@type": "Thing", name: frontmatter.topic },
+    teaches: frontmatter.title,
+    proficiencyLevel: "Beginner",
+    timeRequired: "PT15M",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/tutorial/html/${params.slug}`,
+    },
+  };
+
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <TrackVisit slug={params.slug} />
       <Breadcrumbs topic={frontmatter.topic} title={lesson.title} />
       <h1 className="mb-3 text-3xl font-bold tracking-tight">

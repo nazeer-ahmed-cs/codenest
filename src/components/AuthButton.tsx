@@ -20,6 +20,7 @@ export default function AuthButton() {
   return (
     <Link
       href="/login"
+      prefetch={false}
       className="shrink-0 rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700"
     >
       Sign in

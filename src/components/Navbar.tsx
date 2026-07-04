@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import SearchBar from "@/components/SearchBar";
 import TopicSwitcher from "@/components/TopicSwitcher";
 import AuthButton from "@/components/AuthButton";
 import type { SearchItem } from "@/lib/curriculum";
 import type { TopicNavItem } from "@/components/TopicSwitcher";
+
+const SearchBar = dynamic(
+  () => import("@/components/SearchBar"),
+  { ssr: false }
+);
 
 export default function Navbar({
   searchItems,
@@ -32,6 +37,7 @@ export default function Navbar({
         <nav className="flex items-center gap-1">
           <Link
             href="/playground"
+            prefetch={false}
             className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
               pathname === "/playground"
                 ? "bg-gray-100 text-gray-900"
@@ -42,6 +48,7 @@ export default function Navbar({
           </Link>
           <Link
             href="/reference"
+            prefetch={false}
             className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
               pathname === "/reference"
                 ? "bg-gray-100 text-gray-900"

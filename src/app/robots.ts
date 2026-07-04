@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard"],
+        disallow: ["/api/", "/dashboard", "/lessons"],
       },
     ],
     sitemap: "https://codenest-pink.vercel.app/sitemap.xml",

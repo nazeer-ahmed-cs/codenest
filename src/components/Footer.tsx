@@ -26,7 +26,7 @@ export default function Footer() {
             </li>
           </ul>
         </nav>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-500">
           &copy; {new Date().getFullYear()} CodeNest
         </p>
       </div>
