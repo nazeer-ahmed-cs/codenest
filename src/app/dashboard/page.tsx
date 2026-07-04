@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { topics, lessonsMap } from "@/lib/curriculum";
 import Container from "@/components/Container";
+import type { CertificateAttempt } from "@/lib/models/user-progress";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -23,6 +24,13 @@ export default async function DashboardPage() {
   const bookmarked = new Set(progress?.bookmarkedLessons ?? []);
   const quizScores: { topicId: string; score: number; total: number; percentage: number; completedAt: string }[] =
     progress?.quizScores ?? [];
+  const certificateAttempts: CertificateAttempt[] =
+    progress?.certificateAttempts ?? [];
+  const CERT_PASS_THRESHOLD = 70;
+  const bestCert = certificateAttempts.length > 0
+    ? certificateAttempts.reduce((a, b) => (a.percentage > b.percentage ? a : b))
+    : null;
+  const certPassed = bestCert ? bestCert.percentage >= CERT_PASS_THRESHOLD : false;
   const streak = progress?.streak?.count ?? 0;
   const lastLessonSlug = progress?.lastLessonSlug ?? null;
   const lastLesson = lastLessonSlug ? lessonsMap[lastLessonSlug] : null;
@@ -238,6 +246,86 @@ export default async function DashboardPage() {
           </details>
         </div>
       )}
+
+      {/* Certificate Exam */}
+      <div className="mb-10">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">
+          Certificate Exam
+        </h2>
+        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          {bestCert && certPassed ? (
+            <div className="flex items-center gap-4">
+              <div className="inline-flex size-12 items-center justify-center rounded-full bg-green-100">
+                <svg
+                  className="size-6 text-green-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-gray-900">
+                  Certificate Earned
+                </div>
+                <div className="text-sm text-gray-500">
+                  Best score: {bestCert.percentage}% ({bestCert.score}/
+                  {bestCert.total}) &middot; {certificateAttempts.length}{" "}
+                  attempt{certificateAttempts.length !== 1 ? "s" : ""}
+                </div>
+              </div>
+              <Link
+                href="/certificate"
+                className="rounded-lg border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-50"
+              >
+                Retake
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <div className="inline-flex size-12 items-center justify-center rounded-full bg-gray-100">
+                <svg
+                  className="size-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-gray-900">
+                  {certificateAttempts.length > 0
+                    ? "Keep Trying"
+                    : "Ready to Test Your Skills?"}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {certificateAttempts.length > 0
+                    ? `Best score: ${bestCert?.percentage}% (${bestCert?.score}/${bestCert?.total})`
+                    : "20 random questions, 30 minutes, 70% to pass."}
+                </div>
+              </div>
+              <Link
+                href="/certificate"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              >
+                {certificateAttempts.length > 0 ? "Retry" : "Start Exam"}
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
 
       {completedCount > 0 && (
         <>
