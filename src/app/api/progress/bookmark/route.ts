@@ -36,11 +36,14 @@ export async function POST(req: Request) {
     const isBookmarked = existing?.bookmarkedLessons?.includes(slug) ?? false;
 
     if (isBookmarked) {
+      const updated = (existing?.bookmarkedLessons ?? []).filter(
+        (s: string) => s !== slug
+      );
       await db
         .collection("user-progress")
         .updateOne(
           { userId: session.user.id },
-          { $pull: { bookmarkedLessons: slug } }
+          { $set: { bookmarkedLessons: updated } }
         );
     } else {
       await db
