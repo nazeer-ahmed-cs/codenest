@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
@@ -20,9 +21,16 @@ export default async function DashboardPage() {
 
   const completed = new Set(progress?.completedLessons ?? []);
   const bookmarked = new Set(progress?.bookmarkedLessons ?? []);
+  const quizScores: { topicId: string; score: number; total: number; percentage: number; completedAt: string }[] =
+    progress?.quizScores ?? [];
   const streak = progress?.streak?.count ?? 0;
   const lastLessonSlug = progress?.lastLessonSlug ?? null;
   const lastLesson = lastLessonSlug ? lessonsMap[lastLessonSlug] : null;
+
+  const scoresByTopic: Record<string, typeof quizScores> = {};
+  for (const s of quizScores) {
+    (scoresByTopic[s.topicId] ??= []).push(s);
+  }
 
   const allLessons = topics.flatMap((t) => t.lessons);
   const totalLessons = allLessons.length;
@@ -102,16 +110,134 @@ export default async function DashboardPage() {
                   {t.done}/{t.total} ({pct}%)
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+              <div className="mb-2 h-2 overflow-hidden rounded-full bg-gray-100">
                 <div
                   className="h-full rounded-full bg-green-500 transition-all"
                   style={{ width: `${pct}%` }}
                 />
               </div>
+              <Link
+                href={`/quiz/${encodeURIComponent(t.title)}`}
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800"
+              >
+                <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+                Take Quiz
+              </Link>
             </div>
           );
         })}
       </div>
+
+      {/* Quiz Scores */}
+      {quizScores.length > 0 && (
+        <div className="mb-10">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">
+            Quiz Scores
+          </h2>
+
+          {/* Per-topic summary */}
+          <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(scoresByTopic).map(([topicId, scores]) => {
+              const latest = scores[scores.length - 1];
+              const best = scores.reduce((a, b) =>
+                a.percentage > b.percentage ? a : b
+              );
+              const avg = Math.round(
+                scores.reduce((sum, s) => sum + s.percentage, 0) /
+                  scores.length
+              );
+
+              const colorClass =
+                best.percentage >= 80
+                  ? "border-green-200 bg-green-50"
+                  : best.percentage >= 60
+                    ? "border-yellow-200 bg-yellow-50"
+                    : "border-red-200 bg-red-50";
+              const textClass =
+                best.percentage >= 80
+                  ? "text-green-700"
+                  : best.percentage >= 60
+                    ? "text-yellow-700"
+                    : "text-red-700";
+
+              return (
+                <div
+                  key={topicId}
+                  className={`rounded-xl border p-4 ${colorClass}`}
+                >
+                  <div className="mb-2 text-sm font-semibold text-gray-900">
+                    {topicId}
+                  </div>
+                  <div className="mb-2 flex items-center gap-3">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold ${textClass}`}
+                    >
+                      {best.percentage}%
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {scores.length} attempt{scores.length > 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  <div className="space-y-0.5 text-xs text-gray-500">
+                    <div>
+                      Best: <span className="font-medium">{best.percentage}%</span>
+                    </div>
+                    <div>
+                      Average:{" "}
+                      <span className="font-medium">{avg}%</span>
+                    </div>
+                    <div>
+                      Latest:{" "}
+                      <span className="font-medium">{latest.percentage}%</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Full history */}
+          <details className="group">
+            <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-gray-900">
+              View full history ({quizScores.length} entries)
+            </summary>
+            <div className="mt-3 space-y-2">
+              {[...quizScores]
+                .reverse()
+                .map((s, idx) => {
+                  const date = new Date(s.completedAt);
+                  const color =
+                    s.percentage >= 80
+                      ? "text-green-700 bg-green-50 border-green-200"
+                      : s.percentage >= 60
+                        ? "text-yellow-700 bg-yellow-50 border-yellow-200"
+                        : "text-red-700 bg-red-50 border-red-200";
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex items-center justify-between rounded-lg border px-4 py-2.5 text-sm ${color}`}
+                    >
+                      <div>
+                        <span className="font-medium">{s.topicId}</span>
+                        <span className="ml-2 text-gray-500">
+                          {date.toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span>
+                          {s.score}/{s.total}
+                        </span>
+                        <span className="font-bold">{s.percentage}%</span>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </details>
+        </div>
+      )}
 
       {completedCount > 0 && (
         <>
