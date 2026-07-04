@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { lessonsMap, allSlugs } from "@/lib/curriculum";
 import CopyCodeBlocks from "@/components/CopyCodeBlocks";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import MarkCompleteButton from "@/components/MarkCompleteButton";
 
 type Props = {
   params: { slug: string };
@@ -38,6 +39,10 @@ export default function TutorialLessonPage({ params }: Props) {
           <lesson.Content />
         </div>
       </CopyCodeBlocks>
+
+      <div className="mt-8 flex justify-center">
+        <MarkCompleteButton slug={params.slug} />
+      </div>
 
       <nav
         className="mt-16 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8"

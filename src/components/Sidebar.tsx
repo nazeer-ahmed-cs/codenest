@@ -3,11 +3,28 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { topics } from "@/lib/curriculum";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const currentSlug = pathname.split("/").pop();
+  const { data: session } = useSession();
+
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!session?.user) {
+      setCompleted(new Set());
+      return;
+    }
+    fetch("/api/progress/complete")
+      .then((r) => r.json())
+      .then((data) => {
+        setCompleted(new Set(data.completedLessons ?? []));
+      })
+      .catch(() => {});
+  }, [session]);
 
   const activeTopic = topics.find((t) =>
     t.lessons.some((l) => l.slug === currentSlug)
@@ -91,13 +108,18 @@ export default function Sidebar() {
                       <li key={lesson.slug}>
                         <Link
                           href={`/tutorial/html/${lesson.slug}`}
-                          className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${
+                          className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${
                             isActive
                               ? "bg-blue-50 font-medium text-blue-700"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                           }`}
                         >
-                          {lesson.title}
+                          {completed.has(lesson.slug) && (
+                            <svg className="size-4 shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                          <span className="flex-1">{lesson.title}</span>
                         </Link>
                       </li>
                     );
