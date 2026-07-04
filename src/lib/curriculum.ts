@@ -1,10 +1,4 @@
-import { lessons as gettingStarted } from "@/lessons/getting-started";
-import { lessons as html } from "@/lessons/html";
-import { lessons as css } from "@/lessons/css";
-import { lessons as javascript } from "@/lessons/javascript";
-import { lessons as react } from "@/lessons/react";
-import { lessons as python } from "@/lessons/python";
-import { lessons as sql } from "@/lessons/sql";
+import * as topicModules from "@/lessons";
 
 export type LessonFrontmatter = {
   title: string;
@@ -18,15 +12,7 @@ export type LessonFrontmatter = {
 
 export type LessonEntry = LessonFrontmatter & { Content: React.ComponentType };
 
-const unsorted: LessonEntry[] = [
-  ...gettingStarted,
-  ...html,
-  ...css,
-  ...javascript,
-  ...react,
-  ...python,
-  ...sql,
-];
+const unsorted: LessonEntry[] = Object.values(topicModules).flat();
 
 unsorted.sort((a, b) => {
   if (a.topic !== b.topic) return a.topic.localeCompare(b.topic);
