@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { getServerSession } from "next-auth";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SessionProvider from "@/components/SessionProvider";
@@ -99,6 +100,7 @@ export default async function RootLayout({
             <Footer />
           </div>
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
