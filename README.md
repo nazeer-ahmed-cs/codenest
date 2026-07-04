@@ -1,3 +1,5 @@
+[![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-000000?logo=vercel)](https://codenest-pink.vercel.app)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
