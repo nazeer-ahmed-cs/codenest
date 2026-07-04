@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { getServerSession } from "next-auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SessionProvider from "@/components/SessionProvider";
 import { topics, searchIndex } from "@/lib/curriculum";
+import { authOptions } from "@/lib/auth";
 import type { TopicNavItem } from "@/components/TopicSwitcher";
 import "./globals.css";
 
@@ -64,11 +66,17 @@ const topicNavItems: TopicNavItem[] = topics
     };
   });
 
-export default function RootLayout({
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+  const isAdmin =
+    !!session?.user?.email && session.user.email === ADMIN_EMAIL;
+
   return (
     <html lang="en" className="scroll-smooth">
       <body
@@ -82,7 +90,7 @@ export default function RootLayout({
             >
               Skip to content
             </a>
-            <Navbar searchItems={searchIndex} topicNavItems={topicNavItems} />
+            <Navbar searchItems={searchIndex} topicNavItems={topicNavItems} isAdmin={isAdmin} />
             <main id="main-content" className="flex-1">
               {children}
             </main>

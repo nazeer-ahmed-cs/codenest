@@ -16,9 +16,11 @@ const SearchBar = dynamic(
 export default function Navbar({
   searchItems,
   topicNavItems,
+  isAdmin = false,
 }: {
   searchItems: SearchItem[];
   topicNavItems: TopicNavItem[];
+  isAdmin?: boolean;
 }) {
   const pathname = usePathname();
 
@@ -58,6 +60,20 @@ export default function Navbar({
             Reference
           </Link>
         </nav>
+
+        {isAdmin && (
+          <Link
+            href="/admin"
+            prefetch={false}
+            className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+              pathname.startsWith("/admin")
+                ? "bg-purple-100 text-purple-900"
+                : "text-purple-600 hover:bg-purple-50 hover:text-purple-900"
+            }`}
+          >
+            Admin
+          </Link>
+        )}
 
         <div className="flex-1" />
 
