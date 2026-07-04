@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { quizMap } from "@/lib/quizzes";
+import type { UserProgress } from "@/lib/models/user-progress";
 
 export async function GET() {
   try {
@@ -15,7 +16,7 @@ export async function GET() {
     const db = client.db("codenest");
 
     const progress = await db
-      .collection("user-progress")
+      .collection<UserProgress>("user-progress")
       .findOne({ userId: session.user.id });
 
     return NextResponse.json(
@@ -59,7 +60,7 @@ export async function POST(req: Request) {
     const client = await connectToDatabase();
     const db = client.db("codenest");
 
-    await db.collection("user-progress").updateOne(
+    await db.collection<UserProgress>("user-progress").updateOne(
       { userId: session.user.id },
       {
         $push: {
@@ -70,8 +71,7 @@ export async function POST(req: Request) {
             percentage,
             completedAt,
           },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
+        },
         $set: {
           lastVisited: new Date(),
         },

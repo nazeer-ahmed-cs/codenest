@@ -1,18 +1,28 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { htmlTags } from "@/data/html-tags";
 import { cssProperties } from "@/data/css-properties";
 
 type Tab = "html" | "css";
 
-const htmlCategories = Array.from(new Set(htmlTags.map((t) => t.category)));
+const htmlTagsOnly = htmlTags.filter((t) => t.category !== "Global Attributes");
+const htmlAttributes = htmlTags.filter((t) => t.category === "Global Attributes");
+const htmlCategories = Array.from(new Set(htmlTagsOnly.map((t) => t.category)));
 const cssCategories = Array.from(new Set(cssProperties.map((t) => t.category)));
 
 function CssPreview({ css }: { css: string }) {
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (previewRef.current) {
+      previewRef.current.style.cssText = css;
+    }
+  }, [css]);
+
   return (
-    <div className="pointer-events-none absolute -top-2 left-1/2 z-50 w-64 -translate-x-1/2 -translate-y-full">
+    <div className="w-64">
       <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
         <div className="mb-2 rounded-md bg-gray-50 p-2">
           <code className="block whitespace-pre-wrap text-[11px] leading-relaxed text-gray-600">
@@ -21,10 +31,7 @@ function CssPreview({ css }: { css: string }) {
         </div>
         <div className="flex items-center justify-center" style={{ minHeight: 60 }}>
           <div style={{ all: "initial" }}>
-            <div style={{ ...Object.fromEntries(css.split(";").filter(Boolean).map((s) => {
-              const [prop, ...rest] = s.trim().split(":");
-              return [prop.trim(), rest.join(":").trim()];
-            })), fontFamily: "system-ui, sans-serif", fontSize: "14px" }}>
+            <div ref={previewRef} style={{ fontFamily: "system-ui, sans-serif", fontSize: "14px" }}>
               Preview
             </div>
           </div>
@@ -42,7 +49,8 @@ export default function ReferencePage() {
 
   const filteredHtml = useMemo(() => {
     const q = search.toLowerCase().trim();
-    return htmlTags.filter((t) => {
+    const source = category === "Global Attributes" ? htmlAttributes : htmlTagsOnly;
+    return source.filter((t) => {
       const matchesSearch =
         !q ||
         t.tag.toLowerCase().includes(q) ||
@@ -66,7 +74,9 @@ export default function ReferencePage() {
 
   const currentCategories = tab === "html" ? htmlCategories : cssCategories;
   const filtered = tab === "html" ? filteredHtml : filteredCss;
-  const total = tab === "html" ? htmlTags.length : cssProperties.length;
+  const htmlTotal = category === "Global Attributes" ? htmlAttributes.length : htmlTagsOnly.length;
+  const total = tab === "html" ? htmlTotal : cssProperties.length;
+  const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -172,7 +182,7 @@ export default function ReferencePage() {
                 <tr key={t.tag + t.category} className="transition-colors hover:bg-gray-50">
                   <td className="whitespace-nowrap px-4 py-3">
                     <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-semibold text-blue-700">
-                      &lt;{t.tag}&gt;
+                      {t.category === "Global Attributes" ? t.tag : `<${t.tag}>`}
                     </code>
                   </td>
                   <td className="px-4 py-3 text-gray-700">{t.description}</td>
@@ -211,8 +221,16 @@ export default function ReferencePage() {
                 <tr
                   key={p.property + p.category}
                   className="relative transition-colors hover:bg-gray-50"
-                  onMouseEnter={() => setHoveredProp(p.preview ? p.property : null)}
-                  onMouseLeave={() => setHoveredProp(null)}
+                  onMouseEnter={(e) => {
+                    if (p.preview) {
+                      setHoveredProp(p.property);
+                      setHoveredRect(e.currentTarget.getBoundingClientRect());
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredProp(null);
+                    setHoveredRect(null);
+                  }}
                 >
                   <td className="whitespace-nowrap px-4 py-3">
                     <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-semibold text-purple-700">
@@ -242,15 +260,25 @@ export default function ReferencePage() {
                       )}
                     </div>
                   </td>
-                  {p.preview && hoveredProp === p.property && (
-                    <td colSpan={5} className="absolute inset-x-0 top-0 z-40 px-4">
-                      <CssPreview css={p.preview} />
-                    </td>
-                  )}
                 </tr>
               ))}
             </tbody>
           </table>
+        )}
+        {tab === "css" && hoveredProp && hoveredRect && (
+          <div
+            style={{
+              position: "fixed",
+              top: hoveredRect.top - 12,
+              left: hoveredRect.left + hoveredRect.width / 2,
+              transform: "translate(-50%, -100%)",
+              zIndex: 50,
+            }}
+          >
+            {cssProperties.find((p) => p.property === hoveredProp && p.preview) && (
+              <CssPreview css={cssProperties.find((p) => p.property === hoveredProp)!.preview!} />
+            )}
+          </div>
         )}
 
         {filtered.length === 0 && (

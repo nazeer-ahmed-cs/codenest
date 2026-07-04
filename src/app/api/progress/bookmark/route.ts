@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { lessonsMap } from "@/lib/curriculum";
+import type { UserProgress } from "@/lib/models/user-progress";
 
 export async function POST(req: Request) {
   try {
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
     const db = client.db("codenest");
 
     const existing = await db
-      .collection("user-progress")
+      .collection<UserProgress>("user-progress")
       .findOne({ userId: session.user.id });
 
     const isBookmarked = existing?.bookmarkedLessons?.includes(slug) ?? false;
@@ -40,14 +41,14 @@ export async function POST(req: Request) {
         (s: string) => s !== slug
       );
       await db
-        .collection("user-progress")
+        .collection<UserProgress>("user-progress")
         .updateOne(
           { userId: session.user.id },
           { $set: { bookmarkedLessons: updated } }
         );
     } else {
       await db
-        .collection("user-progress")
+        .collection<UserProgress>("user-progress")
         .updateOne(
           { userId: session.user.id },
           { $addToSet: { bookmarkedLessons: slug } },

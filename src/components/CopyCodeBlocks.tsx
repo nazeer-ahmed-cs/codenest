@@ -52,7 +52,7 @@ export default function CopyCodeBlocks({
     return () => {
       buttons.forEach((btn) => btn.remove());
     };
-  }, [children]);
+  }, []);
 
   return <div ref={containerRef}>{children}</div>;
 }

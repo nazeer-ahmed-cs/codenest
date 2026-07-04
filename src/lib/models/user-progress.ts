@@ -20,5 +20,6 @@ export interface UserProgress {
   bookmarkedLessons: string[];
   quizScores: QuizScore[];
   lastVisited: Date;
+  lastLessonSlug?: string;
   streak: Streak;
 }

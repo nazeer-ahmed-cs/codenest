@@ -16,7 +16,7 @@ export type LessonFrontmatter = {
 
 export type LessonEntry = LessonFrontmatter & { Content: React.ComponentType };
 
-const rawLessons: LessonEntry[] = [
+const unsorted: LessonEntry[] = [
   ...gettingStarted,
   ...html,
   ...css,
@@ -24,15 +24,16 @@ const rawLessons: LessonEntry[] = [
   ...react,
 ];
 
-rawLessons.sort((a, b) => {
+unsorted.sort((a, b) => {
   if (a.topic !== b.topic) return a.topic.localeCompare(b.topic);
   return a.order - b.order;
 });
 
-for (let i = 0; i < rawLessons.length; i++) {
-  if (i > 0) rawLessons[i].prevSlug = rawLessons[i - 1].slug;
-  if (i < rawLessons.length - 1) rawLessons[i].nextSlug = rawLessons[i + 1].slug;
-}
+const rawLessons: LessonEntry[] = unsorted.map((lesson, i, arr) => ({
+  ...lesson,
+  prevSlug: i > 0 ? arr[i - 1].slug : undefined,
+  nextSlug: i < arr.length - 1 ? arr[i + 1].slug : undefined,
+}));
 
 export type LessonMeta = { title: string; slug: string };
 export type Topic = { title: string; lessons: LessonMeta[] };

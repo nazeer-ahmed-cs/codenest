@@ -1,4 +1,4 @@
-import { Quiz } from "../models/quiz";
+import { Quiz } from "@/lib/models/quiz";
 import { gettingStartedQuiz } from "./getting-started";
 import { htmlQuiz } from "./html";
 import { cssQuiz } from "./css";

@@ -143,7 +143,7 @@ export default async function DashboardPage() {
               const latest = scores[scores.length - 1];
               const best = scores.reduce((a, b) =>
                 a.percentage > b.percentage ? a : b
-              );
+              , scores[0]);
               const avg = Math.round(
                 scores.reduce((sum, s) => sum + s.percentage, 0) /
                   scores.length

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { lessonsMap } from "@/lib/curriculum";
 import { calcStreak } from "@/lib/progress";
+import type { UserProgress } from "@/lib/models/user-progress";
 
 export async function GET() {
   try {
@@ -16,7 +17,7 @@ export async function GET() {
     const db = client.db("codenest");
 
     const progress = await db
-      .collection("user-progress")
+      .collection<UserProgress>("user-progress")
       .findOne({ userId: session.user.id });
 
     return NextResponse.json(
@@ -64,12 +65,12 @@ export async function POST(req: Request) {
     const db = client.db("codenest");
 
     const existing = await db
-      .collection("user-progress")
+      .collection<UserProgress>("user-progress")
       .findOne({ userId: session.user.id });
 
     const newStreak = calcStreak(existing?.streak);
 
-    await db.collection("user-progress").updateOne(
+    await db.collection<UserProgress>("user-progress").updateOne(
       { userId: session.user.id },
       {
         $addToSet: { completedLessons: slug },

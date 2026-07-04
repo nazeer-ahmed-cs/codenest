@@ -20,10 +20,10 @@ export default function Home() {
             Browse Lessons
           </Link>
           <Link
-            href="/about"
+            href="/reference"
             className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 transition-colors hover:border-gray-900 hover:text-gray-900"
           >
-            About CodeNest
+            Reference
           </Link>
         </div>
       </section>

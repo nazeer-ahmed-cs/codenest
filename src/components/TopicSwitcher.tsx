@@ -19,9 +19,11 @@ export default function TopicSwitcher({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const currentTopic = topics.find(
-    (t) => !t.disabled && pathname.startsWith("/tutorial/html/") && pathname.includes(t.href.split("/").pop()!)
-  );
+  const currentTopic = topics.find((t) => {
+    if (t.disabled) return false;
+    const slug = t.href.split("/").pop();
+    return slug ? pathname === t.href || pathname.startsWith(`/tutorial/html/${slug}/`) : false;
+  });
 
   const activeLabel = currentTopic?.label ?? "Select Topic";
 

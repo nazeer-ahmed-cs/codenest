@@ -26,12 +26,15 @@ export default function SearchBar({ items }: { items: SearchItem[] }) {
   const [results, setResults] = useState<SearchItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(-1);
+  const [isMac, setIsMac] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const fuseRef = useRef<Fuse<SearchItem>>();
-  const isMac =
-    typeof navigator !== "undefined" && navigator.platform.includes("Mac");
+
+  useEffect(() => {
+    setIsMac(navigator.platform.includes("Mac"));
+  }, []);
 
   useEffect(() => {
     fuseRef.current = new Fuse(items, {
