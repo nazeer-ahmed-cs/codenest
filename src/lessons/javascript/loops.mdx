@@ -1,0 +1,190 @@
+---
+title: "Loops"
+slug: loops
+order: 4
+topic: "JavaScript Fundamentals"
+description: "Repeat code efficiently with for, while, do...while, and array iteration methods."
+---
+
+Loops let you run the same block of code multiple times, often with a changing value each time.
+
+## `for` Loop
+
+The most common loop. It has three parts: initializer, condition, and increment.
+
+```js
+for (let i = 0; i < 5; i++) {
+  console.log(i); // 0, 1, 2, 3, 4
+}
+```
+
+| Part | Runs | Example |
+|---|---|---|
+| Initializer | Once before loop | `let i = 0` |
+| Condition | Before each iteration | `i < 5` |
+| Increment | After each iteration | `i++` |
+
+### Looping Through Arrays
+
+```js
+let colors = ["red", "green", "blue"];
+
+for (let i = 0; i < colors.length; i++) {
+  console.log(colors[i]);
+}
+// "red", "green", "blue"
+```
+
+## `while` Loop
+
+Runs as long as the condition is `true`. Use when you don't know the number of iterations in advance.
+
+```js
+let count = 0;
+
+while (count < 3) {
+  console.log(count);
+  count++;
+}
+// 0, 1, 2
+```
+
+If the condition starts `false`, the body never runs.
+
+## `do...while` Loop
+
+Runs at least once, then checks the condition.
+
+```js
+let x = 0;
+
+do {
+  console.log(x);
+  x++;
+} while (x < 3);
+// 0, 1, 2
+```
+
+Even if `x` started at 10, the body would still run once.
+
+## `break` and `continue`
+
+**`break`** — exits the loop entirely.
+
+```js
+for (let i = 0; i < 10; i++) {
+  if (i === 5) break;
+  console.log(i); // 0, 1, 2, 3, 4
+}
+```
+
+**`continue`** — skips to the next iteration.
+
+```js
+for (let i = 0; i < 5; i++) {
+  if (i === 2) continue;
+  console.log(i); // 0, 1, 3, 4
+}
+```
+
+## `for...of` Loop
+
+Iterates over values in an iterable (arrays, strings, etc.).
+
+```js
+let fruits = ["apple", "banana", "cherry"];
+
+for (let fruit of fruits) {
+  console.log(fruit);
+}
+// "apple", "banana", "cherry"
+```
+
+Works with strings too:
+
+```js
+for (let char of "hello") {
+  console.log(char); // "h", "e", "l", "l", "o"
+}
+```
+
+## `for...in` Loop
+
+Iterates over object keys (or array indices).
+
+```js
+let user = { name: "Alice", age: 25, role: "admin" };
+
+for (let key in user) {
+  console.log(key, user[key]);
+}
+// "name Alice", "age 25", "role admin"
+```
+
+For arrays, prefer `for...of` — `for...in` gives indices as strings and can include prototype properties.
+
+## Array Iteration Methods
+
+Modern JavaScript often uses built-in array methods instead of manual loops.
+
+### `forEach`
+
+```js
+let numbers = [1, 2, 3];
+
+numbers.forEach((n) => {
+  console.log(n * 2);
+});
+// 2, 4, 6
+```
+
+### `map`
+
+Creates a new array by transforming each element.
+
+```js
+let doubled = numbers.map((n) => n * 2);
+// [2, 4, 6]
+```
+
+### `filter`
+
+Creates a new array with elements that pass a test.
+
+```js
+let evens = numbers.filter((n) => n % 2 === 0);
+// [2]
+```
+
+## Which Loop to Use
+
+| Situation | Best Choice |
+|---|---|
+| Known number of iterations | `for` |
+| Unknown count, condition-based | `while` |
+| Must run at least once | `do...while` |
+| Array values | `for...of` or `.forEach()` |
+| Transform array | `.map()` |
+| Filter array | `.filter()` |
+| Object keys | `for...in` or `Object.keys()` |
+
+## Practice
+
+Experiment with different loops in the editor below.
+
+<TryIt
+  html={`<ul id="list"></ul>`}
+  css={`body { font-family: system-ui, sans-serif; }`}
+  js={`let items = ["HTML", "CSS", "JavaScript", "React"];
+let list = document.getElementById("list");
+
+// Loop through items and add them to the list
+for (let item of items) {
+  let li = document.createElement("li");
+  li.textContent = item;
+  list.appendChild(li);
+}
+
+// Try changing items or using a different loop!
+console.log("Items:", items);`}
+/>

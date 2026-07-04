@@ -6,9 +6,126 @@ topic: "JavaScript Fundamentals"
 description: "Learn how to store data using let, const, and the core JavaScript data types."
 ---
 
-Variables store data. Use `let` for values that change and `const` for values that don't.
+Variables let you store and reuse values in your code. JavaScript has three ways to declare them.
+
+## `let` vs `const` vs `var`
+
+**`let`** — Use for values that will change over time.
 
 ```js
-let name = "Alice";
-const age = 30;
+let score = 0;
+score = 10;       // reassign
 ```
+
+**`const`** — Use for values that should stay the same. The variable cannot be reassigned.
+
+```js
+const birthYear = 1990;
+birthYear = 2000; // Error! Cannot reassign
+```
+
+> A `const` object or array can still have its *contents* changed. Only the binding is constant.
+
+```js
+const colors = ["red", "blue"];
+colors.push("green"); // OK — mutating the array
+colors = ["a"];        // Error — reassigning
+```
+
+**`var`** — Older syntax, avoid in modern code. It ignores block scope and can cause bugs.
+
+```js
+var x = 1;
+if (true) {
+  var x = 2; // same x!
+}
+console.log(x); // 2
+```
+
+## Data Types
+
+JavaScript has **7 primitive types** and **objects**.
+
+| Type | Example | Notes |
+|---|---|---|
+| `string` | `"hello"`, `'world'`, `` `template` `` | Text |
+| `number` | `42`, `3.14`, `Infinity`, `NaN` | Integers and decimals |
+| `boolean` | `true`, `false` | Logical values |
+| `undefined` | `let x;` | Variable declared but not assigned |
+| `null` | `let x = null;` | Intentionally empty |
+| `bigint` | `9007199254740991n` | Very large integers |
+| `symbol` | `Symbol("id")` | Unique identifier |
+
+### Strings
+
+```js
+let single = 'Hello';
+let double = "World";
+let template = `Hello, ${single}!`; // template literal with interpolation
+```
+
+Template literals (backticks) let you embed expressions with `${}`.
+
+### Numbers
+
+```js
+let integer = 42;
+let float = 3.14;
+let negative = -10;
+let notANumber = "abc" / 2; // NaN
+```
+
+### Booleans & Comparisons
+
+```js
+let isLoggedIn = true;
+let isGreater = 5 > 3; // true
+```
+
+### `undefined` vs `null`
+
+```js
+let a;           // undefined
+let b = null;   // explicitly empty
+```
+
+`undefined` means "not assigned". `null` means "intentionally nothing".
+
+## Checking Types
+
+Use `typeof` to see a value's type.
+
+```js
+typeof "hello";    // "string"
+typeof 42;        // "number"
+typeof true;      // "boolean"
+typeof undefined; // "undefined"
+typeof null;      // "object"  — this is a historical bug!
+```
+
+## Naming Conventions
+
+Variables should use **camelCase** and be descriptive.
+
+```js
+let userName = "Alice";       // good
+let totalPrice = 29.99;       // good
+let x = 5;                    // avoid — too vague
+let get_user_name = "Bob";    // avoid — not JavaScript style
+```
+
+## Practice
+
+Try modifying the code below — change the variable values and see what happens.
+
+<TryIt
+  html={`<p id="output"></p>`}
+  js={`let name = "Alice";
+const age = 25;
+let greeting = \`Hello, I'm \${name} and I'm \${age} years old.\`;
+
+document.getElementById("output").textContent = greeting;
+
+console.log(typeof name);  // "string"
+console.log(typeof age);   // "number"`}
+/>

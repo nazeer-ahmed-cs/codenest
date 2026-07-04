@@ -1,0 +1,190 @@
+---
+title: "Arrays"
+slug: arrays
+order: 5
+topic: "JavaScript Fundamentals"
+description: "Store and manipulate ordered lists of data using JavaScript arrays."
+---
+
+Arrays hold ordered collections of values. They are zero-indexed and can contain any data type.
+
+## Creating Arrays
+
+```js
+let colors = ["red", "green", "blue"];
+let mixed = [1, "hello", true, null];
+let empty = [];
+```
+
+## Accessing Elements
+
+Use square brackets with the index. The first element is at index `0`.
+
+```js
+let fruits = ["apple", "banana", "cherry"];
+
+fruits[0];  // "apple"
+fruits[1];  // "banana"
+fruits[2];  // "cherry"
+fruits[3];  // undefined
+```
+
+Change an element by assigning to its index.
+
+```js
+fruits[1] = "blueberry";
+// ["apple", "blueberry", "cherry"]
+```
+
+The `length` property tells you how many items are in the array.
+
+```js
+fruits.length; // 3
+```
+
+## Adding & Removing Elements
+
+### End of Array
+
+```js
+let nums = [1, 2];
+
+nums.push(3);     // [1, 2, 3] — add to end
+let last = nums.pop(); // 3 — remove from end, returns it
+```
+
+### Beginning of Array
+
+```js
+nums.unshift(0);  // [0, 1, 2] — add to front
+let first = nums.shift(); // 0 — remove from front, returns it
+```
+
+| Method | What it does | Returns | Mutates? |
+|---|---|---|---|
+| `push(v)` | Add to end | New length | Yes |
+| `pop()` | Remove from end | Removed item | Yes |
+| `unshift(v)` | Add to front | New length | Yes |
+| `shift()` | Remove from front | Removed item | Yes |
+
+## Finding Items
+
+```js
+let items = ["a", "b", "c", "b"];
+
+items.indexOf("b");    // 1 — first index found
+items.lastIndexOf("b"); // 3 — last index found
+items.includes("c");   // true
+items.includes("z");   // false
+```
+
+## Slicing & Splicing
+
+**`slice(start, end)`** — returns a new array without modifying the original.
+
+```js
+let arr = ["a", "b", "c", "d", "e"];
+let sliced = arr.slice(1, 4); // ["b", "c", "d"]
+```
+
+**`splice(start, deleteCount, ...items)`** — changes the original array.
+
+```js
+arr.splice(2, 1);       // removes 1 item at index 2 → ["a", "b", "d", "e"]
+arr.splice(1, 0, "x");  // inserts "x" at index 1 → ["a", "x", "b", "d", "e"]
+```
+
+## Iterating Arrays
+
+```js
+let nums = [10, 20, 30];
+
+for (let i = 0; i < nums.length; i++) {
+  console.log(nums[i]);
+}
+
+for (let n of nums) {
+  console.log(n);
+}
+
+nums.forEach((n) => console.log(n));
+```
+
+## Transforming Arrays
+
+These methods return **new arrays** and don't mutate the original.
+
+```js
+let nums = [1, 2, 3, 4, 5];
+
+let doubled = nums.map((n) => n * 2);      // [2, 4, 6, 8, 10]
+let evens = nums.filter((n) => n % 2 === 0); // [2, 4]
+let sum = nums.reduce((a, b) => a + b, 0);   // 15
+```
+
+### `map`
+
+Creates a new array by applying a function to every element.
+
+```js
+let names = ["alice", "bob", "charlie"];
+let upper = names.map((n) => n.toUpperCase());
+// ["ALICE", "BOB", "CHARLIE"]
+```
+
+### `filter`
+
+Keeps elements that pass a test.
+
+```js
+let scores = [45, 80, 90, 30, 75];
+let passing = scores.filter((s) => s >= 70);
+// [80, 90, 75]
+```
+
+### `reduce`
+
+Accumulates values into a single result.
+
+```js
+let total = [1, 2, 3, 4].reduce((acc, n) => acc + n, 0);
+// 10
+```
+
+## Spread Operator
+
+The `...` spread operator expands an array into individual elements.
+
+```js
+let a = [1, 2, 3];
+let b = [4, 5, 6];
+let combined = [...a, ...b]; // [1, 2, 3, 4, 5, 6]
+
+let copy = [...a]; // shallow copy
+```
+
+## Practice
+
+Type some array methods in the editor and see the output.
+
+<TryIt
+  html={`<p id="output"></p>`}
+  js={`let fruits = ["apple", "banana", "cherry", "date"];
+
+// Add a fruit
+fruits.push("elderberry");
+
+// Find index
+let idx = fruits.indexOf("cherry");
+
+// Transform
+let uppercased = fruits.map(f => f.toUpperCase());
+
+document.getElementById("output").textContent =
+  "Total: " + fruits.length +
+  " | Cherry at index: " + idx +
+  " | Uppercased: " + uppercased.join(", ");
+
+console.log(fruits);
+console.log(uppercased);`}
+/>

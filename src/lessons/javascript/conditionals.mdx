@@ -1,0 +1,190 @@
+---
+title: "Conditionals"
+slug: conditionals
+order: 3
+topic: "JavaScript Fundamentals"
+description: "Control program flow with if, else, else if, switch, and the ternary operator."
+---
+
+Conditionals let your code make decisions based on whether a condition is true or false.
+
+## `if` Statement
+
+```js
+let age = 18;
+
+if (age >= 18) {
+  console.log("You can vote");
+}
+```
+
+## `if` / `else`
+
+```js
+let age = 16;
+
+if (age >= 18) {
+  console.log("You can vote");
+} else {
+  console.log("Too young to vote");
+}
+```
+
+## `else if`
+
+Chain multiple conditions.
+
+```js
+let score = 85;
+
+if (score >= 90) {
+  console.log("A");
+} else if (score >= 80) {
+  console.log("B");
+} else if (score >= 70) {
+  console.log("C");
+} else {
+  console.log("F");
+}
+```
+
+Conditions are checked top to bottom. The first match wins. The final `else` catches everything that doesn't match.
+
+## Truthy & Falsy
+
+JavaScript treats all values as either "truthy" or "falsy" in a boolean context.
+
+**Falsy values** (act like `false`):
+- `false`
+- `0`, `-0`
+- `""` (empty string)
+- `null`
+- `undefined`
+- `NaN`
+
+**Everything else is truthy**, including `"0"`, `"false"`, empty arrays `[]`, and empty objects `{}`.
+
+```js
+let name = "";
+
+if (name) {
+  console.log("Has name"); // won't run — "" is falsy
+}
+
+let items = [];
+if (items) {
+  console.log("Has items"); // runs — [] is truthy
+}
+```
+
+## Comparison Operators
+
+| Operator | Meaning |
+|---|---|
+| `===` | Strict equal (value + type) |
+| `!==` | Strict not equal |
+| `==` | Loose equal (type coercion) |
+| `!=` | Loose not equal |
+| `>` / `>=` | Greater than / or equal |
+| `<` / `<=` | Less than / or equal |
+
+Always prefer `===` over `==` to avoid type coercion surprises.
+
+```js
+5 === "5";  // false
+5 == "5";   // true — coerces string to number
+0 === false; // false
+0 == false;  // true
+```
+
+## Logical Operators
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `&&` | AND — both must be true | `a > 0 && b > 0` |
+| `||` | OR — at least one true | `a > 0 || b > 0` |
+| `!` | NOT — flips truthiness | `!isLoggedIn` |
+
+```js
+let age = 25;
+let hasID = true;
+
+if (age >= 18 && hasID) {
+  console.log("Welcome");
+}
+
+if (!hasID) {
+  console.log("ID required");
+}
+```
+
+## Ternary Operator
+
+A compact `if`/`else` for simple assignments.
+
+```js
+let age = 20;
+let status = age >= 18 ? "Adult" : "Minor";
+
+console.log(status); // "Adult"
+```
+
+Format: `condition ? valueIfTrue : valueIfFalse`
+
+## `switch` Statement
+
+Use `switch` when comparing one value against many possible options.
+
+```js
+let day = 3;
+let dayName;
+
+switch (day) {
+  case 1:
+    dayName = "Monday";
+    break;
+  case 2:
+    dayName = "Tuesday";
+    break;
+  case 3:
+    dayName = "Wednesday";
+    break;
+  case 4:
+    dayName = "Thursday";
+    break;
+  case 5:
+    dayName = "Friday";
+    break;
+  default:
+    dayName = "Weekend";
+}
+
+console.log(dayName); // "Wednesday"
+```
+
+Always include `break` to prevent fall-through to the next case. `default` runs when no case matches.
+
+## Practice
+
+Try changing the values in the editor below and see how the conditional logic behaves.
+
+<TryIt
+  html={`<p id="output"></p>`}
+  js={`let temperature = 72;
+let message;
+
+if (temperature >= 90) {
+  message = "It's hot out!";
+} else if (temperature >= 70) {
+  message = "Perfect weather!";
+} else if (temperature >= 50) {
+  message = "Kind of chilly.";
+} else {
+  message = "Brr, bundle up!";
+}
+
+document.getElementById("output").textContent = message;
+
+// Check the console for more
+console.log(32 >= 0 && 32 < 50 ? "Cold" : "Not too cold");`}
+/>

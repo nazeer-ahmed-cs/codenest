@@ -1,0 +1,232 @@
+---
+title: "Objects"
+slug: objects
+order: 6
+topic: "JavaScript Fundamentals"
+description: "Model real-world data with JavaScript objects, properties, methods, and destructuring."
+---
+
+Objects store collections of key-value pairs. They are the foundation of most data structures in JavaScript.
+
+## Object Literals
+
+```js
+let user = {
+  name: "Alice",
+  age: 25,
+  isAdmin: true
+};
+```
+
+Each key is a string (or Symbol), and the value can be any type — including other objects or arrays.
+
+## Accessing Properties
+
+### Dot Notation
+
+```js
+user.name;    // "Alice"
+user.age;     // 25
+```
+
+### Bracket Notation
+
+Use brackets when the key is dynamic or not a valid identifier.
+
+```js
+user["name"];        // "Alice"
+let key = "age";
+user[key];           // 25
+user["favorite color"] = "blue"; // key with a space
+```
+
+## Adding & Updating Properties
+
+```js
+let car = { brand: "Toyota" };
+
+car.model = "Camry";     // add new property
+car.brand = "Honda";     // update existing
+car["year"] = 2022;      // bracket notation
+
+console.log(car); // { brand: "Honda", model: "Camry", year: 2022 }
+```
+
+## Deleting Properties
+
+```js
+delete car.year;
+```
+
+## Nested Objects
+
+Properties can hold other objects or arrays.
+
+```js
+let person = {
+  name: "Bob",
+  address: {
+    street: "123 Main St",
+    city: "Portland",
+    zip: 97201
+  },
+  hobbies: ["reading", "coding", "hiking"]
+};
+
+person.address.city;     // "Portland"
+person.hobbies[0];       // "reading"
+```
+
+## Methods
+
+Functions stored as object properties are called methods.
+
+```js
+let calculator = {
+  a: 10,
+  b: 5,
+  add() {
+    return this.a + this.b;
+  },
+  subtract() {
+    return this.a - this.b;
+  }
+};
+
+calculator.add();      // 15
+calculator.subtract(); // 5
+```
+
+Inside a method, `this` refers to the object the method was called on.
+
+## Looping Through Objects
+
+### `for...in`
+
+```js
+let user = { name: "Alice", age: 25, role: "admin" };
+
+for (let key in user) {
+  console.log(key, user[key]);
+}
+// name Alice, age 25, role admin
+```
+
+### `Object.keys`, `Object.values`, `Object.entries`
+
+```js
+Object.keys(user);    // ["name", "age", "role"]
+Object.values(user);  // ["Alice", 25, "admin"]
+Object.entries(user); // [["name","Alice"], ["age",25], ["role","admin"]]
+```
+
+Useful with array methods:
+
+```js
+Object.entries(user).forEach(([key, value]) => {
+  console.log(`${key}: ${value}`);
+});
+```
+
+## Checking if a Property Exists
+
+```js
+"name" in user;    // true
+"salary" in user;  // false
+
+user.hasOwnProperty("name"); // true
+```
+
+## Destructuring
+
+Extract properties into variables with a concise syntax.
+
+```js
+let user = { name: "Alice", age: 25, city: "Paris" };
+
+let { name, age } = user;
+console.log(name); // "Alice"
+console.log(age);  // 25
+```
+
+Rename variables during destructuring:
+
+```js
+let { name: userName, city: location } = user;
+console.log(userName); // "Alice"
+console.log(location); // "Paris"
+```
+
+Default values for missing properties:
+
+```js
+let { name, salary = 50000 } = user;
+console.log(salary); // 50000
+```
+
+## Spread Operator
+
+Copy or merge objects (shallow).
+
+```js
+let defaults = { theme: "light", lang: "en" };
+let userPrefs = { theme: "dark" };
+
+let settings = { ...defaults, ...userPrefs };
+// { theme: "dark", lang: "en" }
+
+let cloned = { ...user }; // shallow copy
+```
+
+## Common Patterns
+
+### Object as a lookup / map
+
+```js
+let rolePermissions = {
+  admin: ["read", "write", "delete"],
+  editor: ["read", "write"],
+  viewer: ["read"]
+};
+
+rolePermissions["admin"]; // ["read", "write", "delete"]
+```
+
+### Computed property keys
+
+```js
+let key = "dynamicKey";
+let obj = {
+  [key]: "dynamic value"
+};
+obj.dynamicKey; // "dynamic value"
+```
+
+## Practice
+
+Try creating and manipulating objects below.
+
+<TryIt
+  html={`<pre id="output"></pre>`}
+  js={`let inventory = {
+  apples: 10,
+  bananas: 5,
+  oranges: 8
+};
+
+// Add new stock
+inventory.grapes = 12;
+
+// Update
+inventory.apples -= 3;
+
+// Build a summary
+let summary = Object.entries(inventory)
+  .map(([item, qty]) => \`\${item}: \${qty}\`)
+  .join("\\n");
+
+document.getElementById("output").textContent = summary;
+
+// Try adding more items or using spread!
+console.log(inventory);`}
+/>

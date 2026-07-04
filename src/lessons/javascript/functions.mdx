@@ -3,13 +3,164 @@ title: "Functions & Scope"
 slug: functions
 order: 2
 topic: "JavaScript Fundamentals"
-description: "Write reusable functions and understand JavaScript scope rules."
+description: "Write reusable functions and understand JavaScript scope, parameters, and return values."
 ---
 
-Functions are reusable blocks of code.
+Functions are reusable blocks of code that take inputs, perform work, and return outputs.
+
+## Function Declarations
 
 ```js
 function greet(name) {
   return `Hello, ${name}!`;
 }
+
+greet("Alice"); // "Hello, Alice!"
 ```
+
+The `return` statement gives back a value. Without it, the function returns `undefined`.
+
+```js
+function noReturn() {
+  let x = 1 + 2;
+}
+
+console.log(noReturn()); // undefined
+```
+
+## Parameters vs Arguments
+
+**Parameters** are the names in the function definition. **Arguments** are the values you pass when calling it.
+
+```js
+function add(a, b) {   // a and b are parameters
+  return a + b;
+}
+
+add(3, 5);             // 3 and 5 are arguments
+```
+
+### Default Parameters
+
+```js
+function multiply(a, b = 1) {
+  return a * b;
+}
+
+multiply(5, 3); // 15
+multiply(5);    // 5 (b defaults to 1)
+```
+
+## Function Expressions
+
+Functions can be stored in variables.
+
+```js
+const double = function(x) {
+  return x * 2;
+};
+
+double(4); // 8
+```
+
+## Arrow Functions
+
+A shorter syntax, especially useful for callbacks.
+
+```js
+const double = (x) => x * 2;
+
+const add = (a, b) => a + b;
+
+const log = (msg) => {
+  console.log(msg);
+  return msg.length;
+};
+```
+
+| Syntax | Meaning |
+|---|---|
+| `x => x * 2` | Single parameter, single expression (implicit return) |
+| `(a, b) => a + b` | Multiple parameters, single expression |
+| `() => 42` | No parameters |
+| `x => ({ key: x })` | Returning an object literal needs parentheses |
+| `x => { doStuff(); return x; }` | Block body needs explicit return |
+
+## Scope
+
+Scope determines where variables are accessible.
+
+### Global Scope
+
+Variables declared outside any function are global.
+
+```js
+let globalVar = "I'm everywhere";
+
+function test() {
+  console.log(globalVar); // accessible
+}
+```
+
+### Local / Function Scope
+
+Variables declared inside a function are only visible there.
+
+```js
+function myFunc() {
+  let localVar = "I'm hidden";
+  console.log(localVar); // works
+}
+
+console.log(localVar); // Error! not defined
+```
+
+### Block Scope
+
+`let` and `const` are scoped to the nearest `{}` block.
+
+```js
+if (true) {
+  let blockVar = "inside block";
+  const alsoBlock = "also inside";
+  var notBlock = "leaks out"; // var ignores block scope
+}
+
+console.log(blockVar);  // Error!
+console.log(notBlock);  // "leaks out" — bad!
+```
+
+## When to Use Each
+
+| Situation | Best Choice |
+|---|---|
+| Named reusable function | `function name() {}` |
+| Short inline callback | Arrow function |
+| Method in an object | Arrow function (preserves `this`) |
+| Need `arguments` object | `function` declaration |
+| Need dynamic `this` binding | `function` expression |
+
+## Practice
+
+Run the editor below. Try modifying the function and seeing how scope works.
+
+<TryIt
+  html={`<p>Open the console (F12) to see output.</p>`}
+  js={`function calculateTotal(price, taxRate = 0.08) {
+  const tax = price * taxRate;
+  return price + tax;
+}
+
+console.log(calculateTotal(100));      // 108
+console.log(calculateTotal(50, 0.1));  // 55
+
+// Scope demo
+const discount = 0.9; // global
+
+function applyDiscount(price) {
+  // discount is accessible here
+  return price * discount;
+}
+
+console.log(applyDiscount(100)); // 90`}
+/>

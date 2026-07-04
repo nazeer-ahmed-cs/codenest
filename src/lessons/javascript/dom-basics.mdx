@@ -1,0 +1,200 @@
+---
+title: "DOM Basics"
+slug: dom-basics
+order: 7
+topic: "JavaScript Fundamentals"
+description: "Select and manipulate HTML elements using the Document Object Model."
+---
+
+The **DOM (Document Object Model)** is JavaScript's interface to HTML. It represents the page as a tree of objects you can read and modify.
+
+## What is the DOM?
+
+When the browser loads an HTML page, it creates a structured tree of nodes. Each element, attribute, and piece of text becomes a node you can access with JavaScript.
+
+```html
+<html>
+  <body>
+    <h1>Title</h1>
+    <p>Text</p>
+  </body>
+</html>
+```
+
+## Selecting Elements
+
+### `getElementById`
+
+Fastest way to select a single element by its `id`.
+
+```js
+let heading = document.getElementById("main-title");
+```
+
+### `querySelector`
+
+Selects the first element that matches a CSS selector.
+
+```js
+let firstLink = document.querySelector("a");
+let button = document.querySelector(".btn-primary");
+let sidebar = document.querySelector("#sidebar");
+```
+
+### `querySelectorAll`
+
+Returns a static NodeList of all matching elements.
+
+```js
+let allLinks = document.querySelectorAll("nav a");
+let items = document.querySelectorAll(".list-item");
+```
+
+You can loop over a NodeList with `forEach`.
+
+```js
+allLinks.forEach((link) => {
+  console.log(link.href);
+});
+```
+
+### Other selection methods
+
+```js
+document.getElementsByClassName("card");  // live HTMLCollection
+document.getElementsByTagName("p");       // live HTMLCollection
+```
+
+Prefer `querySelector` / `querySelectorAll` for consistency — they accept any CSS selector.
+
+## Reading & Changing Content
+
+### `textContent`
+
+Gets or sets the text inside an element (strips HTML tags).
+
+```js
+let el = document.querySelector("p");
+el.textContent = "Updated text";
+console.log(el.textContent);
+```
+
+### `innerHTML`
+
+Gets or sets the HTML markup inside an element. Use with caution (XSS risk).
+
+```js
+el.innerHTML = "<strong>Bold text</strong>";
+```
+
+## Working with Attributes
+
+```js
+let img = document.querySelector("img");
+
+img.getAttribute("src");       // "logo.png"
+img.setAttribute("alt", "Logo");
+img.hasAttribute("src");       // true
+img.removeAttribute("title");
+```
+
+Direct properties exist for common attributes:
+
+```js
+img.src = "new-logo.png";
+img.alt = "New Logo";
+```
+
+## Changing Styles
+
+Access inline styles via the `style` property. Properties use camelCase instead of kebab-case.
+
+```js
+let box = document.querySelector(".box");
+
+box.style.backgroundColor = "blue";
+box.style.fontSize = "18px";
+box.style.display = "flex";
+```
+
+For reading computed styles (including from CSS classes):
+
+```js
+getComputedStyle(box).color; // "rgb(0, 0, 0)"
+```
+
+## Working with Classes
+
+```js
+let el = document.querySelector("div");
+
+el.classList.add("active");
+el.classList.remove("hidden");
+el.classList.toggle("expanded");
+el.classList.contains("active"); // true/false
+```
+
+## Creating & Inserting Elements
+
+```js
+let newLi = document.createElement("li");
+newLi.textContent = "Item 3";
+newLi.classList.add("list-item");
+
+let list = document.querySelector("ul");
+list.appendChild(newLi);          // at end
+list.prepend(newLi);              // at beginning
+list.insertBefore(newLi, list.children[1]); // before index 1
+```
+
+### Removing elements
+
+```js
+newLi.remove();            // modern
+list.removeChild(newLi);   // older
+```
+
+## Traversing the DOM
+
+```js
+let el = document.querySelector("li");
+
+el.parentElement;           // parent node
+el.children;                // HTMLCollection of children
+el.firstElementChild;       // first child element
+el.lastElementChild;        // last child element
+el.nextElementSibling;      // next sibling
+el.previousElementSibling;  // previous sibling
+```
+
+## Practice
+
+The editor below starts with some HTML. Use the JS panel to select, modify, and create elements.
+
+<TryIt
+  html={`<h2 id="title">Original Title</h2>
+<p class="description">This is a paragraph.</p>
+<ul id="list">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>`}
+  css={`body { font-family: system-ui, sans-serif; padding: 1rem; }
+.highlight { background: #fff3cd; padding: 0.25rem 0.5rem; border-radius: 4px; }`}
+  js={`// Select and modify
+let title = document.getElementById("title");
+title.textContent = "DOM Basics in Action";
+title.style.color = "#2563eb";
+
+// Add a class to the paragraph
+let desc = document.querySelector(".description");
+desc.classList.add("highlight");
+desc.textContent = "This paragraph was modified by JavaScript!";
+
+// Create and insert a new item
+let list = document.getElementById("list");
+let newItem = document.createElement("li");
+newItem.textContent = "Item 3 — dynamically added";
+list.appendChild(newItem);
+
+console.log("Done! Title updated, class added, new item created.");`}
+/>

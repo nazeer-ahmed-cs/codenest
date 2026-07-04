@@ -1,0 +1,200 @@
+---
+title: "Events"
+slug: events
+order: 8
+topic: "JavaScript Fundamentals"
+description: "Respond to user interactions with event listeners, the event object, and delegation."
+---
+
+Events let your code react to what the user does — clicks, key presses, form submissions, and more.
+
+## `addEventListener`
+
+Attach a function that runs when a specific event occurs on an element.
+
+```js
+let button = document.querySelector("button");
+
+button.addEventListener("click", () => {
+  console.log("Button was clicked!");
+});
+```
+
+The first argument is the event type (without `on` prefix). The second is the handler function.
+
+## Common Event Types
+
+| Event | Fires when |
+|---|---|
+| `click` | Element is clicked |
+| `dblclick` | Element is double-clicked |
+| `mouseenter` / `mouseleave` | Mouse enters or leaves |
+| `focus` / `blur` | Element gains or loses focus |
+| `input` | Value of an `<input>` or `<textarea>` changes |
+| `change` | Value is committed (e.g., select dropdown) |
+| `submit` | A form is submitted |
+| `keydown` / `keyup` | A key is pressed or released |
+| `scroll` | The page or element is scrolled |
+| `load` | Page or resource finishes loading |
+
+## The Event Object
+
+The handler receives an event object with details about what happened.
+
+```js
+document.querySelector("button").addEventListener("click", (event) => {
+  console.log(event.type);     // "click"
+  console.log(event.target);   // the element that was clicked
+  console.log(event.currentTarget); // the element the listener is on
+});
+```
+
+### Mouse events
+
+```js
+element.addEventListener("click", (e) => {
+  console.log(e.clientX, e.clientY); // coordinates relative to viewport
+  console.log(e.pageX, e.pageY);     // coordinates relative to page
+});
+```
+
+### Keyboard events
+
+```js
+document.addEventListener("keydown", (e) => {
+  console.log(e.key);    // "Enter", "a", "Shift", etc.
+  console.log(e.code);   // "Enter", "KeyA", "ShiftLeft"
+  console.log(e.ctrlKey); // true if Ctrl is held
+});
+```
+
+## Form Events
+
+```js
+let form = document.querySelector("form");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // stop the page from reloading
+
+  let name = document.querySelector("#name").value;
+  console.log("Submitted:", name);
+});
+```
+
+`preventDefault()` stops the browser's default behavior — essential for handling form submissions with JavaScript.
+
+## Removing Event Listeners
+
+To remove a listener, pass the same function reference.
+
+```js
+function handleClick() {
+  console.log("Clicked");
+}
+
+button.addEventListener("click", handleClick);
+button.removeEventListener("click", handleClick);
+```
+
+Anonymous functions cannot be removed — always use a named function if you need `removeEventListener`.
+
+## Event Delegation
+
+Instead of attaching a listener to every child, attach one to a parent and use `event.target` to figure out which child was interacted with.
+
+```js
+let list = document.querySelector("ul");
+
+list.addEventListener("click", (e) => {
+  if (e.target.tagName === "LI") {
+    console.log("Clicked:", e.target.textContent);
+  }
+});
+```
+
+This works for dynamically added children too — no need to re-attach listeners.
+
+## Event Phases
+
+Events flow through three phases:
+
+1. **Capture phase** — travels from `document` down to the target
+2. **Target phase** — reaches the target element
+3. **Bubble phase** — travels back up from target to `document`
+
+By default, listeners run during the **bubble phase**.
+
+```js
+// Run during capture phase instead
+element.addEventListener("click", handler, true);
+
+// Stop the event from bubbling
+e.stopPropagation();
+```
+
+## Common Patterns
+
+### Toggle a class on click
+
+```js
+button.addEventListener("click", () => {
+  panel.classList.toggle("open");
+});
+```
+
+### Live character counter
+
+```js
+input.addEventListener("input", () => {
+  counter.textContent = input.value.length;
+});
+```
+
+### Keyboard shortcut
+
+```js
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    modal.classList.add("hidden");
+  }
+});
+```
+
+## Practice
+
+Try interacting with the elements below — the JavaScript handles clicks, input, and toggles.
+
+<TryIt
+  html={`<button id="clickBtn">Click me</button>
+<p id="clickCount">Clicks: 0</p>
+<hr />
+<input id="nameInput" placeholder="Type something..." />
+<p id="livePreview">Preview will appear here</p>
+<hr />
+<button id="toggleBtn">Toggle highlight</button>
+<div id="toggleBox" style="padding:1rem; border:1px solid #ccc; border-radius:8px; margin-top:0.5rem;">
+  This box can be highlighted.
+</div>`}
+  css={`body { font-family: system-ui, sans-serif; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+button { padding: 0.5rem 1rem; cursor: pointer; }
+.highlight { background: #dbeafe; border-color: #2563eb; }`}
+  js={`// Click counter
+let count = 0;
+document.getElementById("clickBtn").addEventListener("click", () => {
+  count++;
+  document.getElementById("clickCount").textContent = "Clicks: " + count;
+});
+
+// Live input preview
+document.getElementById("nameInput").addEventListener("input", (e) => {
+  let preview = document.getElementById("livePreview");
+  preview.textContent = e.target.value || "Preview will appear here";
+});
+
+// Toggle highlight
+document.getElementById("toggleBtn").addEventListener("click", () => {
+  document.getElementById("toggleBox").classList.toggle("highlight");
+});
+
+console.log("All event listeners are set up!");`}
+/>
