@@ -5,39 +5,6 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { lessonsMap } from "@/lib/curriculum";
 import { calcStreak } from "@/lib/progress";
 
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
-    const client = await connectToDatabase();
-    const db = client.db("codenest");
-
-    const progress = await db
-      .collection("user-progress")
-      .findOne({ userId: session.user.id });
-
-    return NextResponse.json(
-      {
-        completedLessons: progress?.completedLessons ?? [],
-        bookmarkedLessons: progress?.bookmarkedLessons ?? [],
-        streak: progress?.streak ?? { count: 0, lastActivityDate: null },
-        lastVisited: progress?.lastVisited ?? null,
-        lastLessonSlug: progress?.lastLessonSlug ?? null,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("[progress/complete] GET", error);
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
-    );
-  }
-}
-
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -72,7 +39,6 @@ export async function POST(req: Request) {
     await db.collection("user-progress").updateOne(
       { userId: session.user.id },
       {
-        $addToSet: { completedLessons: slug },
         $set: {
           lastVisited: new Date(),
           lastLessonSlug: slug,
@@ -82,12 +48,9 @@ export async function POST(req: Request) {
       { upsert: true }
     );
 
-    return NextResponse.json(
-      { message: "Progress saved", streak: newStreak.count },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Visit tracked" }, { status: 200 });
   } catch (error) {
-    console.error("[progress/complete] POST", error);
+    console.error("[progress/visit] POST", error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

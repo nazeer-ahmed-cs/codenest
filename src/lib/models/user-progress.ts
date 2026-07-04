@@ -9,6 +9,7 @@ export interface UserProgress {
   _id: ObjectId;
   userId: string;
   completedLessons: string[];
+  bookmarkedLessons: string[];
   lastVisited: Date;
   streak: Streak;
 }

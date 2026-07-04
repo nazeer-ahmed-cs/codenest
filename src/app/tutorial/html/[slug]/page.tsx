@@ -4,6 +4,8 @@ import { lessonsMap, allSlugs } from "@/lib/curriculum";
 import CopyCodeBlocks from "@/components/CopyCodeBlocks";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import MarkCompleteButton from "@/components/MarkCompleteButton";
+import BookmarkButton from "@/components/BookmarkButton";
+import TrackVisit from "@/components/TrackVisit";
 
 type Props = {
   params: { slug: string };
@@ -26,6 +28,7 @@ export default function TutorialLessonPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+      <TrackVisit slug={params.slug} />
       <Breadcrumbs topic={frontmatter.topic} title={lesson.title} />
       <h1 className="mb-3 text-3xl font-bold tracking-tight">
         {lesson.title}
@@ -40,8 +43,9 @@ export default function TutorialLessonPage({ params }: Props) {
         </div>
       </CopyCodeBlocks>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex items-center justify-center gap-3">
         <MarkCompleteButton slug={params.slug} />
+        <BookmarkButton slug={params.slug} />
       </div>
 
       <nav

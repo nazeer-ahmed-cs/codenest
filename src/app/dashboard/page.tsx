@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
-import { topics } from "@/lib/curriculum";
+import { topics, lessonsMap } from "@/lib/curriculum";
 import Container from "@/components/Container";
 
 export default async function DashboardPage() {
@@ -14,12 +14,16 @@ export default async function DashboardPage() {
 
   const client = await connectToDatabase();
   const db = client.db("codenest");
-  const progress = await db
+  const progressDoc = await db
     .collection("user-progress")
     .findOne({ userId: session.user.id });
+  const progress = progressDoc ?? {};
 
   const completed = new Set(progress?.completedLessons ?? []);
+  const bookmarked = new Set(progress?.bookmarkedLessons ?? []);
   const streak = progress?.streak?.count ?? 0;
+  const lastLessonSlug = progress?.lastLessonSlug ?? null;
+  const lastLesson = lastLessonSlug ? lessonsMap[lastLessonSlug] : null;
 
   const allLessons = topics.flatMap((t) => t.lessons);
   const totalLessons = allLessons.length;
@@ -45,6 +49,30 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
+
+      {lastLesson && (
+        <a
+          href={`/tutorial/html/${lastLessonSlug}`}
+          className="mb-6 flex items-center gap-4 rounded-xl border border-blue-200 bg-blue-50 p-5 transition-colors hover:bg-blue-100"
+        >
+          <div className="rounded-lg bg-blue-100 p-2.5">
+            <svg className="size-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <div className="text-xs font-medium uppercase tracking-wide text-blue-500">
+              Continue where you left off
+            </div>
+            <div className="text-sm font-semibold text-blue-900">
+              {lastLesson.title}
+            </div>
+          </div>
+          <svg className="size-5 shrink-0 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      )}
 
       <div className="mb-8 rounded-xl border border-gray-200 bg-gray-50 p-6">
         <div className="mb-1 text-sm text-gray-500">Overall Progress</div>
@@ -111,6 +139,40 @@ export default async function DashboardPage() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  {l.title}
+                </a>
+              ))}
+          </div>
+        </>
+      )}
+
+      {bookmarked.size > 0 && (
+        <>
+          <h2 className="mb-4 mt-10 text-lg font-semibold text-gray-900">
+            Bookmarked Lessons
+          </h2>
+          <div className="space-y-2">
+            {allLessons
+              .filter((l) => bookmarked.has(l.slug))
+              .map((l) => (
+                <a
+                  key={l.slug}
+                  href={`/tutorial/html/${l.slug}`}
+                  className="flex items-center gap-3 rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800 transition-colors hover:bg-yellow-100"
+                >
+                  <svg
+                    className="size-4 shrink-0 text-yellow-600"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
                     />
                   </svg>
                   {l.title}

@@ -12,19 +12,22 @@ export default function Sidebar() {
   const { data: session } = useSession();
 
   const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [bookmarked, setBookmarked] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!session?.user) {
       setCompleted(new Set());
+      setBookmarked(new Set());
       return;
     }
     fetch("/api/progress/complete")
       .then((r) => r.json())
       .then((data) => {
         setCompleted(new Set(data.completedLessons ?? []));
+        setBookmarked(new Set(data.bookmarkedLessons ?? []));
       })
       .catch(() => {});
-  }, [session]);
+  }, [session, pathname]);
 
   const activeTopic = topics.find((t) =>
     t.lessons.some((l) => l.slug === currentSlug)
@@ -117,6 +120,11 @@ export default function Sidebar() {
                           {completed.has(lesson.slug) && (
                             <svg className="size-4 shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                          {bookmarked.has(lesson.slug) && (
+                            <svg className="size-3.5 shrink-0 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
                           )}
                           <span className="flex-1">{lesson.title}</span>
