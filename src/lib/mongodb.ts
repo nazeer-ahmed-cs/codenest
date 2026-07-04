@@ -28,11 +28,15 @@ function connect(): Promise<MongoClient> {
   return client.connect();
 }
 
-export async function connectToDatabase() {
+export function getClientPromise(): Promise<MongoClient> {
   if (!clientPromise) {
     clientPromise = connect();
   }
   return clientPromise;
+}
+
+export async function connectToDatabase() {
+  return getClientPromise();
 }
 
 export default connectToDatabase;

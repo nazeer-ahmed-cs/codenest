@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { connectToDatabase } from "@/lib/mongodb";
 
 export async function POST(req: Request) {
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     await db.collection("users").insertOne({
+      userId: crypto.randomUUID(),
       email,
       name,
       password: hashedPassword,
