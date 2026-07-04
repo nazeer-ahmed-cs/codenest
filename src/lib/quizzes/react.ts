@@ -89,5 +89,53 @@ export const reactQuiz: Quiz = {
       explanation:
         "Ternary (condition ? a : b) and && (condition && <Component />) are common patterns. if/else doesn't work inside JSX expressions.",
     },
+    {
+      question: "How do you prevent a form from submitting in React?",
+      options: [
+        "return false",
+        "e.preventDefault()",
+        "stop.submit()",
+        "cancel.submit()",
+      ],
+      correctIndex: 1,
+      explanation:
+        "In React, call e.preventDefault() on the event object inside the submit handler to prevent the default form submission behavior.",
+    },
+    {
+      question: "What is useRef used for?",
+      options: [
+        "Managing complex state",
+        "Accessing DOM elements and storing mutable values",
+        "Fetching data from an API",
+        "Creating context providers",
+      ],
+      correctIndex: 1,
+      explanation:
+        "useRef returns a mutable ref object whose .current property persists across re-renders. It's commonly used to access DOM elements directly.",
+    },
+    {
+      question: "What problem does React Context solve?",
+      options: [
+        "Component styling",
+        "Prop drilling — passing data through many component levels",
+        "State management for forms",
+        "Code splitting",
+      ],
+      correctIndex: 1,
+      explanation:
+        "Context provides a way to share data (like themes or auth) across the component tree without passing props manually at every level.",
+    },
+    {
+      question: "What is a custom hook?",
+      options: [
+        "A built-in React function",
+        "A JavaScript function that starts with 'use' and may call other hooks",
+        "A React component without JSX",
+        "A third-party library",
+      ],
+      correctIndex: 1,
+      explanation:
+        "A custom hook is a function whose name starts with 'use' and may call other hooks. It lets you extract component logic into reusable functions.",
+    },
   ],
 };

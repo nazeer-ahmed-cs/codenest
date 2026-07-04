@@ -53,6 +53,8 @@ const topicLabels: Record<string, string> = {
   CSS: "CSS",
   "JavaScript Fundamentals": "JavaScript",
   React: "React",
+  Python: "Python",
+  SQL: "SQL",
 };
 
 const topicNavItems: TopicNavItem[] = topics

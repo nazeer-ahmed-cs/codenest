@@ -1,0 +1,99 @@
+---
+title: "Refs & DOM Access"
+slug: react-refs
+order: 7
+topic: "React"
+description: "Access DOM elements directly and persist mutable values with useRef."
+---
+
+Refs let you access DOM elements directly and store mutable values that persist across re-renders without causing them.
+
+## Accessing a DOM Element
+
+```jsx
+import { useRef, useEffect } from "react";
+
+function AutoFocusInput() {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  return <input ref={inputRef} type="text" />;
+}
+```
+
+## Using Refs for Animations
+
+```jsx
+function Box() {
+  const boxRef = useRef(null);
+
+  function handleClick() {
+    boxRef.current.style.backgroundColor = "red";
+    boxRef.current.style.transform = "scale(1.2)";
+  }
+
+  return (
+    <div>
+      <div
+        ref={boxRef}
+        style={{ width: 100, height: 100, background: "blue" }}
+      />
+      <button onClick={handleClick}>Animate</button>
+    </div>
+  );
+}
+```
+
+## Storing Mutable Values
+
+Unlike state, changing a ref doesn't cause re-render:
+
+```jsx
+function Stopwatch() {
+  const [time, setTime] = useState(0);
+  const intervalRef = useRef(null);
+
+  function start() {
+    intervalRef.current = setInterval(() => {
+      setTime((t) => t + 1);
+    }, 1000);
+  }
+
+  function stop() {
+    clearInterval(intervalRef.current);
+  }
+
+  return (
+    <div>
+      <p>{time}s</p>
+      <button onClick={start}>Start</button>
+      <button onClick={stop}>Stop</button>
+    </div>
+  );
+}
+```
+
+## forwardRef
+
+Pass refs through to child components:
+
+```jsx
+const FancyInput = forwardRef((props, ref) => {
+  return <input ref={ref} className="fancy-input" {...props} />;
+});
+
+function Parent() {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  return <FancyInput ref={inputRef} />;
+}
+```
+
+Use refs sparingly — prefer declarative React patterns when possible.

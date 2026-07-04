@@ -1,0 +1,74 @@
+---
+title: "Data Types & Type Conversion"
+slug: python-data-types
+order: 2
+topic: "Python"
+description: "Explore Python's built-in data types and how to convert between them."
+---
+
+Python comes with several built-in data types. Understanding them is fundamental to writing correct code.
+
+## Numeric Types
+
+```python
+a = 42        # int — arbitrary precision
+b = 3.14      # float — double-precision
+c = 1 + 2j    # complex — uses j for imaginary unit
+
+print(type(a))  # <class 'int'>
+```
+
+## Strings
+
+```python
+single = 'hello'
+double = "world"
+multi = """This spans
+multiple lines"""
+
+print(len(single))        # 5
+print(single.upper())     # "HELLO"
+print(single[0])          # "h"
+```
+
+## Booleans
+
+```python
+is_ok = True
+is_done = False
+
+print(True and False)   # False
+print(True or False)    # True
+print(not True)         # False
+```
+
+## Type Conversion
+
+```python
+# int → float
+print(float(42))        # 42.0
+
+# float → int (truncates)
+print(int(3.9))         # 3
+
+# string → int
+print(int("42"))        # 42
+
+# anything → string
+print(str(42))          # "42"
+
+# truthiness
+print(bool(0))          # False
+print(bool(42))         # True
+print(bool(""))         # False
+print(bool("hello"))    # True
+```
+
+## None
+
+`None` represents the absence of a value:
+
+```python
+result = None
+print(result is None)   # True
+```

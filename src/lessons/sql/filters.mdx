@@ -1,0 +1,76 @@
+---
+title: "Advanced Filters"
+slug: sql-filters
+order: 3
+topic: "SQL"
+description: "Combine conditions with AND, OR, IN, BETWEEN, and pattern matching with LIKE."
+---
+
+The `WHERE` clause supports powerful operators for precise filtering.
+
+## AND / OR
+
+```sql
+-- both conditions must be true
+SELECT * FROM products
+WHERE category = 'Electronics'
+  AND price < 200;
+
+-- either condition can be true
+SELECT * FROM products
+WHERE category = 'Electronics'
+   OR category = 'Books';
+```
+
+## IN
+
+Check if a value matches any item in a list:
+
+```sql
+SELECT * FROM products
+WHERE category IN ('Electronics', 'Books', 'Clothing');
+
+-- equivalent to:
+WHERE category = 'Electronics'
+   OR category = 'Books'
+   OR category = 'Clothing';
+```
+
+## BETWEEN
+
+Range check (inclusive):
+
+```sql
+SELECT * FROM products
+WHERE price BETWEEN 10 AND 50;
+
+-- equivalent to:
+WHERE price >= 10 AND price <= 50;
+
+-- works with dates too
+SELECT * FROM orders
+WHERE order_date BETWEEN '2024-01-01' AND '2024-12-31';
+```
+
+## LIKE
+
+Pattern matching with wildcards:
+
+```sql
+-- % matches any number of characters
+SELECT * FROM users WHERE name LIKE 'A%';    -- starts with A
+SELECT * FROM users WHERE name LIKE '%son';  -- ends with "son"
+SELECT * FROM users WHERE name LIKE '%li%';  -- contains "li"
+
+-- _ matches exactly one character
+SELECT * FROM users WHERE name LIKE '_at';   -- "cat", "bat", "hat"
+```
+
+## NULL Checks
+
+Use `IS NULL` and `IS NOT NULL` (never `= NULL`):
+
+```sql
+SELECT * FROM users WHERE email IS NULL;
+SELECT * FROM users WHERE email IS NOT NULL;
+```

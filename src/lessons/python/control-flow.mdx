@@ -1,0 +1,84 @@
+---
+title: "Control Flow"
+slug: python-control-flow
+order: 5
+topic: "Python"
+description: "Master if/elif/else conditions and for/while loops."
+---
+
+Control flow lets your program make decisions and repeat actions.
+
+## Conditionals
+
+```python
+score = 85
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+else:
+    grade = "F"
+
+print(grade)  # "B"
+```
+
+### Ternary Expression
+
+```python
+age = 20
+status = "adult" if age >= 18 else "minor"
+```
+
+## For Loops
+
+```python
+# iterate over a list
+for fruit in ["apple", "banana", "cherry"]:
+    print(fruit)
+
+# range
+for i in range(5):
+    print(i)          # 0, 1, 2, 3, 4
+
+for i in range(2, 8, 2):
+    print(i)          # 2, 4, 6
+
+# enumerate (index + value)
+for i, fruit in enumerate(["a", "b", "c"]):
+    print(i, fruit)
+```
+
+## While Loops
+
+```python
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+```
+
+## Break & Continue
+
+```python
+for n in range(10):
+    if n == 3:
+        continue      # skip 3
+    if n == 7:
+        break         # stop at 7
+    print(n)          # 0, 1, 2, 4, 5, 6
+```
+
+## For-Else
+
+The `else` clause runs if the loop wasn't broken:
+
+```python
+for n in range(10):
+    if n == 42:
+        break
+else:
+    print("42 not found")   # this runs
+```

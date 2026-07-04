@@ -1,0 +1,93 @@
+---
+title: "Subqueries & Set Operations"
+slug: sql-nested
+order: 6
+topic: "SQL"
+description: "Nest queries inside other queries and combine results with UNION."
+---
+
+Subqueries (nested queries) let you use the result of one query inside another.
+
+## Subquery in WHERE
+
+```sql
+-- find products priced above average
+SELECT name, price
+FROM products
+WHERE price > (SELECT AVG(price) FROM products);
+```
+
+## Subquery with IN
+
+```sql
+-- find customers who have placed orders
+SELECT name FROM customers
+WHERE id IN (SELECT DISTINCT customer_id FROM orders);
+```
+
+## Subquery in SELECT
+
+```sql
+-- show each product with the category average
+SELECT
+    name,
+    price,
+    (SELECT AVG(price) FROM products p2
+     WHERE p2.category = p1.category) AS category_avg
+FROM products p1;
+```
+
+## EXISTS
+
+Check if a subquery returns any rows:
+
+```sql
+-- customers with at least one order
+SELECT name FROM customers c
+WHERE EXISTS (
+    SELECT 1 FROM orders o
+    WHERE o.customer_id = c.id
+);
+```
+
+`EXISTS` is often more efficient than `IN` for large datasets.
+
+## UNION
+
+Combine results from multiple queries (removes duplicates):
+
+```sql
+SELECT name, email FROM employees
+UNION
+SELECT name, email FROM contractors;
+```
+
+`UNION ALL` keeps duplicates (faster):
+
+```sql
+SELECT city FROM customers
+UNION ALL
+SELECT city FROM suppliers;
+```
+
+## Complete Example
+
+```sql
+SELECT
+    name,
+    total_spent
+FROM (
+    SELECT
+        c.name,
+        SUM(o.amount) AS total_spent
+    FROM customers c
+    JOIN orders o ON c.id = o.customer_id
+    GROUP BY c.id, c.name
+) AS customer_totals
+WHERE total_spent > (SELECT AVG(total_spent) FROM (
+    SELECT SUM(amount) AS total_spent
+    FROM orders
+    GROUP BY customer_id
+) AS avg_table)
+ORDER BY total_spent DESC;
+```

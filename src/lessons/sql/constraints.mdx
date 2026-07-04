@@ -1,0 +1,97 @@
+---
+title: "Constraints & Schema Design"
+slug: sql-constraints
+order: 7
+topic: "SQL"
+description: "Define table structure with constraints: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL."
+---
+
+Constraints enforce rules on the data in your tables.
+
+## CREATE TABLE
+
+```sql
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    age INTEGER DEFAULT 18,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## PRIMARY KEY
+
+Uniquely identifies each row. Each table should have one.
+
+```sql
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+```
+
+`AUTOINCREMENT` (or `SERIAL` / `IDENTITY` depending on the database) automatically assigns the next number.
+
+## FOREIGN KEY
+
+Links a column to a primary key in another table (enforces referential integrity):
+
+```sql
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    amount DECIMAL(10,2),
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+```
+
+## NOT NULL
+
+Ensures a column cannot be empty:
+
+```sql
+CREATE TABLE articles (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL
+);
+```
+
+## UNIQUE
+
+Ensures all values in a column are different:
+
+```sql
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL
+);
+```
+
+## CHECK
+
+Validate values against a condition:
+
+```sql
+CREATE TABLE employees (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    salary DECIMAL(10,2) CHECK (salary > 0),
+    age INTEGER CHECK (age >= 16 AND age <= 120)
+);
+```
+
+## DEFAULT
+
+Provide a default value:
+
+```sql
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY,
+    content TEXT,
+    likes_count INTEGER DEFAULT 0,
+    is_published BOOLEAN DEFAULT false
+);
+```

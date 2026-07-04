@@ -1,0 +1,74 @@
+---
+title: "Dictionaries & Sets"
+slug: python-dicts
+order: 4
+topic: "Python"
+description: "Store key-value pairs with dictionaries and unique elements with sets."
+---
+
+Dictionaries and sets are Python's hash-based collection types.
+
+## Dictionaries
+
+```python
+person = {
+    "name": "Alice",
+    "age": 30,
+    "city": "New York"
+}
+
+# access
+print(person["name"])        # "Alice"
+print(person.get("age"))     # 30
+print(person.get("salary", 0))  # 0 (default)
+
+# modify
+person["age"] = 31
+person["email"] = "alice@example.com"
+
+# delete
+del person["city"]
+
+# iterate
+for key in person:
+    print(key, person[key])
+
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+for value in person.values():
+    print(value)
+```
+
+## Dictionary Methods
+
+```python
+keys = person.keys()          # dict_keys(['name', 'age', 'email'])
+values = person.values()      # dict_values(['Alice', 31, ...])
+items = person.items()        # dict_items([('name', 'Alice'), ...])
+
+# merge
+defaults = {"theme": "dark", "lang": "en"}
+settings = {"theme": "light"}
+merged = {**defaults, **settings}  # {"theme": "light", "lang": "en"}
+```
+
+## Sets (Unordered, Unique)
+
+```python
+numbers = {1, 2, 3, 3, 2}    # {1, 2, 3} — duplicates removed
+
+numbers.add(4)
+numbers.remove(2)
+
+# set operations
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+print(a | b)   # union:     {1, 2, 3, 4, 5, 6}
+print(a & b)   # intersect: {3, 4}
+print(a - b)   # difference:{1, 2}
+print(a ^ b)   # symmetric: {1, 2, 5, 6}
+```
+
+Use sets when you need fast membership testing and uniqueness guarantees.

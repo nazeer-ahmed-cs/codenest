@@ -1,0 +1,91 @@
+---
+title: "Events & Forms"
+slug: react-events
+order: 3
+topic: "React"
+description: "Handle user interactions with event handlers and manage form inputs."
+---
+
+React uses a synthetic event system that works consistently across browsers.
+
+## Handling Events
+
+```jsx
+function Button() {
+  function handleClick(event) {
+    console.log("Button clicked!", event);
+  }
+
+  return <button onClick={handleClick}>Click me</button>;
+}
+```
+
+## Passing Arguments
+
+```jsx
+function Item({ name, onDelete }) {
+  return (
+    <button onClick={() => onDelete(name)}>
+      Delete {name}
+    </button>
+  );
+}
+```
+
+## Form Inputs (Controlled Components)
+
+```jsx
+function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("Logging in with", email, password);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+```
+
+## Event Object
+
+```jsx
+function Input() {
+  function handleChange(e) {
+    console.log(e.target.value);   // current input value
+    console.log(e.target.type);    // input type
+  }
+
+  return <input onChange={handleChange} />;
+}
+```
+
+## Prevent Default
+
+```jsx
+function Link() {
+  function handleClick(e) {
+    e.preventDefault();
+    alert("Navigation prevented");
+  }
+
+  return <a href="https://example.com" onClick={handleClick}>Click</a>;
+}
+```

@@ -392,5 +392,128 @@ export const certificateQuiz: Quiz = {
       explanation:
         "A breakpoint is a viewport width at which the layout changes via a media query.",
     },
+    // ── Python (8) ──
+    {
+      question: "How do you print output in Python?",
+      options: ["console.log()", "print()", "echo()", "System.out.println()"],
+      correctIndex: 1,
+      explanation: "Python's built-in print() function writes text to the console.",
+    },
+    {
+      question: "Which Python data type is mutable?",
+      options: ["tuple", "string", "list", "int"],
+      correctIndex: 2,
+      explanation: "Lists are mutable. Tuples, strings, and ints are immutable.",
+    },
+    {
+      question: "What does len('hello') return?",
+      options: ["4", "5", "6", "TypeError"],
+      correctIndex: 1,
+      explanation: "len() returns the number of characters in the string. 'hello' has 5 characters.",
+    },
+    {
+      question: "How do you define a function in Python?",
+      options: ["function myFunc():", "def myFunc():", "fn myFunc():", "func myFunc():"],
+      correctIndex: 1,
+      explanation: "Python uses the def keyword to define functions.",
+    },
+    {
+      question: "What is the result of 10 // 3 in Python?",
+      options: ["3.33", "3", "3.0", "1"],
+      correctIndex: 1,
+      explanation: "// is floor division in Python. 10 // 3 = 3 (integer division).",
+    },
+    {
+      question: "Which keyword is used to import modules?",
+      options: ["include", "using", "import", "require"],
+      correctIndex: 2,
+      explanation: "Python uses the import keyword to bring in modules.",
+    },
+    {
+      question: "What does range(5) generate?",
+      options: ["[1, 2, 3, 4, 5]", "[0, 1, 2, 3, 4]", "[0, 1, 2, 3, 4, 5]", "Error"],
+      correctIndex: 1,
+      explanation: "range(5) generates numbers from 0 to 4 (exclusive of 5).",
+    },
+    {
+      question: "Which statement is true about Python?",
+      options: [
+        "Python is statically typed",
+        "Python is dynamically typed",
+        "Python requires semicolons",
+        "Python uses curly braces for blocks",
+      ],
+      correctIndex: 1,
+      explanation: "Python is dynamically typed and uses indentation for blocks, not curly braces or semicolons.",
+    },
+    // ── SQL (8) ──
+    {
+      question: "Which SQL statement retrieves data?",
+      options: ["GET", "FETCH", "SELECT", "RETRIEVE"],
+      correctIndex: 2,
+      explanation: "SELECT is the SQL command for querying data from tables.",
+    },
+    {
+      question: "How do you filter rows in SQL?",
+      options: ["FILTER", "WHERE", "HAVING", "MATCH"],
+      correctIndex: 1,
+      explanation: "The WHERE clause filters rows before any grouping occurs.",
+    },
+    {
+      question: "What does INNER JOIN return?",
+      options: [
+        "All rows from both tables",
+        "Only rows with matching values in both tables",
+        "All rows from the left table",
+        "All rows from the right table",
+      ],
+      correctIndex: 1,
+      explanation: "INNER JOIN returns only rows where the join condition is met in both tables.",
+    },
+    {
+      question: "Which function counts rows in SQL?",
+      options: ["TOTAL()", "SUM()", "COUNT()", "LEN()"],
+      correctIndex: 2,
+      explanation: "COUNT() returns the number of rows or non-null values in a column.",
+    },
+    {
+      question: "What does '%cat%' in a LIKE clause match?",
+      options: [
+        "Strings starting with 'cat'",
+        "Strings ending with 'cat'",
+        "Strings containing 'cat' anywhere",
+        "Strings exactly equal to 'cat'",
+      ],
+      correctIndex: 2,
+      explanation: "The % wildcard matches any sequence. '%cat%' matches 'cat' anywhere in the string.",
+    },
+    {
+      question: "What is a PRIMARY KEY?",
+      options: [
+        "A column that allows NULL values",
+        "A column that uniquely identifies each row",
+        "A key for sorting results",
+        "A reference to another table",
+      ],
+      correctIndex: 1,
+      explanation: "A PRIMARY KEY uniquely identifies each row. It must be unique and non-null.",
+    },
+    {
+      question: "Which clause sorts SQL results?",
+      options: ["SORT BY", "ORDER BY", "GROUP BY", "ARRANGE BY"],
+      correctIndex: 1,
+      explanation: "ORDER BY sorts the result set in ascending (default) or descending order.",
+    },
+    {
+      question: "What does AVG(price) return?",
+      options: [
+        "The total price",
+        "The average price",
+        "The highest price",
+        "The row count",
+      ],
+      correctIndex: 1,
+      explanation: "AVG() computes the arithmetic mean of values in a column.",
+    },
   ],
 };

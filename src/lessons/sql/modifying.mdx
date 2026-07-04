@@ -1,0 +1,90 @@
+---
+title: "Modifying Data"
+slug: sql-modifying
+order: 8
+topic: "SQL"
+description: "Insert, update, and delete data with INSERT, UPDATE, DELETE, and manage tables with DDL."
+---
+
+SQL isn't just for reading data — it also lets you create, modify, and delete data and structures.
+
+## INSERT
+
+```sql
+-- insert a single row
+INSERT INTO users (name, email, age)
+VALUES ('Alice', 'alice@example.com', 30);
+
+-- insert multiple rows
+INSERT INTO products (name, price, category)
+VALUES
+    ('Laptop', 999.99, 'Electronics'),
+    ('Mouse', 29.99, 'Electronics'),
+    ('Desk Lamp', 45.00, 'Furniture');
+```
+
+## UPDATE
+
+```sql
+-- update specific rows
+UPDATE users
+SET age = 31
+WHERE name = 'Alice';
+
+-- update all rows (be careful!)
+UPDATE products
+SET price = price * 1.1;    -- 10% price increase
+```
+
+## DELETE
+
+```sql
+-- delete specific rows
+DELETE FROM users
+WHERE id = 5;
+
+-- delete all rows (be very careful!)
+DELETE FROM products;
+
+-- TRUNCATE is faster for removing all rows
+TRUNCATE TABLE products;
+```
+
+## ALTER TABLE
+
+```sql
+-- add a column
+ALTER TABLE users
+ADD COLUMN phone TEXT;
+
+-- drop a column
+ALTER TABLE users
+DROP COLUMN phone;
+
+-- rename a column
+ALTER TABLE users
+RENAME COLUMN age TO user_age;
+```
+
+## DROP TABLE
+
+```sql
+-- remove the entire table and its data
+DROP TABLE IF EXISTS temp_data;
+```
+
+## Transactions
+
+Group multiple operations into an atomic unit:
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+
+COMMIT;
+-- or ROLLBACK if something goes wrong
+```
+
+Transactions ensure that either all operations succeed, or none are applied.

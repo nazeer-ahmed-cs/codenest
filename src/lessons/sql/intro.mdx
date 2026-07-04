@@ -1,0 +1,57 @@
+---
+title: "SQL Introduction"
+slug: sql-intro
+order: 1
+topic: "SQL"
+description: "Learn what SQL is, how databases are structured, and write your first queries."
+---
+
+SQL (Structured Query Language) is the standard language for managing relational databases. It's used to query, insert, update, and delete data.
+
+## What is a Relational Database?
+
+Data is stored in **tables** with rows and columns, similar to a spreadsheet.
+
+```
+users
+┌────┬─────────┬─────────────┐
+│ id │ name    │ email       │
+├────┼─────────┼─────────────┤
+│ 1  │ Alice   │ alice@...   │
+│ 2  │ Bob     │ bob@...     │
+│ 3  │ Charlie │ charlie@... │
+└────┴─────────┴─────────────┘
+```
+
+## Your First Query
+
+```sql
+SELECT * FROM users;
+```
+
+This returns all columns (`*`) and all rows from the `users` table.
+
+## Selecting Specific Columns
+
+```sql
+SELECT name, email FROM users;
+```
+
+## Comments
+
+```sql
+-- single-line comment
+
+/*
+multi-line
+comment
+*/
+```
+
+## Case Sensitivity
+
+SQL keywords are conventionally written in UPPERCASE, but they work in lowercase too. Table and column names may be case-sensitive depending on the database.
+
+```sql
+select name from users;  -- works, but uppercase is conventional
+```

@@ -1,0 +1,75 @@
+---
+title: "Lists & Tuples"
+slug: python-lists
+order: 3
+topic: "Python"
+description: "Work with ordered collections using lists and tuples."
+---
+
+Lists and tuples are Python's ordered collection types.
+
+## Lists (Mutable)
+
+```python
+fruits = ["apple", "banana", "cherry"]
+
+# access by index
+print(fruits[0])      # "apple"
+print(fruits[-1])     # "cherry" (negative index wraps around)
+
+# slicing
+print(fruits[0:2])    # ["apple", "banana"]
+
+# modify
+fruits[1] = "blueberry"
+fruits.append("date")
+fruits.insert(0, "apricot")
+removed = fruits.pop()
+
+# check membership
+print("apple" in fruits)   # True
+
+# length
+print(len(fruits))
+```
+
+## List Methods
+
+```python
+nums = [3, 1, 4, 1, 5]
+
+nums.sort()           # [1, 1, 3, 4, 5]
+nums.reverse()        # [5, 4, 3, 1, 1]
+nums.count(1)         # 2
+nums.index(3)         # 2
+```
+
+## List Comprehensions
+
+A concise way to create lists:
+
+```python
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+
+# equivalent to:
+evens2 = []
+for x in range(20):
+    if x % 2 == 0:
+        evens2.append(x)
+```
+
+## Tuples (Immutable)
+
+```python
+point = (3, 4)
+x, y = point          # tuple unpacking
+
+print(x)              # 3
+print(y)              # 4
+
+# tuples are immutable:
+# point[0] = 5       # TypeError!
+```
+
+Use tuples for fixed collections (coordinates, return values, function arguments that shouldn't change).

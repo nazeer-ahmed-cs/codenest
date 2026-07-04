@@ -1,0 +1,109 @@
+---
+title: "Effects & Lifecycle"
+slug: react-effects
+order: 5
+topic: "React"
+description: "Handle side effects with useEffect — data fetching, subscriptions, and cleanup."
+---
+
+The `useEffect` hook lets you perform side effects in function components.
+
+## Basic Effect
+
+```jsx
+import { useState, useEffect } from "react";
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((s) => s + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <p>{seconds}s elapsed</p>;
+}
+```
+
+## Data Fetching
+
+```jsx
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUser() {
+      setLoading(true);
+      const res = await fetch(`/api/users/${userId}`);
+      const data = await res.json();
+      setUser(data);
+      setLoading(false);
+    }
+
+    fetchUser();
+  }, [userId]);
+
+  if (loading) return <p>Loading...</p>;
+  return <h1>{user.name}</h1>;
+}
+```
+
+## Dependency Array
+
+```jsx
+useEffect(() => {
+  // runs on every render
+});
+
+useEffect(() => {
+  // runs once on mount
+}, []);
+
+useEffect(() => {
+  // runs when `count` changes
+}, [count]);
+
+useEffect(() => {
+  // runs when `count` or `name` changes
+}, [count, name]);
+```
+
+## Cleanup
+
+Return a function from useEffect to clean up:
+
+```jsx
+function ChatRoom({ roomId }) {
+  useEffect(() => {
+    const connection = createConnection(roomId);
+    connection.connect();
+
+    return () => {
+      connection.disconnect();  // cleanup on unmount or re-render
+    };
+  }, [roomId]);
+}
+```
+
+## Avoiding Infinite Loops
+
+Always include all values used inside the effect in the dependency array:
+
+```jsx
+function SearchResults({ query }) {
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    if (!query) return;
+    fetch(`/api/search?q=${query}`)
+      .then((r) => r.json())
+      .then(setResults);
+  }, [query]);  // ✅ query is included
+
+  return <ResultsList results={results} />;
+}
+```

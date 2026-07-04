@@ -1,0 +1,98 @@
+---
+title: "Conditional Rendering & Lists"
+slug: react-conditional
+order: 4
+topic: "React"
+description: "Render different UI based on state and display lists of data with keys."
+---
+
+React lets you conditionally render content using JavaScript expressions.
+
+## Ternary Operator
+
+```jsx
+function Greeting({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please sign in</h1>}
+    </div>
+  );
+}
+```
+
+## && Short-Circuit
+
+```jsx
+function Notification({ message }) {
+  return (
+    <div>
+      {message && <p className="alert">{message}</p>}
+    </div>
+  );
+}
+```
+
+## If/Else Outside JSX
+
+```jsx
+function UserStatus({ role }) {
+  if (role === "admin") {
+    return <AdminPanel />;
+  }
+  if (role === "user") {
+    return <UserDashboard />;
+  }
+  return <GuestView />;
+}
+```
+
+## Rendering Lists
+
+```jsx
+function TodoList({ items }) {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{item.text}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## Keys
+
+Keys help React identify which items changed:
+
+```jsx
+function ProductList({ products }) {
+  return (
+    <div>
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}        // stable, unique ID
+          product={product}
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+Don't use the array index as a key if the list can change order.
+
+## Filtering and Transforming
+
+```jsx
+function ActiveUsers({ users }) {
+  const activeUsers = users.filter((u) => u.isActive);
+
+  return (
+    <ul>
+      {activeUsers.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```

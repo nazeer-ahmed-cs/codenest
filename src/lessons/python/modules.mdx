@@ -1,0 +1,83 @@
+---
+title: "Modules & Packages"
+slug: python-modules
+order: 7
+topic: "Python"
+description: "Organize code into modules, import the standard library, and install third-party packages."
+---
+
+Modules let you organize Python code into separate files. The standard library provides hundreds of ready-to-use modules.
+
+## Importing
+
+```python
+# import the whole module
+import math
+print(math.sqrt(16))   # 4.0
+
+# import specific names
+from math import pi, sin
+print(pi)              # 3.14159...
+
+# import with alias
+import datetime as dt
+today = dt.date.today()
+```
+
+## Common Standard Library Modules
+
+```python
+import os
+import sys
+import json
+import random
+import collections
+
+# os — operating system interface
+print(os.getcwd())     # current working directory
+
+# random
+print(random.randint(1, 6))   # random dice roll
+print(random.choice(["a", "b", "c"]))
+random.shuffle(my_list)
+
+# json
+data = '{"name": "Alice", "age": 30}'
+parsed = json.loads(data)
+print(parsed["name"])
+```
+
+## Your Own Modules
+
+Save a file `helpers.py`:
+
+```python
+# helpers.py
+def add(a, b):
+    return a + b
+
+PI = 3.14159
+```
+
+Then import it from another file:
+
+```python
+import helpers
+print(helpers.add(2, 3))   # 5
+print(helpers.PI)           # 3.14159
+```
+
+## Installing Packages (pip)
+
+```bash
+pip install requests
+pip install numpy pandas matplotlib
+```
+
+Then use them:
+
+```python
+import requests
+response = requests.get("https://api.github.com")
+print(response.status_code)   # 200
+```

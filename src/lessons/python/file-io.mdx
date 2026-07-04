@@ -1,0 +1,89 @@
+---
+title: "File I/O"
+slug: python-file-io
+order: 8
+topic: "Python"
+description: "Read and write files using Python's built-in file handling."
+---
+
+Python makes file operations simple with the built-in `open()` function and the `with` statement.
+
+## Reading Files
+
+```python
+# read entire file
+with open("data.txt", "r") as f:
+    content = f.read()
+    print(content)
+
+# read line by line
+with open("data.txt", "r") as f:
+    for line in f:
+        print(line.strip())
+
+# read all lines into a list
+with open("data.txt", "r") as f:
+    lines = f.readlines()   # ["line1\n", "line2\n", ...]
+```
+
+## Writing Files
+
+```python
+# overwrite mode
+with open("output.txt", "w") as f:
+    f.write("Hello, World!\n")
+    f.write("Second line\n")
+
+# append mode
+with open("output.txt", "a") as f:
+    f.write("This line is appended\n")
+
+# binary mode
+with open("image.jpg", "rb") as f:
+    data = f.read()
+```
+
+## The `with` Statement
+
+The `with` statement automatically closes the file, even if an error occurs:
+
+```python
+# without `with` — you must close manually
+f = open("data.txt", "r")
+content = f.read()
+f.close()
+
+# with `with` — auto-closes
+with open("data.txt", "r") as f:
+    content = f.read()
+# file is closed here
+```
+
+## Working with JSON Files
+
+```python
+import json
+
+data = {"name": "Alice", "scores": [90, 85, 92]}
+
+# write JSON
+with open("data.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+# read JSON
+with open("data.json", "r") as f:
+    loaded = json.load(f)
+    print(loaded["name"])   # "Alice"
+```
+
+## Error Handling with Files
+
+```python
+try:
+    with open("missing.txt", "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    print("File not found!")
+except PermissionError:
+    print("No permission to read!")
+```

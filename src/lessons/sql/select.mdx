@@ -1,0 +1,75 @@
+---
+title: "SELECT & Filtering"
+slug: sql-select
+order: 2
+topic: "SQL"
+description: "Retrieve data with SELECT, filter rows with WHERE, and sort results with ORDER BY."
+---
+
+The `SELECT` statement retrieves data from a table.
+
+## Basic SELECT
+
+```sql
+SELECT name, age FROM employees;
+```
+
+## Filtering with WHERE
+
+```sql
+SELECT * FROM products
+WHERE price > 100;
+
+SELECT name, email FROM users
+WHERE active = true;
+
+SELECT * FROM orders
+WHERE order_date >= '2024-01-01';
+```
+
+## ORDER BY
+
+```sql
+SELECT name, salary FROM employees
+ORDER BY salary DESC;        -- highest first
+
+SELECT name, salary FROM employees
+ORDER BY salary ASC;         -- lowest first (default)
+```
+
+## LIMIT
+
+```sql
+SELECT * FROM products
+ORDER BY price DESC
+LIMIT 5;                     -- top 5 most expensive
+```
+
+## DISTINCT
+
+```sql
+-- get unique values
+SELECT DISTINCT city FROM customers;
+
+SELECT DISTINCT department, role FROM employees;
+```
+
+## Aliases (AS)
+
+```sql
+SELECT name AS full_name, salary * 12 AS annual_salary
+FROM employees;
+```
+
+## Complete Example
+
+Given a `products` table:
+
+```sql
+SELECT name, price, category
+FROM products
+WHERE category = 'Electronics'
+  AND price > 50
+ORDER BY price ASC
+LIMIT 10;
+```

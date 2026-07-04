@@ -3,6 +3,8 @@ import { lessons as html } from "@/lessons/html";
 import { lessons as css } from "@/lessons/css";
 import { lessons as javascript } from "@/lessons/javascript";
 import { lessons as react } from "@/lessons/react";
+import { lessons as python } from "@/lessons/python";
+import { lessons as sql } from "@/lessons/sql";
 
 export type LessonFrontmatter = {
   title: string;
@@ -22,6 +24,8 @@ const unsorted: LessonEntry[] = [
   ...css,
   ...javascript,
   ...react,
+  ...python,
+  ...sql,
 ];
 
 unsorted.sort((a, b) => {

@@ -1,0 +1,91 @@
+---
+title: "Joins"
+slug: sql-joins
+order: 5
+topic: "SQL"
+description: "Combine data from multiple tables using JOIN operations."
+---
+
+Joins let you query data from multiple related tables in a single statement.
+
+## INNER JOIN
+
+Returns rows that match in both tables:
+
+```sql
+SELECT orders.id, customers.name, orders.amount
+FROM orders
+INNER JOIN customers ON orders.customer_id = customers.id;
+```
+
+```
+orders                customers
+┌────┬──────────┐     ┌────┬─────────┐
+│ id │ cust_id  │     │ id │ name    │
+├────┼──────────┤     ├────┼─────────┤
+│ 1  │ 1        │     │ 1  │ Alice   │
+│ 2  │ 1        │     │ 2  │ Bob     │
+│ 3  │ 3        │     │ 3  │ Charlie │
+└────┴──────────┘     └────┴─────────┘
+
+Result:
+1 | Alice | 100
+2 | Alice | 50
+3 | Charlie | 75
+```
+
+## LEFT JOIN
+
+Returns all rows from the left table, with matching rows from the right (NULL if no match):
+
+```sql
+SELECT customers.name, orders.amount
+FROM customers
+LEFT JOIN orders ON customers.id = orders.customer_id;
+
+-- Bob has no orders → amount is NULL
+-- Alice | 100
+-- Alice | 50
+-- Bob   | NULL
+-- Charlie | 75
+```
+
+## RIGHT JOIN
+
+Returns all rows from the right table:
+
+```sql
+SELECT customers.name, orders.amount
+FROM customers
+RIGHT JOIN orders ON customers.id = orders.customer_id;
+```
+
+## FULL OUTER JOIN
+
+Returns all rows from both tables:
+
+```sql
+SELECT customers.name, orders.amount
+FROM customers
+FULL OUTER JOIN orders ON customers.id = orders.customer_id;
+```
+
+## Self Join
+
+A table joined with itself:
+
+```sql
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;
+```
+
+## Table Aliases
+
+Shorten table names with aliases:
+
+```sql
+SELECT o.id, c.name, o.amount
+FROM orders o
+JOIN customers c ON o.customer_id = c.id;
+```
