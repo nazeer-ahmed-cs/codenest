@@ -5,14 +5,9 @@ import { connectToDatabase } from "@/lib/mongodb";
 import type { Lesson } from "@/lib/models/lesson";
 import type { UserProgress } from "@/lib/models/user-progress";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
 async function checkAdmin() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
-    return false;
-  }
-  return true;
+  return session?.user?.role === "admin";
 }
 
 export async function GET() {

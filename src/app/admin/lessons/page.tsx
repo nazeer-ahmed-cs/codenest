@@ -5,12 +5,10 @@ import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import type { Lesson } from "@/lib/models/lesson";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
 export default async function AdminLessonsPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
+  if (session?.user?.role !== "admin") {
     redirect("/login");
   }
 

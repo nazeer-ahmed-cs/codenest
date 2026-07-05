@@ -69,16 +69,13 @@ const topicNavItems: TopicNavItem[] = topics
     };
   });
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  const isAdmin =
-    !!session?.user?.email && session.user.email === ADMIN_EMAIL;
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <html lang="en" className="scroll-smooth">

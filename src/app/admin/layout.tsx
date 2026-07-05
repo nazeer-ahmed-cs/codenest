@@ -3,8 +3,6 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
 export default async function AdminLayout({
   children,
 }: {
@@ -12,7 +10,7 @@ export default async function AdminLayout({
 }) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
+  if (session?.user?.role !== "admin") {
     redirect("/login");
   }
 
